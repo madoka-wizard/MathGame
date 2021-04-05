@@ -129,4 +129,5 @@
     <string name="steps_count">"Количество шагов: "</string>
     <string name="multiselection_mode_is_on">⚠️ ВКЛЮЧЕН режим мультивыделения ⚠️</string>
     <string name="multiselection_mode_is_off">✅ Обычный режим ✅</string>
+    <string name="previous_level">Назад</string>
 </resources>

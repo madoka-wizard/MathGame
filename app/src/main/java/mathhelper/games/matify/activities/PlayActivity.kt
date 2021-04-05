@@ -27,7 +27,7 @@ import java.lang.Exception
 import kotlin.math.max
 import kotlin.math.min
 
-class PlayActivity: AppCompatActivity() {
+class PlayActivity : AppCompatActivity() {
     private val TAG = "PlayActivity"
     private var scale = 1.0f
     private var needClear = false
@@ -302,26 +302,44 @@ class PlayActivity: AppCompatActivity() {
 
     private fun createWinDialog(): AlertDialog {
         Log.d(TAG, "createWinDialog")
+        val view = this.layoutInflater.inflate(R.layout.alert_win_dialog_layout, null)
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
         )
-        builder
+            .setView(view)
             .setTitle(R.string.congratulations)
             .setMessage("")
-            .setPositiveButton(R.string.next) { dialog: DialogInterface, id: Int -> }
-            .setNeutralButton(R.string.menu) { dialog: DialogInterface, id: Int ->
-                PlayScene.shared.menu(this,false)
-                finish()
-            }
-            .setNegativeButton(R.string.restart_label) { dialog: DialogInterface, id: Int ->
-                scale = 1f
-                PlayScene.shared.restart(this, resources.configuration.locale.language)
-            }
             .setCancelable(false)
+
         val dialog = builder.create()
+
+        val menuButton = view.findViewById<Button>(R.id.menu_button)
+        menuButton.setText(R.string.menu)
+        menuButton.setOnClickListener {
+            PlayScene.shared.menu(this, false)
+            dialog.dismiss()
+            finish()
+        }
+
+        val previousButton = view.findViewById<Button>(R.id.previous_button)
+        previousButton.setText(R.string.previous_level)
+        previousButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val nextButton = view.findViewById<Button>(R.id.next_button)
+        nextButton.setText(R.string.next)
+
+        val restartButton = view.findViewById<Button>(R.id.restart_button)
+        restartButton.setText(R.string.restart_label)
+        restartButton.setOnClickListener {
+            scale = 1f
+            dialog.dismiss()
+            PlayScene.shared.restart(this, resources.configuration.locale.language)
+        }
+
         dialog.setOnShowListener {
-            val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            okButton.setOnClickListener {
+            nextButton.setOnClickListener {
                 scale = 1f
                 if (!LevelScene.shared.nextLevel()) {
                     Toast.makeText(this, R.string.next_after_last_level_label, Toast.LENGTH_SHORT).show()

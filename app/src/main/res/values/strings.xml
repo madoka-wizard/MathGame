@@ -141,4 +141,5 @@
     <string name="steps_count">Steps:</string>
     <string name="multiselection_mode_is_on">⚠️ Multiselection is ON ⚠️</string>
     <string name="multiselection_mode_is_off">✅ Usual mode ✅</string>
+    <string name="previous_level">Previous</string>
 </resources>
