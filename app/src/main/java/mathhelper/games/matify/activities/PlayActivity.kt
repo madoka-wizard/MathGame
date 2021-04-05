@@ -284,6 +284,7 @@ class PlayActivity: AppCompatActivity() {
         }
         val sec = "${currentTime % 60}".padStart(2, '0')
         val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
+        PlayScene.shared.cancelTimers()
         val spannable = SpannableString("$msgTitle$steps$time\n\n${resources.getString(R.string.award)}: $award")
         val spanColor = ThemeController.shared.getColor(this, ColorName.PRIMARY_COLOR)
         spannable.setSpan(BulletSpan(5, spanColor), msgTitle.length + 1,
