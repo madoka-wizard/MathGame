@@ -16,12 +16,10 @@ import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.activity_play.*
+import mathhelper.games.matify.*
 import mathhelper.games.matify.level.Award
-import mathhelper.games.matify.LevelScene
-import mathhelper.games.matify.PlayScene
-import mathhelper.games.matify.R
-import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
+import mathhelper.games.matify.game.Game
 import standartlibextensions.selectPlacesForColoringByFragment
 import java.lang.Exception
 import kotlin.math.max
@@ -344,7 +342,12 @@ class PlayActivity : AppCompatActivity() {
             nextButton.setOnClickListener {
                 scale = 1f
                 if (!LevelScene.shared.hasNextLevel()) {
-                    Toast.makeText(this, R.string.next_after_last_level_label, Toast.LENGTH_SHORT).show()
+                    val nextGame = GlobalScene.shared.nextGame()
+                    if (nextGame != null) {
+                        AndroidUtil.showDialog(createNextGameDialog(nextGame))
+                    } else {
+                        Toast.makeText(this, R.string.it_was_the_last_level, Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     LevelScene.shared.nextLevel()
                     dialog.dismiss()
@@ -353,6 +356,27 @@ class PlayActivity : AppCompatActivity() {
         }
 
         return dialog
+    }
+
+    private fun createNextGameDialog(nextGame: Game): AlertDialog {
+        Log.d(TAG, "createNextGameDialog")
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
+        builder
+            .setTitle(R.string.game_completed)
+            .setMessage(R.string.next_game_dialog)
+//            .setPositiveButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
+//            }
+            .setNegativeButton(R.string.next_game_btn) { dialog: DialogInterface, id: Int ->
+                finish()
+                if (LevelScene.shared.levelsActivity != null) {
+                    LevelScene.shared.back()
+                }
+                GlobalScene.shared.currentGame = nextGame
+            }
+            .setCancelable(true)
+        return builder.create()
     }
 
     private fun createLooseDialog(): AlertDialog {

@@ -142,4 +142,8 @@
     <string name="multiselection_mode_is_on">⚠️ Multiselection is ON ⚠️</string>
     <string name="multiselection_mode_is_off">✅ Usual mode ✅</string>
     <string name="previous_level">Previous</string>
+    <string name="next_game_btn">Next Game</string>
+    <string name="next_game_dialog">You passed the last level in this game. Should we move to the next one?</string>
+    <string name="game_completed">You completed the last level!</string>
+    <string name="it_was_the_last_level">It was the last level in our game! Please, wait for updates :)</string>
 </resources>

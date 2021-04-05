@@ -78,6 +78,14 @@ class GlobalScene {
         }
     var loadingElement: ProgressBar? = null
 
+    fun nextGame(): Game? {
+        if (currentGame == null) {
+            return null
+        }
+        val nextIndex = games.indexOf(currentGame!!) + 1
+        return if (nextIndex != games.size) games[nextIndex] else null
+    }
+
     fun resetAll() {
         if (LevelScene.shared.levelsActivity != null) {
             LevelScene.shared.back()
