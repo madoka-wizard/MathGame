@@ -68,12 +68,20 @@ class LevelScene {
         return currentLevel?.endless == true && currentLevel?.lastResult?.award?.value == AwardType.PAUSED
     }
 
-    fun nextLevel(): Boolean {
-        if (currentLevelIndex + 1 == levels.size) {
-            return false
-        }
+    fun hasNextLevel(): Boolean {
+        return currentLevelIndex + 1 != levels.size
+    }
+
+    fun nextLevel() {
         currentLevelIndex++
-        return true
+    }
+
+    fun hasPreviousLevel(): Boolean {
+        return currentLevelIndex != 0
+    }
+
+    fun previousLevel() {
+        currentLevelIndex--
     }
 
     fun back() {

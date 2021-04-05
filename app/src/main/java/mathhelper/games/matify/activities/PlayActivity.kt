@@ -324,6 +324,7 @@ class PlayActivity : AppCompatActivity() {
         val previousButton = view.findViewById<Button>(R.id.previous_button)
         previousButton.setText(R.string.previous_level)
         previousButton.setOnClickListener {
+            LevelScene.shared.previousLevel()
             dialog.dismiss()
         }
 
@@ -339,15 +340,18 @@ class PlayActivity : AppCompatActivity() {
         }
 
         dialog.setOnShowListener {
+            previousButton.isEnabled = LevelScene.shared.hasPreviousLevel()
             nextButton.setOnClickListener {
                 scale = 1f
-                if (!LevelScene.shared.nextLevel()) {
+                if (!LevelScene.shared.hasNextLevel()) {
                     Toast.makeText(this, R.string.next_after_last_level_label, Toast.LENGTH_SHORT).show()
                 } else {
+                    LevelScene.shared.nextLevel()
                     dialog.dismiss()
                 }
             }
         }
+
         return dialog
     }
 
