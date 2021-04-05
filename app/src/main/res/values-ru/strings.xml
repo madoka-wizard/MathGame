@@ -67,7 +67,7 @@
     <string name="this_action_will_reset_all_your_achievements">Это действие сбросит все Ваши достижения</string>
     <string name="wanna_say_something">Обратная связь</string>
     <string name="tell_about_your_problem">Описание проблемы</string>
-    <string name="msg_on_start_multiselect">Режим мультивыбора. Для отмены нажмите ≢</string>
+    <string name="msg_on_start_multiselect">Режим мультивыбора. Для отмены нажмите ☝️</string>
     <string name="start_multiselect_info">Войти в режим мультивыбора</string>
     <string name="end_multiselect_info">Выйти из режима мультивыбора</string>
     <string name="previous_info">Предыдущий шаг</string>
