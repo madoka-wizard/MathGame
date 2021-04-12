@@ -1,13 +1,10 @@
 package mathhelper.games.matify
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import mathhelper.games.matify.mathResolver.MathResolver
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
-import mathhelper.games.matify.mathResolver.MathResolver
-import org.junit.Ignore
 
 @RunWith(AndroidJUnit4::class)
 class MathResolverTest {
@@ -17,8 +14,8 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "  1 cos(x)\n" +
-            "1+—*——————\n" +
-            "  2    2  \n"
+                "1+—*——————\n" +
+                "  2    2  \n"
         assertEquals(expected, actual)
     }
 
@@ -28,12 +25,12 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "       10     \n" +
-            "      ———     \n" +
-            "      232 3.78\n" +
-            "      ———*————\n" +
-            "  1    3    2 \n" +
-            "—————+————————\n" +
-            "81278     2   \n"
+                "      ———     \n" +
+                "      232 3.78\n" +
+                "      ———*————\n" +
+                "  1    3    2 \n" +
+                "—————+————————\n" +
+                "81278     2   \n"
         assertEquals(expected, actual)
     }
 
@@ -43,14 +40,14 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "       10       \n" +
-            "      ———       \n" +
-            "      232 3     \n" +
-            "      ———+—     \n" +
-            "       2  2     \n" +
-            "————————————————\n" +
-            " 1 1255673645564\n" +
-            "——+—————————————\n" +
-            "32       33     \n"
+                "      ———       \n" +
+                "      232 3     \n" +
+                "      ———+—     \n" +
+                "       2  2     \n" +
+                "————————————————\n" +
+                " 1 1255673645564\n" +
+                "——+—————————————\n" +
+                "32       33     \n"
         assertEquals(expected, actual)
     }
 
@@ -60,10 +57,10 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "  1  \n" +
-            "—————\n" +
-            "113+4\n" +
-            "—————\n" +
-            "  2  \n"
+                "—————\n" +
+                "113+4\n" +
+                "—————\n" +
+                "  2  \n"
         assertEquals(expected, actual)
     }
 
@@ -73,19 +70,19 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "                                 1 \n" +
-            "                               (-—)\n" +
-            "                                 2 \n" +
-            "         3   tg(x)                 \n" +
-            "   cos(x-—)*——————                 \n" +
-            " 1       2  ctg(x)        x*y      \n" +
-            " —+———————————————*14*sin(———)     \n" +
-            " 2          x+y            2       \n" +
-            "(    sin(-x+———)              )    \n" +
-            "             2                     \n" +
-            " —————————————————————————————     \n" +
-            "                  x                \n" +
-            "            -(-35+—)               \n" +
-            "                  2                \n"
+                "                               (-—)\n" +
+                "                                 2 \n" +
+                "         3   tg(x)                 \n" +
+                "   cos(x-—)*——————                 \n" +
+                " 1       2  ctg(x)        x*y      \n" +
+                " —+———————————————*14*sin(———)     \n" +
+                " 2          x+y            2       \n" +
+                "(    sin(-x+———)              )    \n" +
+                "             2                     \n" +
+                " —————————————————————————————     \n" +
+                "                  x                \n" +
+                "            -(-35+—)               \n" +
+                "                  2                \n"
         assertEquals(expected, actual)
     }
 
@@ -95,8 +92,8 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "1       3 \n" +
-            "—+cos(x+—)\n" +
-            "2       2 \n"
+                "—+cos(x+—)\n" +
+                "2       2 \n"
         assertEquals(expected, actual)
     }
 
@@ -106,10 +103,10 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             " cos(x)   cos(x) \n" +
-            "————————+————————\n" +
-            "1+sin(x)       x \n" +
-            "         1+sin(—)\n" +
-            "               2 \n"
+                "————————+————————\n" +
+                "1+sin(x)       x \n" +
+                "         1+sin(—)\n" +
+                "               2 \n"
         assertEquals(expected, actual)
     }
 
@@ -119,14 +116,14 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "      2\n" +
-            "    x  \n" +
-            "cos(—) \n" +
-            "    2  \n" +
-            "———————\n" +
-            "    1  \n" +
-            "   (—) \n" +
-            "    2  \n" +
-            "  1    \n"
+                "    x  \n" +
+                "cos(—) \n" +
+                "    2  \n" +
+                "———————\n" +
+                "    1  \n" +
+                "   (—) \n" +
+                "    2  \n" +
+                "  1    \n"
         assertEquals(expected, actual)
     }
 
@@ -136,14 +133,14 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "                 x       \n" +
-            "             cos(—)      \n" +
-            "                 2       \n" +
-            "         (————————————+8)\n" +
-            "          sin((y+4)*2)   \n" +
-            "        2                \n" +
-            " sin(x)                  \n" +
-            "(——————)                 \n" +
-            " cos(x)                  \n"
+                "             cos(—)      \n" +
+                "                 2       \n" +
+                "         (————————————+8)\n" +
+                "          sin((y+4)*2)   \n" +
+                "        2                \n" +
+                " sin(x)                  \n" +
+                "(——————)                 \n" +
+                " cos(x)                  \n"
         assertEquals(expected, actual)
     }
 
@@ -161,7 +158,7 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "  (-(2+3))\n" +
-            "-1        \n"
+                "-1        \n"
         assertEquals(expected, actual)
     }
 
@@ -171,11 +168,11 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "          cos(x)   cos(x)   \n" +
-            "      (-(————————+————————))\n" +
-            "         1-sin(x) 1+sin(x)  \n" +
-            "   -2                       \n" +
-            "tg(——)                      \n" +
-            "    x                       \n"
+                "      (-(————————+————————))\n" +
+                "         1-sin(x) 1+sin(x)  \n" +
+                "   -2                       \n" +
+                "tg(——)                      \n" +
+                "    x                       \n"
         assertEquals(expected, actual)
     }
 
@@ -201,9 +198,9 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "   2\n" +
-            " 1  \n" +
-            "(—) \n" +
-            " 2  \n"
+                " 1  \n" +
+                "(—) \n" +
+                " 2  \n"
         assertEquals(expected, actual)
     }
 
@@ -213,10 +210,10 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "      1        \n" +
-            "      —      3 \n" +
-            "1     2     4  \n" +
-            "—*(1+———+4+2  )\n" +
-            "2    384       \n"
+                "      —      3 \n" +
+                "1     2     4  \n" +
+                "—*(1+———+4+2  )\n" +
+                "2    384       \n"
         assertEquals(expected, actual)
     }
 
@@ -226,9 +223,9 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "   2     \n" +
-            "1 a -25 a\n" +
-            "—-—————+—\n" +
-            "a  5*a  5\n"
+                "1 a -25 a\n" +
+                "—-—————+—\n" +
+                "a  5*a  5\n"
         assertEquals(expected, actual)
     }
 
@@ -256,7 +253,7 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "      2      2 \n" +
-            "cos(x) +cos(x )\n"
+                "cos(x) +cos(x )\n"
         assertEquals(expected, actual)
     }
 
@@ -266,11 +263,11 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "  1 \n" +
-            "————\n" +
-            "   2\n" +
-            "  2 \n" +
-            " 2  \n" +
-            "2   \n"
+                "————\n" +
+                "   2\n" +
+                "  2 \n" +
+                " 2  \n" +
+                "2   \n"
         assertEquals(expected, actual)
     }
 
@@ -280,10 +277,10 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "    1   \n" +
-            "————————\n" +
-            "       2\n" +
-            "   2  2 \n" +
-            "1*1 *1  \n"
+                "————————\n" +
+                "       2\n" +
+                "   2  2 \n" +
+                "1*1 *1  \n"
         assertEquals(expected, actual)
     }
 
@@ -293,10 +290,10 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "    1   \n" +
-            "————————\n" +
-            "       2\n" +
-            "   2  2 \n" +
-            "1*1 *1  \n"
+                "————————\n" +
+                "       2\n" +
+                "   2  2 \n" +
+                "1*1 *1  \n"
         assertEquals(expected, actual)
     }
 
@@ -306,10 +303,10 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
         val expected =
             "  1   \n" +
-            " (—)  \n" +
-            "  2  1\n" +
-            "2   +—\n" +
-            "     4\n"
+                " (—)  \n" +
+                "  2  1\n" +
+                "2   +—\n" +
+                "     4\n"
         assertEquals(expected, actual)
     }
 
@@ -319,14 +316,14 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
         val expected =
             "                   2 \n" +
-            "          log   (27 )\n" +
-            "               3     \n" +
-            "   1+2       13      \n" +
-            "————————*4           \n" +
-            "     2               \n" +
-            "  794                \n" +
-            "————————             \n" +
-            "cos(2*x)             \n"
+                "          log   (27 )\n" +
+                "               3     \n" +
+                "   1+2       13      \n" +
+                "————————*4           \n" +
+                "     2               \n" +
+                "  794                \n" +
+                "————————             \n" +
+                "cos(2*x)             \n"
         assertEquals(expected, actual)
     }
 
@@ -360,7 +357,7 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
         val expected =
             "3+log (7)\n" +
-            "     2   \n"
+                "     2   \n"
         assertEquals(expected, actual)
     }
 
@@ -370,9 +367,9 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
         val expected =
             " 2             7  \n" +
-            "3 +log       (———)\n" +
-            "      log (8)   e \n" +
-            "         3    31  \n"
+                "3 +log       (———)\n" +
+                "      log (8)   e \n" +
+                "         3    31  \n"
         assertEquals(expected, actual)
     }
 
@@ -382,12 +379,12 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
         val expected =
             "    3               7  \n" +
-            "sin(—)+log        (———)\n" +
-            "    2     log  (8)   e \n" +
-            "              2    31  \n" +
-            "             3         \n" +
-            "          ————————     \n" +
-            "            1784       \n"
+                "sin(—)+log        (———)\n" +
+                "    2     log  (8)   e \n" +
+                "              2    31  \n" +
+                "             3         \n" +
+                "          ————————     \n" +
+                "            1784       \n"
         assertEquals(expected, actual)
     }
 
@@ -397,9 +394,9 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
         val expected =
             "      с          \n" +
-            "log (a )*log  (b)\n" +
-            "   b         2   \n" +
-            "            a    \n"
+                "log (a )*log  (b)\n" +
+                "   b         2   \n" +
+                "            a    \n"
         assertEquals(expected, actual)
     }
 }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
-import mathhelper.games.matify.R
 import java.util.*
 import kotlin.math.absoluteValue
 
@@ -113,7 +112,7 @@ class Storage {
             .getString(AuthInfo.SERVER_TOKEN.str, "")!!
     }
 
-    fun theme(context: Context) : ThemeName {
+    fun theme(context: Context): ThemeName {
         val theme = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
             .getString(SettingInfo.THEME.str, "")
         return when (theme) {
@@ -123,7 +122,7 @@ class Storage {
         }
     }
 
-    fun themeInt(context: Context) : Int {
+    fun themeInt(context: Context): Int {
         return theme(context).resId
     }
 
@@ -150,7 +149,7 @@ class Storage {
                 else -> info.login
             }
         }
-        if (info.password.isNullOrBlank()){
+        if (info.password.isNullOrBlank()) {
             info.password = info.login
         }
         prefEdit.commit()

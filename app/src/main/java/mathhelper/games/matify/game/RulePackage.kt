@@ -2,13 +2,11 @@ package mathhelper.games.matify.game
 
 import android.util.Log
 import api.expressionSubstitutionFromStructureStrings
-import api.findSubstitutionPlacesInExpression
-import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.common.Constants.Companion.defaultRulePriority
-import org.json.JSONObject
 import mathhelper.games.matify.level.Type
-import mathhelper.games.matify.level.Type.*
+import mathhelper.games.matify.level.Type.valueOf
+import org.json.JSONObject
 
 enum class PackageField(val str: String) {
     RULE_PACK("rulePack"),
@@ -37,7 +35,11 @@ private constructor(
     var children = ArrayList<RulePackage>()
 
     companion object {
-        fun parse(name: String, rulePacksJsons: HashMap<String, JSONObject>, rulePacks: HashMap<String, RulePackage>): RulePackage? {
+        fun parse(
+            name: String,
+            rulePacksJsons: HashMap<String, JSONObject>,
+            rulePacks: HashMap<String, RulePackage>
+        ): RulePackage? {
             val packJson = rulePacksJsons[name]!!
             var type: Type? = null
             if (packJson.has(PackageField.TYPE.str)) {
@@ -72,7 +74,9 @@ private constructor(
                         }
                     }
                     /** SUBSTITUTION */
-                    (type != null && (ruleInfo.has(PackageField.RULE_LEFT.str) && ruleInfo.has(PackageField.RULE_RIGHT.str)) || ruleInfo.has(PackageField.CODE.str)) -> {
+                    (type != null && (ruleInfo.has(PackageField.RULE_LEFT.str) && ruleInfo.has(PackageField.RULE_RIGHT.str)) || ruleInfo.has(
+                        PackageField.CODE.str
+                    )) -> {
                         resPckg.rules.add(parseRule(ruleInfo, type))
                     }
                     else -> return null
@@ -92,12 +96,23 @@ private constructor(
             val nameEn = ruleInfo.optString(PackageField.NAME_EN.str, "")
             val nameRu = ruleInfo.optString(PackageField.NAME_RU.str, "")
             val code = ruleInfo.optString(PackageField.CODE.str, "")
-            return expressionSubstitutionFromStructureStrings(from, to, basedOnTaskContext, matchJumbledAndNested, simpleAdditional, isExtending, priority, code, nameEn, nameRu)
+            return expressionSubstitutionFromStructureStrings(
+                from,
+                to,
+                basedOnTaskContext,
+                matchJumbledAndNested,
+                simpleAdditional,
+                isExtending,
+                priority,
+                code,
+                nameEn,
+                nameRu
+            )
         }
     }
 
     fun getAllRules(): List<ExpressionSubstitution>? {
-        var res : ArrayList<ExpressionSubstitution> = rules
+        var res: ArrayList<ExpressionSubstitution> = rules
         for (pckg in children) {
             val rulesFromPack = pckg.getAllRules()
             if (rulesFromPack != null) {

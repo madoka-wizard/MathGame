@@ -12,7 +12,7 @@ class MathResolverSetNodeNot(
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
     private val symbol = "—"
 
-    override fun setNodesFromExpression()  {
+    override fun setNodesFromExpression() {
         needBrackets = origin.children[0].nodeType == NodeType.FUNCTION
         super.setNodesFromExpression()
         val elem = createNode(origin.children[0], false, style, taskType)

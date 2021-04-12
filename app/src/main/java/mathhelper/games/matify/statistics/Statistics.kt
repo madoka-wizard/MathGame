@@ -36,7 +36,9 @@ class Statistics {
             currRule: ExpressionSubstitution?, places: List<ExpressionNode>
         ) {
             val activity = PlayScene.shared.playActivity!!
-            val rule: MutableMap<String, String>? = if (currRule == null) { null } else {
+            val rule: MutableMap<String, String>? = if (currRule == null) {
+                null
+            } else {
                 mutableMapOf(
                     PackageField.RULE_LEFT.str to expressionToStructureString(currRule.left),
                     PackageField.RULE_RIGHT.str to expressionToStructureString(currRule.right)

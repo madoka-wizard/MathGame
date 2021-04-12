@@ -10,7 +10,7 @@ class MathResolverNodeRightUnary(
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
 
-    override fun setNodesFromExpression()  {
+    override fun setNodesFromExpression() {
         super.setNodesFromExpression()
         length += op!!.name.length
         var maxH = 0
@@ -34,7 +34,8 @@ class MathResolverNodeRightUnary(
 
     override fun setCoordinates(leftTop: Point) {
         super.setCoordinates(leftTop)
-        children.firstOrNull()?.setCoordinates(Point(leftTop.x, leftTop.y + baseLineOffset - children.first().baseLineOffset))
+        children.firstOrNull()
+            ?.setCoordinates(Point(leftTop.x, leftTop.y + baseLineOffset - children.first().baseLineOffset))
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {

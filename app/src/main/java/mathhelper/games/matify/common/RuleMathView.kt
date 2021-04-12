@@ -3,13 +3,10 @@ package mathhelper.games.matify.common
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
-import android.text.TextUtils
-import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.HorizontalScrollView
-import android.widget.ScrollView
 import android.widget.TextView
 import api.expressionSubstitutionFromStructureStrings
 import expressiontree.ExpressionSubstitution
@@ -19,9 +16,9 @@ import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.mathResolver.VariableStyle
-import java.lang.Exception
 
-class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatTextView {
+class RuleMathView : HorizontalScrollView {
+    //androidx.appcompat.widget.AppCompatTextView {
     private val TAG = "RuleMathView"
     private val moveTreshold = 10
     var subst: ExpressionSubstitution? = null
@@ -31,11 +28,11 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
     private var moveCnt = 0
 
     /** INITIALIZATION **/
-    constructor(context: Context): super(context) {
+    constructor(context: Context) : super(context) {
         setDefaults(context)
     }
 
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         val params = context.obtainStyledAttributes(attrs, R.styleable.RuleMathView)
         val substFrom = params.getString(R.styleable.RuleMathView_substFrom)
         val substTo = params.getString(R.styleable.RuleMathView_substTo)
@@ -63,7 +60,8 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
             Constants.defaultPadding, Constants.defaultPadding)*/
         setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
-            Constants.defaultPadding, Constants.defaultPadding)
+            Constants.defaultPadding, Constants.defaultPadding
+        )
         addView(ruleView)
         if (subst != null) {
             setSubst(subst!!, Type.OTHER)
@@ -105,7 +103,12 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
                 needClick = true
                 moveCnt = 0
                 val themeName = Storage.shared.theme(context)
-                setBackgroundColor(ThemeController.shared.getColorByTheme(themeName, ColorName.ON_TOUCH_BACKGROUND_COLOR))
+                setBackgroundColor(
+                    ThemeController.shared.getColorByTheme(
+                        themeName,
+                        ColorName.ON_TOUCH_BACKGROUND_COLOR
+                    )
+                )
             }
             event.action == MotionEvent.ACTION_UP -> {
                 Log.d(TAG, "ACTION_UP")

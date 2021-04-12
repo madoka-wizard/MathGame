@@ -2,18 +2,22 @@ package mathhelper.games.matify.tutorial
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import android.widget.*
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
 import kotlin.math.max
 import kotlin.math.min
 
-class TutorialPlayActivity: AppCompatActivity() {
+class TutorialPlayActivity : AppCompatActivity() {
     private val TAG = "TutorialPlayActivity"
     private var scale = 1.0f
     private var needClear = false
@@ -185,8 +189,10 @@ class TutorialPlayActivity: AppCompatActivity() {
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_goal))
         pointerEndView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerEndView)
-        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_goal_explanation) +
-            resources.getString(R.string.tutorial_on_level_goal_toggle))
+        tutorialDialog.setMessage(
+            resources.getString(R.string.tutorial_on_level_goal_explanation) +
+                resources.getString(R.string.tutorial_on_level_goal_toggle)
+        )
         AndroidUtil.showDialog(tutorialDialog, false)
     }
 
@@ -195,13 +201,15 @@ class TutorialPlayActivity: AppCompatActivity() {
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_main_element))
         pointerCentralView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerCentralView)
-        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_main_element_current) +
-            resources.getString(R.string.tutorial_on_level_main_element_to_win) +
-            resources.getString(R.string.tutorial_on_level_main_element_touch) +
-            resources.getString(R.string.tutorial_on_level_main_element_find_rule) +
-            resources.getString(R.string.tutorial_on_level_main_element_make_subst) +
-            resources.getString(R.string.tutorial_on_level_main_element_repeat) +
-            resources.getString(R.string.got_it))
+        tutorialDialog.setMessage(
+            resources.getString(R.string.tutorial_on_level_main_element_current) +
+                resources.getString(R.string.tutorial_on_level_main_element_to_win) +
+                resources.getString(R.string.tutorial_on_level_main_element_touch) +
+                resources.getString(R.string.tutorial_on_level_main_element_find_rule) +
+                resources.getString(R.string.tutorial_on_level_main_element_make_subst) +
+                resources.getString(R.string.tutorial_on_level_main_element_repeat) +
+                resources.getString(R.string.got_it)
+        )
         AndroidUtil.showDialog(tutorialDialog, false)
     }
 
@@ -244,13 +252,14 @@ class TutorialPlayActivity: AppCompatActivity() {
         AndroidUtil.showDialog(dialog, false)
     }
 
-    inner class MathScaleListener: ScaleGestureDetector.SimpleOnScaleGestureListener() {
+    inner class MathScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             needClear = false
             scale *= detector.scaleFactor
             scale = max(
                 Constants.ruleDefaultSize / Constants.centralExpressionDefaultSize,
-                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize))
+                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize)
+            )
             globalMathView.textSize = Constants.centralExpressionDefaultSize * scale
             return true
         }

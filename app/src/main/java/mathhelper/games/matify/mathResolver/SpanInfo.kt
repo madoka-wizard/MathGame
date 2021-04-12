@@ -4,8 +4,10 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import androidx.core.text.getSpans
 
-data class SpanInfo(val span: Any, val strInd: Int, val start: Int,
-    val end: Int, val flag: Int = Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) {
+data class SpanInfo(
+    val span: Any, val strInd: Int, val start: Int,
+    val end: Int, val flag: Int = Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+) {
     companion object {
         fun getSpanInfoArray(string: SpannableStringBuilder): ArrayList<SpanInfo> {
             val array = ArrayList<SpanInfo>()

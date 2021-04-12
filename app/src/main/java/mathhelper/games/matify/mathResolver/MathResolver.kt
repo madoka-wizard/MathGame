@@ -27,12 +27,15 @@ class MathResolver {
         private var baseString = 0
         private lateinit var currentViewTree: MathResolverNodeBase
         private var spannableArray = ArrayList<SpanInfo>()
+
         //private val ruleDelim = " ⟼ "
         //private const val ruleDelim = " → "
         private const val ruleDelim = " ~> "
 
-        fun resolveToPlain(expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT,
-                           taskType: TaskType = TaskType.DEFAULT): MathResolverPair {
+        fun resolveToPlain(
+            expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT,
+            taskType: TaskType = TaskType.DEFAULT
+        ): MathResolverPair {
             if (expression.toString() == "()") {
                 Log.e("MathResolver", "TWF parsing failed")
                 return MathResolverPair(null, SpannableStringBuilder("parsing error"))
@@ -42,8 +45,10 @@ class MathResolver {
             return MathResolverPair(currentViewTree, getPlainString())
         }
 
-        fun resolveToPlain(expression: String, style: VariableStyle = VariableStyle.DEFAULT,
-                           taskType: TaskType = TaskType.DEFAULT, structureString:Boolean = false): MathResolverPair {
+        fun resolveToPlain(
+            expression: String, style: VariableStyle = VariableStyle.DEFAULT,
+            taskType: TaskType = TaskType.DEFAULT, structureString: Boolean = false
+        ): MathResolverPair {
             val realExpression = if (!structureString) {
                 stringToExpression(expression)
             } else structureStringToExpression(expression)
@@ -94,8 +99,10 @@ class MathResolver {
         }
 
 
-        private fun correctMatrixByBaseLine (matrix: ArrayList<String>, leadingTree: MathResolverNodeBase,
-                                               secTree: MathResolverNodeBase): Int {
+        private fun correctMatrixByBaseLine(
+            matrix: ArrayList<String>, leadingTree: MathResolverNodeBase,
+            secTree: MathResolverNodeBase
+        ): Int {
             val diff = leadingTree.baseLineOffset - secTree.baseLineOffset
             for (i in 0 until diff) {
                 matrix.add(0, " ".repeat(secTree.length))
@@ -103,8 +110,10 @@ class MathResolver {
             return diff
         }
 
-        private fun correctMatrixByHeight (matrix: ArrayList<String>, leadingTree: MathResolverNodeBase,
-                                             secTree: MathResolverNodeBase): Int {
+        private fun correctMatrixByHeight(
+            matrix: ArrayList<String>, leadingTree: MathResolverNodeBase,
+            secTree: MathResolverNodeBase
+        ): Int {
             val diff = leadingTree.height - secTree.height
             for (i in 0 until diff) {
                 matrix.add(" ".repeat(secTree.length))

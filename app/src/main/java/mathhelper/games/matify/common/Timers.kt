@@ -16,14 +16,14 @@ import mathhelper.games.matify.R
 import mathhelper.games.matify.statistics.Request
 import java.util.*
 
-class MessageTimer: CountDownTimer(PlayScene.messageTime, PlayScene.messageTime) {
+class MessageTimer : CountDownTimer(PlayScene.messageTime, PlayScene.messageTime) {
     override fun onTick(m: Long) {}
     override fun onFinish() {
         PlayScene.shared.playActivity?.messageView?.visibility = View.GONE
     }
 }
 
-class MathDownTimer(time: Long, interval: Long):
+class MathDownTimer(time: Long, interval: Long) :
     CountDownTimer(time * 1000, interval * 1000) {
     private val TAG = "MathDownTimer"
     private val panicTime = 10
@@ -38,10 +38,12 @@ class MathDownTimer(time: Long, interval: Long):
         if (secs <= panicTime) {
             text.setSpan(
                 ForegroundColorSpan(Color.RED), start.length,
-                text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE
+            )
             text.setSpan(
                 StyleSpan(Typeface.BOLD), start.length,
-                text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE
+            )
         }
         PlayScene.shared.playActivity!!.timerView.text = text
     }
@@ -73,8 +75,10 @@ class MathUpTimer(val interval: Long) {
                     PlayScene.shared.stepsCount
                 }
                 val award = LevelScene.shared.currentLevel!!.getAward(context, PlayScene.shared.currentTime, steps)
-                text.setSpan(ForegroundColorSpan(award.color), start.length,
-                    text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                text.setSpan(
+                    ForegroundColorSpan(award.color), start.length,
+                    text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
                 val activity = PlayScene.shared.playActivity!!
                 activity.runOnUiThread {
                     activity.timerView.text = text

@@ -1,16 +1,13 @@
 package mathhelper.games.matify
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import api.expressionToStructureString
 import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
-import expressiontree.SimpleComputationRuleParams
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.MathDownTimer
 import mathhelper.games.matify.common.MathUpTimer
@@ -36,6 +33,7 @@ class PlayScene() {
                 history = History()
             }
         }
+
     /** GAME STATE */
     var currentRuleView: RuleMathView? = null
     fun setCurrentRuleView(context: Context, value: RuleMathView?) {
@@ -51,9 +49,11 @@ class PlayScene() {
             }, 100)
         }
     }
+
     var stepsCount: Double = 0.0
     var currentTime: Long = 0
     private lateinit var history: History
+
     /** TIMERS */
     private val messageTimer = MessageTimer()
     var downTimer: MathDownTimer? = null
@@ -84,12 +84,12 @@ class PlayScene() {
                     levelPassed = true
 
                     Statistics.logRule(
-                     oldSteps,
-                     stepsCount,
-                     prev,
-                     activity.globalMathView.expression!!,
-                     currentRuleView!!.subst,
-                     places
+                        oldSteps,
+                        stepsCount,
+                        prev,
+                        activity.globalMathView.expression!!,
+                        currentRuleView!!.subst,
+                        places
                     )
 
                     onWin(context)
@@ -102,8 +102,10 @@ class PlayScene() {
 
         }
         if (!levelPassed) {
-            Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
-                currentRuleView!!.subst, places)
+            Statistics.logRule(
+                oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
+                currentRuleView!!.subst, places
+            )
         }
     }
 
@@ -124,7 +126,8 @@ class PlayScene() {
                 showMessage(activity.getString(R.string.no_rules))
                 clearRules()
             } else {
-                val rules = LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
+                val rules =
+                    LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
                 activity.globalMathView.currentRulesToResult =
                     LevelScene.shared.currentLevel!!.getResultFromSubstitutionApplication(substitutionApplication)
 
@@ -178,7 +181,8 @@ class PlayScene() {
         val activity = playActivity!!
         val currentLevel = LevelScene.shared.currentLevel!!
         if (continueGame && currentLevel.lastResult != null &&
-            currentLevel.lastResult!!.award.value == AwardType.PAUSED) {
+            currentLevel.lastResult!!.award.value == AwardType.PAUSED
+        ) {
             stepsCount = currentLevel.lastResult!!.steps
             currentTime = currentLevel.lastResult!!.time
             activity.globalMathView.setExpression(currentLevel.lastResult!!.expression, currentLevel.type)
@@ -204,15 +208,17 @@ class PlayScene() {
             val penalty = UndoPolicyHandler.getPenalty(currentLevel.undoPolicy, state.depth)
             stepsCount = stepsCount - 1 + penalty
         }
-        Statistics.logUndo(oldSteps, stepsCount, oldExpression,
-            activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
+        Statistics.logUndo(
+            oldSteps, stepsCount, oldExpression,
+            activity.globalMathView.expression!!, activity.globalMathView.currentAtoms
+        )
     }
 
     fun restart(context: Context, languageCode: String) {
         Log.d(TAG, "restart")
         val activity = playActivity!!
         Statistics.logRestart(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
-        loadLevel(context,false, languageCode)
+        loadLevel(context, false, languageCode)
     }
 
     fun menu(context: Context, save: Boolean = true) {
@@ -220,8 +226,10 @@ class PlayScene() {
         val activity = playActivity!!
         val currentLevel = LevelScene.shared.currentLevel!!
         if (save) {
-            val newRes = Result(stepsCount, currentTime, Award.getPaused(context),
-                expressionToStructureString(activity.globalMathView.expression!!))
+            val newRes = Result(
+                stepsCount, currentTime, Award.getPaused(context),
+                expressionToStructureString(activity.globalMathView.expression!!)
+            )
             currentLevel.lastResult = newRes
             currentLevel.save(activity)
             LevelScene.shared.levelsActivity!!.updateResult()
@@ -238,9 +246,9 @@ class PlayScene() {
         val multi = playActivity!!.globalMathView.multiselectionMode
         showMessage(
             "\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40\n" +
-            "\uD83D\uDC63 ${playActivity!!.getString(R.string.steps_count)} ${"%.1f".format(stepsCount)} \uD83D\uDC63\n" +
-            if (multi) playActivity!!.getString(R.string.multiselection_mode_is_on)
-            else playActivity!!.getString(R.string.multiselection_mode_is_off)
+                "\uD83D\uDC63 ${playActivity!!.getString(R.string.steps_count)} ${"%.1f".format(stepsCount)} \uD83D\uDC63\n" +
+                if (multi) playActivity!!.getString(R.string.multiselection_mode_is_on)
+                else playActivity!!.getString(R.string.multiselection_mode_is_off)
         )
     }
 

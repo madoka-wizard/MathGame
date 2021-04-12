@@ -10,7 +10,7 @@ class MathResolverNodeMult(
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
 
-    override fun setNodesFromExpression()  {
+    override fun setNodesFromExpression() {
         super.setNodesFromExpression()
         var maxH = 0
         length += origin.children.size * op!!.name.length - 1

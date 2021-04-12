@@ -16,7 +16,7 @@ enum class ColorName(val str: String) {
     AWARD_TIMER_BRONZE_COLOR("awardTimerBronzeColor")
 }
 
-enum class ThemeName(val resId: Int){
+enum class ThemeName(val resId: Int) {
     LIGHT(R.style.AppLightTheme) {
         override fun toString(): String {
             return "LIGHT"
@@ -33,6 +33,7 @@ class ThemeController {
     companion object {
         val shared = ThemeController()
     }
+
     private val dark = mapOf(
         ColorName.PRIMARY_COLOR to "#008577",
         ColorName.TEXT_COLOR to "#C5C5C5",

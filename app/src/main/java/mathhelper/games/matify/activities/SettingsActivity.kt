@@ -2,10 +2,8 @@ package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -16,12 +14,15 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import mathhelper.games.matify.*
-import mathhelper.games.matify.common.*
+import mathhelper.games.matify.common.AndroidUtil
+import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.ThemeController
+import mathhelper.games.matify.common.ThemeName
 import mathhelper.games.matify.statistics.Statistics
 import java.util.*
 
 
-class SettingsActivity: AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
     private val TAG = "SettingsActivity"
     private lateinit var reportProblem: TextView
     private lateinit var ratingBar: RatingBar
@@ -182,13 +183,16 @@ class SettingsActivity: AppCompatActivity() {
         val config = Configuration(resources.configuration)
 
         val themeToChoose = when (Storage.shared.theme(this)) {
-                ThemeName.DARK -> ThemeName.LIGHT
-                else -> ThemeName.DARK
-            }
+            ThemeName.DARK -> ThemeName.LIGHT
+            else -> ThemeName.DARK
+        }
 
         builder
             .setTitle(R.string.change_theme)
-            .setMessage("${resources.getString(R.string.change_theme_to)} '${themeToChoose.toString().toUpperCase(config.locale)}'?")
+            .setMessage(
+                "${resources.getString(R.string.change_theme_to)} '${themeToChoose.toString()
+                    .toUpperCase(config.locale)}'?"
+            )
             .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
                 Storage.shared.setTheme(this, themeToChoose)
                 finishAffinity()

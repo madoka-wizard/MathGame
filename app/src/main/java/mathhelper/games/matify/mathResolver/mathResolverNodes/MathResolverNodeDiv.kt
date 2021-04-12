@@ -12,7 +12,7 @@ class MathResolverNodeDiv(
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
     private var divSymbol = "—"
 
-    override fun setNodesFromExpression()  {
+    override fun setNodesFromExpression() {
         super.setNodesFromExpression()
         var maxLen = 0
         for (node in origin.children) {

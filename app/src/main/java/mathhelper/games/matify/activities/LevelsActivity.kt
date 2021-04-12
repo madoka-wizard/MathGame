@@ -1,24 +1,25 @@
 package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.common.*
-import kotlin.collections.ArrayList
+import mathhelper.games.matify.common.AndroidUtil
+import mathhelper.games.matify.common.ColorName
+import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.ThemeController
 
-class LevelsActivity: AppCompatActivity() {
+class LevelsActivity : AppCompatActivity() {
     private val TAG = "LevelsActivity"
     var loading = false
     private lateinit var levelViews: ArrayList<TextView>
@@ -76,12 +77,13 @@ class LevelsActivity: AppCompatActivity() {
 
     fun updateResult() {
         val i = LevelScene.shared.currentLevelIndex
-        levelViews[i].text = "${LevelScene.shared.levels[i].getNameByLanguage(resources.configuration.locale.language)}" +
-            if (LevelScene.shared.levels[i].lastResult != null) {
-                "\n${LevelScene.shared.levels[i].lastResult}"
-            } else {
-                ""
-            }
+        levelViews[i].text =
+            "${LevelScene.shared.levels[i].getNameByLanguage(resources.configuration.locale.language)}" +
+                if (LevelScene.shared.levels[i].lastResult != null) {
+                    "\n${LevelScene.shared.levels[i].lastResult}"
+                } else {
+                    ""
+                }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -90,7 +92,8 @@ class LevelsActivity: AppCompatActivity() {
             val levelView = AndroidUtil.createButtonView(this)
             levelView.text = level.getNameByLanguage(resources.configuration.locale.language)
             if (level.lastResult != null) {
-                levelView.text = "${level.getNameByLanguage(resources.configuration.locale.language)}\n${level.lastResult!!}"
+                levelView.text =
+                    "${level.getNameByLanguage(resources.configuration.locale.language)}\n${level.lastResult!!}"
             }
             val themeName = Storage.shared.theme(this)
             levelView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))

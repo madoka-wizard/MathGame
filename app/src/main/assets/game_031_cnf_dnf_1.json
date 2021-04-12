@@ -5,7 +5,7 @@
   "en": "CNF DNF forms-1",
   "ru": "КНФ ДНФ формы-1",
   "version": 10,
-  "levels":[
+  "levels": [
     {
       "levelCode": "game_031_cnf_dnf_1__Level_01_NF",
       "name": "Level 1 CNF",
@@ -18,9 +18,13 @@
       "originalExpression": "(set-(A;set-(A;B)))",
       "finalExpression": "CNF",
       "finalPattern": "and : (or) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -35,9 +39,13 @@
       "originalExpression": "(implic(implic(A;not(B));C))",
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -52,9 +60,13 @@
       "originalExpression": "(not(and(A;set-(B;C))))",
       "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -69,9 +81,13 @@
       "originalExpression": "(not(or(and(not(A);not(B));and(not(C);not(D)))))",
       "finalExpression": "2-CNF",
       "finalPattern": "and : (or : 2) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -86,9 +102,13 @@
       "originalExpression": "(not(or(A;B;C)))",
       "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -103,9 +123,13 @@
       "originalExpression": "(implic(and(implic(C;B);not(or(A;B;C)));C))",
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -120,9 +144,13 @@
       "originalExpression": "(and(not(or(and(A;B;or(and(B;C);not(A)));A));and(B;A)))",
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -137,9 +165,13 @@
       "originalExpression": "(implic(implic(implic(implic(A;B);C);implic(implic(B;C);A));implic(implic(C;A);B)))",
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -154,9 +186,13 @@
       "originalExpression": "(and(or(A;B;not(C));or(A;not(B);C);or(not(A);B;C)))",
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -171,9 +207,13 @@
       "originalExpression": "(or(and(A;not(B);not(C));and(A;not(B);C);and(not(A);B;C)))",
       "finalExpression": "CNF",
       "finalPattern": "and : (or) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -188,9 +228,13 @@
       "originalExpression": "(or(and(A;not(B));and(C;not(D));and(not(A);B);and(not(C);D)))",
       "finalExpression": "CNF",
       "finalPattern": "and : (or) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -205,9 +249,13 @@
       "originalExpression": "(and(or(A;not(B));or(C;not(D));or(not(A);B);or(not(C);D)))",
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -222,9 +270,13 @@
       "originalExpression": "(or(and(A;not(B);C;not(D));and(not(A);B;not(C);D)))",
       "finalExpression": "CNF",
       "finalPattern": "and : (or) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -239,12 +291,15 @@
       "originalExpression": "(and(or(A;not(B);C;not(D));or(not(A);B;not(C);D)))",
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
-    }
-  ,
+    },
     {
       "levelCode": "game_031_cnf_dnf_1__Level_15_NF",
       "name": "Level 15 3-DNF",
@@ -257,9 +312,13 @@
       "originalExpression": "(and(or(A;B;not(C));or(A;not(B);C);or(not(A);B;C)))",
       "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -274,9 +333,13 @@
       "originalExpression": "(or(and(A;not(B);not(C));and(A;not(B);C);and(not(A);B;C)))",
       "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -291,9 +354,13 @@
       "originalExpression": "(or(and(A;not(B));and(C;not(D));and(not(A);B);and(not(C);D)))",
       "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -308,9 +375,13 @@
       "originalExpression": "(and(or(A;not(B));or(C;not(D));or(not(A);B);or(not(C);D)))",
       "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -325,9 +396,13 @@
       "originalExpression": "(or(and(A;not(B);C;not(D));and(not(A);B;not(C);D)))",
       "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     },
     {
@@ -342,119 +417,376 @@
       "originalExpression": "(and(or(A;not(B);C;not(D));or(not(A);B;not(C);D)))",
       "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
-      "rules":[
-        {"rulePack": "LogicImplicationDifference"},
-        {"rulePack": "LogicAbsorptionLaw"}
+      "rules": [
+        {
+          "rulePack": "LogicImplicationDifference"
+        },
+        {
+          "rulePack": "LogicAbsorptionLaw"
+        }
       ]
     }
   ],
-  "rulePacks":[
+  "rulePacks": [
     {
       "name": "SetDeMorgan",
       "type": "set",
-      "rules":[
-        {"left": "(not(and(A;B)))","right": "(or(not(A);not(B)))", "priority": 15},
-        {"left": "(or(not(A);not(B)))","right": "(not(and(A;B)))", "priority": 10},
-        {"left": "(not(or(A;B)))","right": "(and(not(A);not(B)))", "priority": 15},
-        {"left": "(and(not(A);not(B)))","right": "(not(or(A;B)))", "priority": 10}
+      "rules": [
+        {
+          "left": "(not(and(A;B)))",
+          "right": "(or(not(A);not(B)))",
+          "priority": 15
+        },
+        {
+          "left": "(or(not(A);not(B)))",
+          "right": "(not(and(A;B)))",
+          "priority": 10
+        },
+        {
+          "left": "(not(or(A;B)))",
+          "right": "(and(not(A);not(B)))",
+          "priority": 15
+        },
+        {
+          "left": "(and(not(A);not(B)))",
+          "right": "(not(or(A;B)))",
+          "priority": 10
+        }
       ]
     },
     {
       "name": "LogicAndOrBase",
       "type": "set",
-      "rules":[
-        {"rulePack": "SetDeMorgan"},
-
-        {"left": "(not(not(a)))","right": "(a)", "priority": 5},
-        {"left": "(a)","right": "(not(not(a)))", "isExtending": true, "priority": 89},
-
-        {"left": "(or(a;a))","right": "(a)", "priority": 5},
-        {"left": "(a)","right": "(or(a;a))", "isExtending": true, "priority": 90},
-        {"left": "(and(a;a))","right": "(a)", "priority": 5},
-        {"left": "(a)","right": "(and(a;a))", "isExtending": true, "priority": 90},
-
-        {"left":"(and(a;b))","right":"(and(b;a))", "priority": 40, "isExtending": true},
-        {"left":"(or(a;b))","right":"(or(b;a))", "priority": 40, "isExtending": true},
-
-        {"left":"(a)","right":"(and(a;1))", "priority": 90, "isExtending": true},
-        {"left":"(a)","right":"(or(a;0))", "priority": 90, "isExtending": true},
-
-        {"left": "(or(A;not(A)))","right": "(1)", "priority": 5},
-        {"left": "(or(not(A);A))","right": "(1)", "priority": 5},
-        {"left": "(and(A;not(A)))","right": "(0)", "priority": 5},
-        {"left": "(and(not(A);A))","right": "(0)", "priority": 5},
-        {"left": "(or(A;1))","right": "(1)", "priority": 5},
-        {"left": "(or(1;A))","right": "(1)", "priority": 5},
-        {"left": "(and(A;1))","right": "(A)", "priority": 5},
-        {"left": "(and(1;A))","right": "(A)", "priority": 5},
-        {"left": "(or(A;0))","right": "(A)", "priority": 5},
-        {"left": "(or(0;A))","right": "(A)", "priority": 5},
-        {"left": "(and(A;0))","right": "(0)", "priority": 5},
-        {"left": "(and(0;A))","right": "(0)", "priority": 5},
-
-        {"left": "(not(0))","right": "(1)", "priority": 5},
-        {"left": "(not(1))","right": "(0)", "priority": 5},
-
-        {"code": "SimpleComputation", "priority": 5},
-        {"code": "ZeroComputation", "priority": 5},
-        {"code": "SetComplicatingExtension", "priority": 92},
-        {"code": "ParentBracketsExpansion", "priority": 30},
-        {"code": "ArgumentsSwap", "priority": 40},
-        {"code": "ArgumentsPermutation", "priority": 40},
-        {"code": "OpeningBrackets", "priority": 30},
-        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 41},
-        {"code": "ReduceArithmetic", "priority": 10},
-        {"code": "TwoSidesArithmeticReduce", "priority": 10}
+      "rules": [
+        {
+          "rulePack": "SetDeMorgan"
+        },
+        {
+          "left": "(not(not(a)))",
+          "right": "(a)",
+          "priority": 5
+        },
+        {
+          "left": "(a)",
+          "right": "(not(not(a)))",
+          "isExtending": true,
+          "priority": 89
+        },
+        {
+          "left": "(or(a;a))",
+          "right": "(a)",
+          "priority": 5
+        },
+        {
+          "left": "(a)",
+          "right": "(or(a;a))",
+          "isExtending": true,
+          "priority": 90
+        },
+        {
+          "left": "(and(a;a))",
+          "right": "(a)",
+          "priority": 5
+        },
+        {
+          "left": "(a)",
+          "right": "(and(a;a))",
+          "isExtending": true,
+          "priority": 90
+        },
+        {
+          "left": "(and(a;b))",
+          "right": "(and(b;a))",
+          "priority": 40,
+          "isExtending": true
+        },
+        {
+          "left": "(or(a;b))",
+          "right": "(or(b;a))",
+          "priority": 40,
+          "isExtending": true
+        },
+        {
+          "left": "(a)",
+          "right": "(and(a;1))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "left": "(a)",
+          "right": "(or(a;0))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "left": "(or(A;not(A)))",
+          "right": "(1)",
+          "priority": 5
+        },
+        {
+          "left": "(or(not(A);A))",
+          "right": "(1)",
+          "priority": 5
+        },
+        {
+          "left": "(and(A;not(A)))",
+          "right": "(0)",
+          "priority": 5
+        },
+        {
+          "left": "(and(not(A);A))",
+          "right": "(0)",
+          "priority": 5
+        },
+        {
+          "left": "(or(A;1))",
+          "right": "(1)",
+          "priority": 5
+        },
+        {
+          "left": "(or(1;A))",
+          "right": "(1)",
+          "priority": 5
+        },
+        {
+          "left": "(and(A;1))",
+          "right": "(A)",
+          "priority": 5
+        },
+        {
+          "left": "(and(1;A))",
+          "right": "(A)",
+          "priority": 5
+        },
+        {
+          "left": "(or(A;0))",
+          "right": "(A)",
+          "priority": 5
+        },
+        {
+          "left": "(or(0;A))",
+          "right": "(A)",
+          "priority": 5
+        },
+        {
+          "left": "(and(A;0))",
+          "right": "(0)",
+          "priority": 5
+        },
+        {
+          "left": "(and(0;A))",
+          "right": "(0)",
+          "priority": 5
+        },
+        {
+          "left": "(not(0))",
+          "right": "(1)",
+          "priority": 5
+        },
+        {
+          "left": "(not(1))",
+          "right": "(0)",
+          "priority": 5
+        },
+        {
+          "code": "SimpleComputation",
+          "priority": 5
+        },
+        {
+          "code": "ZeroComputation",
+          "priority": 5
+        },
+        {
+          "code": "SetComplicatingExtension",
+          "priority": 92
+        },
+        {
+          "code": "ParentBracketsExpansion",
+          "priority": 30
+        },
+        {
+          "code": "ArgumentsSwap",
+          "priority": 40
+        },
+        {
+          "code": "ArgumentsPermutation",
+          "priority": 40
+        },
+        {
+          "code": "OpeningBrackets",
+          "priority": 30
+        },
+        {
+          "code": "ArgumentsPermutationInOriginalOrder",
+          "priority": 41
+        },
+        {
+          "code": "ReduceArithmetic",
+          "priority": 10
+        },
+        {
+          "code": "TwoSidesArithmeticReduce",
+          "priority": 10
+        }
       ]
     },
     {
       "name": "LogicImplicationDifference",
       "type": "set",
-      "rules":[
-        {"rulePack": "LogicAndOrBase"},
-
-        {"left": "(or(not(A);B))","right": "(implic(A;B))"},
-        {"left": "(or(B;not(A)))","right": "(implic(A;B))"},
-        {"left": "(implic(A;B))","right": "(or(not(A);B))"},
-
-        {"left": "(and(A;not(B)))","right": "(set-(A;B))"},
-        {"left": "(and(not(B);A))","right": "(set-(A;B))"},
-        {"left": "(set-(A;B))","right": "(and(A;not(B)))"},
-
-        {"left": "(set-(A;B))","right": "(not(implic(A;B)))"},
-        {"left": "(not(implic(A;B)))","right": "(set-(A;B))"},
-        {"left": "(implic(A;B))","right": "(not(set-(A;B)))"},
-        {"left": "(not(set-(A;B)))","right": "(implic(A;B))"},
-
-        {"left": "(set-(A;0))","right": "(A)", "priority": 5},
-        {"left": "(set-(A;1))","right": "(0)", "priority": 5},
-        {"left": "(set-(0;A))","right": "(0)", "priority": 5},
-        {"left": "(set-(1;A))","right": "(not(A))", "priority": 5},
-
-        {"left": "(implic(0;A))","right": "(1)", "priority": 5},
-        {"left": "(implic(A;1))","right": "(1)", "priority": 5},
-        {"left": "(implic(A;0))","right": "(not(A))", "priority": 5},
-        {"left": "(implic(1;A))","right": "(A)", "priority": 5},
-
-        {"left": "(A)","right": "(set-(A;0))", "priority": 91, "isExtending": true},
-        {"left": "(A)","right": "(implic(1;A))", "priority": 91, "isExtending": true}
+      "rules": [
+        {
+          "rulePack": "LogicAndOrBase"
+        },
+        {
+          "left": "(or(not(A);B))",
+          "right": "(implic(A;B))"
+        },
+        {
+          "left": "(or(B;not(A)))",
+          "right": "(implic(A;B))"
+        },
+        {
+          "left": "(implic(A;B))",
+          "right": "(or(not(A);B))"
+        },
+        {
+          "left": "(and(A;not(B)))",
+          "right": "(set-(A;B))"
+        },
+        {
+          "left": "(and(not(B);A))",
+          "right": "(set-(A;B))"
+        },
+        {
+          "left": "(set-(A;B))",
+          "right": "(and(A;not(B)))"
+        },
+        {
+          "left": "(set-(A;B))",
+          "right": "(not(implic(A;B)))"
+        },
+        {
+          "left": "(not(implic(A;B)))",
+          "right": "(set-(A;B))"
+        },
+        {
+          "left": "(implic(A;B))",
+          "right": "(not(set-(A;B)))"
+        },
+        {
+          "left": "(not(set-(A;B)))",
+          "right": "(implic(A;B))"
+        },
+        {
+          "left": "(set-(A;0))",
+          "right": "(A)",
+          "priority": 5
+        },
+        {
+          "left": "(set-(A;1))",
+          "right": "(0)",
+          "priority": 5
+        },
+        {
+          "left": "(set-(0;A))",
+          "right": "(0)",
+          "priority": 5
+        },
+        {
+          "left": "(set-(1;A))",
+          "right": "(not(A))",
+          "priority": 5
+        },
+        {
+          "left": "(implic(0;A))",
+          "right": "(1)",
+          "priority": 5
+        },
+        {
+          "left": "(implic(A;1))",
+          "right": "(1)",
+          "priority": 5
+        },
+        {
+          "left": "(implic(A;0))",
+          "right": "(not(A))",
+          "priority": 5
+        },
+        {
+          "left": "(implic(1;A))",
+          "right": "(A)",
+          "priority": 5
+        },
+        {
+          "left": "(A)",
+          "right": "(set-(A;0))",
+          "priority": 91,
+          "isExtending": true
+        },
+        {
+          "left": "(A)",
+          "right": "(implic(1;A))",
+          "priority": 91,
+          "isExtending": true
+        }
       ]
     },
     {
       "name": "LogicAbsorptionLaw",
       "type": "set",
-      "rules":[
-        {"left": "(and(A;or(A;B)))","right": "(A)", "priority": 6},
-        {"left": "(or(A;and(A;B)))","right": "(A)", "priority": 6},
-        {"left": "(and(A;or(B;A)))","right": "(A)", "priority": 6},
-        {"left": "(or(A;and(B;A)))","right": "(A)", "priority": 6},
-        {"left": "(and(or(A;B);A))","right": "(A)", "priority": 6},
-        {"left": "(or(and(A;B);A))","right": "(A)", "priority": 6},
-        {"left": "(and(or(B;A);A))","right": "(A)", "priority": 6},
-        {"left": "(or(and(B;A);A))","right": "(A)", "priority": 6},
-
-        {"left": "(A)","right": "(and(A;or(A;B)))", "priority": 90, "isExtending": true},
-        {"left": "(A)","right": "(or(A;and(A;B)))", "priority": 90, "isExtending": true}
+      "rules": [
+        {
+          "left": "(and(A;or(A;B)))",
+          "right": "(A)",
+          "priority": 6
+        },
+        {
+          "left": "(or(A;and(A;B)))",
+          "right": "(A)",
+          "priority": 6
+        },
+        {
+          "left": "(and(A;or(B;A)))",
+          "right": "(A)",
+          "priority": 6
+        },
+        {
+          "left": "(or(A;and(B;A)))",
+          "right": "(A)",
+          "priority": 6
+        },
+        {
+          "left": "(and(or(A;B);A))",
+          "right": "(A)",
+          "priority": 6
+        },
+        {
+          "left": "(or(and(A;B);A))",
+          "right": "(A)",
+          "priority": 6
+        },
+        {
+          "left": "(and(or(B;A);A))",
+          "right": "(A)",
+          "priority": 6
+        },
+        {
+          "left": "(or(and(B;A);A))",
+          "right": "(A)",
+          "priority": 6
+        },
+        {
+          "left": "(A)",
+          "right": "(and(A;or(A;B)))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "left": "(A)",
+          "right": "(or(A;and(A;B)))",
+          "priority": 90,
+          "isExtending": true
+        }
       ]
     }
   ]

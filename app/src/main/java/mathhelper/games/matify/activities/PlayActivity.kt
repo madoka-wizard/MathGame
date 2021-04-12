@@ -1,27 +1,28 @@
 package mathhelper.games.matify.activities
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.TransitionDrawable
-import android.os.*
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BulletSpan
 import android.util.Log
-import android.view.*
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.activity_play.*
-import mathhelper.games.matify.*
-import mathhelper.games.matify.level.Award
+import mathhelper.games.matify.GlobalScene
+import mathhelper.games.matify.LevelScene
+import mathhelper.games.matify.PlayScene
+import mathhelper.games.matify.R
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.game.Game
-import standartlibextensions.selectPlacesForColoringByFragment
-import java.lang.Exception
+import mathhelper.games.matify.level.Award
 import kotlin.math.max
 import kotlin.math.min
 
@@ -217,8 +218,7 @@ class PlayActivity : AppCompatActivity() {
             PlayScene.shared.clearRules()
             AndroidUtil.vibrate(this)
             anim.reverseTransition(300)
-        }
-        else {
+        } else {
             startStopView.text = getText(R.string.end_multiselect)
             startStopView.setTextColor(Color.RED)
             showMessage(getString(R.string.msg_on_start_multiselect))
@@ -275,21 +275,26 @@ class PlayActivity : AppCompatActivity() {
     fun onWin(stepsCount: Double, currentTime: Long, award: Award) {
         Log.d(TAG, "onWin")
         val msgTitle = resources.getString(R.string.you_finished_level_with)
-        val steps = "\n\t${resources.getString(R.string.steps)}: " + if (stepsCount.equals(stepsCount.toInt().toFloat())) {
-            "${stepsCount.toInt()}"
-        } else {
-            "%.1f".format(stepsCount)
-        }
+        val steps =
+            "\n\t${resources.getString(R.string.steps)}: " + if (stepsCount.equals(stepsCount.toInt().toFloat())) {
+                "${stepsCount.toInt()}"
+            } else {
+                "%.1f".format(stepsCount)
+            }
         val sec = "${currentTime % 60}".padStart(2, '0')
         val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
         PlayScene.shared.cancelTimers()
         val spannable = SpannableString("$msgTitle$steps$time\n\n${resources.getString(R.string.award)}: $award")
         val spanColor = ThemeController.shared.getColor(this, ColorName.PRIMARY_COLOR)
-        spannable.setSpan(BulletSpan(5, spanColor), msgTitle.length + 1,
-            msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(BulletSpan(5, spanColor),
+        spannable.setSpan(
+            BulletSpan(5, spanColor), msgTitle.length + 1,
+            msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannable.setSpan(
+            BulletSpan(5, spanColor),
             msgTitle.length + steps.length + 1, msgTitle.length + steps.length + time.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         winDialog.setMessage(spannable)
         AndroidUtil.showDialog(winDialog)
     }
@@ -433,13 +438,14 @@ class PlayActivity : AppCompatActivity() {
         return builder.create()
     }
 
-    inner class MathScaleListener: ScaleGestureDetector.SimpleOnScaleGestureListener() {
+    inner class MathScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             needClear = false
             scale *= detector.scaleFactor
             scale = max(
                 Constants.ruleDefaultSize / Constants.centralExpressionDefaultSize,
-                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize))
+                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize)
+            )
             globalMathView.textSize = Constants.centralExpressionDefaultSize * scale
             return true
         }

@@ -17,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import org.json.JSONObject
 import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
@@ -26,8 +25,9 @@ import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.statistics.Pages
 import mathhelper.games.matify.statistics.Request
 import mathhelper.games.matify.statistics.RequestData
+import org.json.JSONObject
 
-class AuthActivity: AppCompatActivity() {
+class AuthActivity : AppCompatActivity() {
     private val TAG = "AuthActivity"
     private val signIn = 1
     private lateinit var loginView: TextView
@@ -68,9 +68,11 @@ class AuthActivity: AppCompatActivity() {
     }
 
     fun continueAsGuest(v: View?) {
-        Storage.shared.initUserInfo(this, AuthInfoObjectBase(
-            authStatus = AuthStatus.GUEST
-        ))
+        Storage.shared.initUserInfo(
+            this, AuthInfoObjectBase(
+                authStatus = AuthStatus.GUEST
+            )
+        )
         val userData = Storage.shared.getUserInfoBase(this)
         val requestRoot = JSONObject()
         requestRoot.put("login", userData.login)
@@ -100,14 +102,16 @@ class AuthActivity: AppCompatActivity() {
         val req = RequestData(Pages.SIGNIN.value, body = requestRoot.toString())
         GlobalScene.shared.request(this, background = {
             val response = Request.signRequest(req)
-            Storage.shared.initUserInfo(this, AuthInfoObjectBase(
-                login = login,
-                name = response.getString("name"),
-                fullName = response.getString("fullName"),
-                additional = response.getString("additional"),
-                authStatus = AuthStatus.MATH_HELPER,
-                serverToken = response.getString("token")
-            ))
+            Storage.shared.initUserInfo(
+                this, AuthInfoObjectBase(
+                    login = login,
+                    name = response.getString("name"),
+                    fullName = response.getString("fullName"),
+                    additional = response.getString("additional"),
+                    authStatus = AuthStatus.MATH_HELPER,
+                    serverToken = response.getString("token")
+                )
+            )
         }, foreground = {
             finish()
         }, errorground = {
@@ -149,14 +153,16 @@ class AuthActivity: AppCompatActivity() {
             val req = RequestData(Pages.GOOGLE_SIGN_IN.value, body = requestRoot.toString())
             GlobalScene.shared.request(this, background = {
                 val response = Request.signRequest(req)
-                Storage.shared.initUserInfo(this, AuthInfoObjectBase(
-                    login = response.getString("login"),
-                    name = response.getString("name"),
-                    fullName = response.getString("fullName"),
-                    additional = response.getString("additional"),
-                    authStatus = AuthStatus.GOOGLE,
-                    serverToken = response.getString("token")
-                ))
+                Storage.shared.initUserInfo(
+                    this, AuthInfoObjectBase(
+                        login = response.getString("login"),
+                        name = response.getString("name"),
+                        fullName = response.getString("fullName"),
+                        additional = response.getString("additional"),
+                        authStatus = AuthStatus.GOOGLE,
+                        serverToken = response.getString("token")
+                    )
+                )
             }, foreground = {
                 finish()
             }, errorground = {

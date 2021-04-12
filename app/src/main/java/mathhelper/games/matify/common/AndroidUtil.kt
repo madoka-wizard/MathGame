@@ -3,7 +3,6 @@ package mathhelper.games.matify.common
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.*
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
@@ -11,7 +10,10 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.ColorInt
 import mathhelper.games.matify.R
@@ -36,7 +38,8 @@ class AndroidUtil {
         fun touchUpInsideView(view: View, event: MotionEvent): Boolean {
             if (event.action == MotionEvent.ACTION_UP &&
                 view.left + event.x >= view.left && view.left + event.x <= view.right &&
-                view.top + event.y >= view.top && view.top + event.y <= view.bottom) {
+                view.top + event.y >= view.top && view.top + event.y <= view.bottom
+            ) {
                 return true
             }
             return false
@@ -115,7 +118,12 @@ class AndroidUtil {
             layoutParams.width = 0
             layoutParams.height = 200
             layoutParams.setGravity(Gravity.FILL_HORIZONTAL)
-            layoutParams.setMargins(Constants.defaultPadding, Constants.defaultPadding, Constants.defaultPadding, Constants.defaultPadding)
+            layoutParams.setMargins(
+                Constants.defaultPadding,
+                Constants.defaultPadding,
+                Constants.defaultPadding,
+                Constants.defaultPadding
+            )
             view.layoutParams = layoutParams
 
             val themeName = Storage.shared.theme(context)
@@ -135,7 +143,8 @@ class AndroidUtil {
             view.isAllCaps = false
             val layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             layoutParams.setMargins(0, Constants.defaultPadding, 0, Constants.defaultPadding)
             view.layoutParams = layoutParams
 
@@ -153,14 +162,16 @@ class AndroidUtil {
             }
         }
 
-        @ColorInt fun darkenColor(@ColorInt color: Int, grade: Int): Int {
+        @ColorInt
+        fun darkenColor(@ColorInt color: Int, grade: Int): Int {
             return if (grade == 0) color else Color.HSVToColor(FloatArray(3).apply {
                 Color.colorToHSV(color, this)
                 this[2] *= (0.6f).pow(grade)
             })
         }
 
-        @ColorInt fun lighterColor(@ColorInt color: Int, @ColorInt default: Int): Int? {
+        @ColorInt
+        fun lighterColor(@ColorInt color: Int, @ColorInt default: Int): Int? {
             val res = FloatArray(3).apply {
                 Color.colorToHSV(color, this)
                 this[2] /= (0.6f)

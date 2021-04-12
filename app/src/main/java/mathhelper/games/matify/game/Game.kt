@@ -2,8 +2,8 @@ package mathhelper.games.matify.game
 
 import android.content.Context
 import android.util.Log
+import mathhelper.games.matify.level.Level
 import org.json.JSONObject
-import mathhelper.games.matify.level.*
 
 enum class GameField(val str: String) {
     GAMESPACE("gameSpace"),
@@ -29,7 +29,7 @@ class Game(var fileName: String) {
     var version: Long = 0
     var loaded = false
 
-    fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
+    fun getNameByLanguage(languageCode: String) = if (languageCode.equals("ru", true)) {
         nameRu
     } else {
         nameEn
@@ -70,7 +70,8 @@ class Game(var fileName: String) {
     private fun preparse(gameJson: JSONObject): Boolean {
         if (!gameJson.has(GameField.GAMESPACE.str) || !gameJson.has(GameField.GAME_CODE.str) ||
             !gameJson.has(GameField.NAME.str) || !gameJson.has(GameField.VERSION.str) ||
-            !gameJson.has(GameField.LEVELS.str)) {
+            !gameJson.has(GameField.LEVELS.str)
+        ) {
             return false
         }
         gameSpace = gameJson.getString(GameField.GAMESPACE.str)

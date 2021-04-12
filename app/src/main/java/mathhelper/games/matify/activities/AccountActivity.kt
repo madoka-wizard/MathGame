@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import org.json.JSONObject
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.AuthInfoObjectBase
@@ -15,8 +14,9 @@ import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.statistics.Pages
 import mathhelper.games.matify.statistics.Request
 import mathhelper.games.matify.statistics.RequestData
+import org.json.JSONObject
 
-class AccountActivity: AppCompatActivity() {
+class AccountActivity : AppCompatActivity() {
     private val TAG = "AccountActivity"
     private lateinit var loginView: TextView
     private lateinit var additionalSwitch: Switch
@@ -77,7 +77,7 @@ class AccountActivity: AppCompatActivity() {
             additional = additionalView.text.toString(),
             password = if (passwordData.isNullOrBlank()) loginView.text.toString() else passwordData
         )
-        if (Storage.shared.serverToken(this).isNullOrBlank()){
+        if (Storage.shared.serverToken(this).isNullOrBlank()) {
             GlobalScene.shared.signUp(this, userData)
         } else {
             val requestRoot = JSONObject()

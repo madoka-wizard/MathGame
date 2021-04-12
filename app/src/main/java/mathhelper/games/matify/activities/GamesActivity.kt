@@ -5,9 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -20,12 +18,14 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import mathhelper.games.matify.*
+import mathhelper.games.matify.GlobalScene
+import mathhelper.games.matify.R
+import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GamesActivity: AppCompatActivity() {
+class GamesActivity : AppCompatActivity() {
     private val TAG = "GamesActivity"
     private lateinit var gamesViews: ArrayList<TextView>
     private lateinit var gamesList: GridLayout
@@ -119,12 +119,17 @@ class GamesActivity: AppCompatActivity() {
         }
         searchView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
                 searchView.compoundDrawables[Constants.drawableEnd].setVisible(true, true)
             }
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
                 filterList(search = s)
             }
         })
@@ -134,7 +139,9 @@ class GamesActivity: AppCompatActivity() {
     private fun generateList(search: CharSequence? = null) {
         GlobalScene.shared.games.forEachIndexed { i, game ->
             if (search != null) {
-                if (!game.getNameByLanguage(resources.configuration.locale.language).contains(search, ignoreCase = true)) {
+                if (!game.getNameByLanguage(resources.configuration.locale.language)
+                        .contains(search, ignoreCase = true)
+                ) {
                     return
                 }
             }
@@ -178,7 +185,9 @@ class GamesActivity: AppCompatActivity() {
     private fun filterList(search: CharSequence? = null) {
         if (search != null && search.isNotBlank()) {
             GlobalScene.shared.games.forEachIndexed { i, game ->
-                if (!game.getNameByLanguage(resources.configuration.locale.language).contains(search, ignoreCase = true)) {
+                if (!game.getNameByLanguage(resources.configuration.locale.language)
+                        .contains(search, ignoreCase = true)
+                ) {
                     gamesViews[i].visibility = View.GONE
                 } else {
                     gamesViews[i].visibility = View.VISIBLE

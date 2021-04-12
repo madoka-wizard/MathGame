@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
-import org.json.JSONObject
 import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
@@ -16,8 +17,9 @@ import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.statistics.Pages
 import mathhelper.games.matify.statistics.Request
 import mathhelper.games.matify.statistics.RequestData
+import org.json.JSONObject
 
-class PasswordActivity: AppCompatActivity() {
+class PasswordActivity : AppCompatActivity() {
     private val TAG = "PasswordActivity"
     private lateinit var oldPassView: TextView
     private lateinit var oldPassInputLayout: TextInputLayout
@@ -65,7 +67,7 @@ class PasswordActivity: AppCompatActivity() {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
             }
         } else if (newPassView.text.toString() == repeatPassView.text.toString()) {
-            if (Storage.shared.serverToken(this).isNullOrBlank()){
+            if (Storage.shared.serverToken(this).isNullOrBlank()) {
                 val userData = Storage.shared.getUserInfoBase(this)
                 userData.password = newPassView.text.toString()
                 GlobalScene.shared.signUp(this, userData)

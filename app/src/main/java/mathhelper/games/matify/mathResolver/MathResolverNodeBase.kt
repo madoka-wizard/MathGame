@@ -8,7 +8,6 @@ import expressiontree.ExpressionNode
 import expressiontree.NodeType
 import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.mathResolver.mathResolverNodes.*
-import java.lang.Exception
 
 open class MathResolverNodeBase(
     var origin: ExpressionNode,
@@ -35,13 +34,15 @@ open class MathResolverNodeBase(
             fp
         }()
 
-        fun createNode(expression: ExpressionNode, needBrackets: Boolean,
-                       style: VariableStyle, taskType: TaskType): MathResolverNodeBase {
+        fun createNode(
+            expression: ExpressionNode, needBrackets: Boolean,
+            style: VariableStyle, taskType: TaskType
+        ): MathResolverNodeBase {
             val node = if (expression.nodeType == NodeType.VARIABLE) {
                 val (value, customized) = CustomSymbolsHandler.getPrettyValue(expression, style, taskType)
                 val variable = MathResolverNodeBase(expression, false, null, value.length, 1)
                 variable.customized = customized
-                variable.outputValue =  if (customized) {
+                variable.outputValue = if (customized) {
                     value
                 } else {
                     expression.value

@@ -11,7 +11,7 @@ class MathResolverNodeFunction(
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
     private val delim = ","
 
-    override fun setNodesFromExpression()  {
+    override fun setNodesFromExpression() {
         super.setNodesFromExpression()
         length += op!!.name.length + 2 + delim.length * (origin.children.size - 1)
         var maxH = 0

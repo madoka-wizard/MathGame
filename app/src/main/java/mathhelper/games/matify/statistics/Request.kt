@@ -5,13 +5,14 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import mathhelper.games.matify.common.RequestTimer
+import org.json.JSONObject
 import java.net.URL
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import java.util.*
 import javax.net.ssl.*
+import kotlin.jvm.Throws
 
 enum class Pages(val value: String) {
     SIGNIN("/api/auth/signin"),
@@ -52,7 +53,7 @@ class MathHelperSpaceHostnameVerifier : HostnameVerifier {
 }
 
 class TrustAllCertsManager : X509TrustManager {
-    override fun getAcceptedIssuers (): Array<X509Certificate?>? = null
+    override fun getAcceptedIssuers(): Array<X509Certificate?>? = null
 
     override fun checkClientTrusted(
         certs: Array<X509Certificate?>?,
@@ -68,9 +69,9 @@ class TrustAllCertsManager : X509TrustManager {
 }
 
 class Request {
-    class TimeoutException(message: String): Exception(message)
-    class UndefinedException(message: String): Exception(message)
-    class TokenNotFoundException(message: String): Exception(message)
+    class TimeoutException(message: String) : Exception(message)
+    class UndefinedException(message: String) : Exception(message)
+    class TokenNotFoundException(message: String) : Exception(message)
 
     companion object {
         private var reqQueue = LinkedList<RequestData>()
@@ -87,7 +88,7 @@ class Request {
             }
             // Install the all-trusting trust manager
             val sc: SSLContext = SSLContext.getInstance("SSL")
-            sc.init(null, arrayOf<TrustManager> (TrustAllCertsManager()), SecureRandom())
+            sc.init(null, arrayOf<TrustManager>(TrustAllCertsManager()), SecureRandom())
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
 
             HttpsURLConnection.setDefaultHostnameVerifier(MathHelperSpaceHostnameVerifier())
@@ -160,7 +161,7 @@ class Request {
         }
 
         fun sendStatisticRequest(req: RequestData) {
-            if (req.securityToken.isNullOrBlank()){
+            if (req.securityToken.isNullOrBlank()) {
                 Log.d("sendStatisticRequest", "No securityToken found")
                 return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
             }
@@ -211,7 +212,7 @@ class Request {
         }
 
         fun editRequest(req: RequestData) {
-            if (req.securityToken.isNullOrBlank()){
+            if (req.securityToken.isNullOrBlank()) {
                 Log.d("editRequest", "No securityToken found")
                 throw TokenNotFoundException("Bad Credentials")
             }

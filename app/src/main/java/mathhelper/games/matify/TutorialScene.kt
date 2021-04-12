@@ -9,15 +9,13 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Handler
-import android.view.View
 import android.util.Log
-import expressiontree.SimpleComputationRuleParams
+import android.view.View
 import expressiontree.ExpressionSubstitution
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import mathhelper.games.matify.common.AndroidUtil
-import mathhelper.games.matify.tutorial.TutorialPlayActivity
 import mathhelper.games.matify.common.RuleMathView
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
@@ -26,9 +24,9 @@ import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
-import mathhelper.games.matify.statistics.Statistics
 import mathhelper.games.matify.tutorial.TutorialGamesActivity
 import mathhelper.games.matify.tutorial.TutorialLevelsActivity
+import mathhelper.games.matify.tutorial.TutorialPlayActivity
 
 class TutorialScene {
     companion object {
@@ -80,7 +78,7 @@ class TutorialScene {
             }
         }
 
-    fun getNotNullActivity () = if (tutorialGamesActivity != null) {
+    fun getNotNullActivity() = if (tutorialGamesActivity != null) {
         tutorialGamesActivity
     } else if (tutorialLevelsActivity != null) {
         tutorialLevelsActivity
@@ -88,7 +86,7 @@ class TutorialScene {
         tutorialPlayActivity
     } else null
 
-    fun getResourceString (id: Int) = getNotNullActivity()?.resources?.getString(id) ?: null
+    fun getResourceString(id: Int) = getNotNullActivity()?.resources?.getString(id) ?: null
 
     lateinit var tutorialLevel: Level
 
@@ -183,7 +181,7 @@ class TutorialScene {
         }
     }
 
-    private fun stepToDisplay() = if (currentStep <=1 ) {
+    private fun stepToDisplay() = if (currentStep <= 1) {
         1
     } else if (currentStep > 3) {
         currentStep - 1
@@ -391,7 +389,7 @@ class TutorialScene {
         Log.d(TAG, "createLeaveDialog")
         val builder = AlertDialog.Builder(
             context, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(context))
-            )
+        )
         builder
             .setTitle(R.string.attention)
             .setMessage(R.string.wanna_leave)

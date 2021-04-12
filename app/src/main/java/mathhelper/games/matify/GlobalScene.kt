@@ -21,7 +21,6 @@ import mathhelper.games.matify.statistics.Pages
 import mathhelper.games.matify.statistics.Request
 import mathhelper.games.matify.statistics.RequestData
 import org.json.JSONObject
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -123,7 +122,7 @@ class GlobalScene {
         return res
     }
 
-    fun signUp (context: Activity, userData: AuthInfoObjectBase) {
+    fun signUp(context: Activity, userData: AuthInfoObjectBase) {
         val requestRoot = JSONObject()
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
@@ -158,7 +157,8 @@ class GlobalScene {
                 when (e) {
                     is Request.TimeoutException -> {
                         context.runOnUiThread {
-                            Toast.makeText(context, R.string.problems_with_internet_connection, Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.problems_with_internet_connection, Toast.LENGTH_LONG)
+                                .show()
                         }
                     }
                     is Request.TokenNotFoundException -> {

@@ -12,7 +12,7 @@ import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.Storage
 
-class TutorialGamesActivity: AppCompatActivity() {
+class TutorialGamesActivity : AppCompatActivity() {
     private val TAG = "TutorialGamesActivity"
     private lateinit var pointer: TextView
     lateinit var dialog: AlertDialog

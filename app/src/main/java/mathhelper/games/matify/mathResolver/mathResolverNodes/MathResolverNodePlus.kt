@@ -12,18 +12,20 @@ class MathResolverNodePlus(
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
     private var operators: ArrayList<String> = ArrayList()
 
-    override fun setNodesFromExpression()  {
+    override fun setNodesFromExpression() {
         super.setNodesFromExpression()
         var maxH = 0
         length += origin.children.size * op!!.name.length - 1
         origin.children.forEachIndexed { i, node ->
             lateinit var elem: MathResolverNodeBase
             if (node.nodeType == NodeType.FUNCTION &&
-                    Operation(node.value).type == OperationType.MINUS && i != 0) {
+                Operation(node.value).type == OperationType.MINUS && i != 0
+            ) {
                 operators.add(node.value)
                 var brackets = false
                 if (node.children[0].nodeType == NodeType.FUNCTION &&
-                    Operation(node.children[0].value).type == OperationType.PLUS) {
+                    Operation(node.children[0].value).type == OperationType.PLUS
+                ) {
                     brackets = true
                 }
                 elem = createNode(node.children[0], brackets, style, taskType)
@@ -74,9 +76,9 @@ class MathResolverNodePlus(
         }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind != 0) {
-                    stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, operators[0])
-                    curInd += operators[0].length
-                    operators.removeAt(0)
+                stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, operators[0])
+                curInd += operators[0].length
+                operators.removeAt(0)
             }
             child.getPlainNode(stringMatrix, spannableArray)
             curInd += child.length

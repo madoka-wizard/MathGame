@@ -1,7 +1,6 @@
 package mathhelper.games.matify.statistics
 
 import com.google.gson.Gson
-import org.json.JSONObject
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.level.Level
 import java.sql.Timestamp
@@ -21,7 +20,7 @@ enum class Action(val str: String) {
     INTERIM("interim");
 }
 
-data class ActivityLog (
+data class ActivityLog(
     var appCode: String = "",
     var activityTypeCode: String = "",
     var clientActionTs: Timestamp? = null,

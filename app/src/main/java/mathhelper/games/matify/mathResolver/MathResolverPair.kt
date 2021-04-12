@@ -7,7 +7,6 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.core.text.getSpans
-import androidx.core.text.set
 import expressiontree.ExpressionNode
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.common.AndroidUtil
@@ -37,18 +36,21 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
         return resNode
     }
 
-    private fun findNodeByExpression(currentTree: MathResolverNodeBase?, expressionNode: ExpressionNode): MathResolverNodeBase? {
+    private fun findNodeByExpression(
+        currentTree: MathResolverNodeBase?,
+        expressionNode: ExpressionNode
+    ): MathResolverNodeBase? {
         if (currentTree == null)
             return null
         if (expressionNode.nodeId == currentTree.origin.nodeId)
             return currentTree
         var res: MathResolverNodeBase? = null
         for (child in currentTree.children)
-            res = findNodeByExpression(child, expressionNode)?:res
+            res = findNodeByExpression(child, expressionNode) ?: res
         return res
     }
 
-    private fun clearColorSpans (start: Int, end: Int, multiSelect: Boolean = false) {
+    private fun clearColorSpans(start: Int, end: Int, multiSelect: Boolean = false) {
         val colorSpans = matrix.getSpans<ForegroundColorSpan>(start, end)
         if (multiSelect) {
             for (cs in colorSpans.sortedBy { matrix.getSpanStart(it) }) {
@@ -56,9 +58,17 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
                 val spanEnd = matrix.getSpanEnd(cs)
                 if (spanStart >= start && spanEnd <= end) {
                     matrix.removeSpan(cs)
-                    val defColor = ThemeController.shared.getColorByTheme(Storage.shared.theme(PlayScene.shared.playActivity!!), ColorName.MULTISELECTION_COLOR)
+                    val defColor = ThemeController.shared.getColorByTheme(
+                        Storage.shared.theme(PlayScene.shared.playActivity!!),
+                        ColorName.MULTISELECTION_COLOR
+                    )
                     val color = AndroidUtil.lighterColor(cs.foregroundColor, defColor)
-                    matrix.setSpan(ForegroundColorSpan(color ?: continue), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    matrix.setSpan(
+                        ForegroundColorSpan(color ?: continue),
+                        spanStart,
+                        spanEnd,
+                        Spannable.SPAN_INCLUSIVE_INCLUSIVE
+                    )
                 }
             }
         } else {
@@ -68,7 +78,7 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
         }
     }
 
-    private fun clearBoldSpans (start: Int, end: Int, multiSelect: Boolean = false) {
+    private fun clearBoldSpans(start: Int, end: Int, multiSelect: Boolean = false) {
         val boldSpans = matrix.getSpans<StyleSpan>(start, end)
         if (multiSelect) {
             for (cs in boldSpans) {
@@ -83,12 +93,12 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
         }
     }
 
-    private fun clearAllSpans (start: Int, end: Int, multiSelect: Boolean = false) {
+    private fun clearAllSpans(start: Int, end: Int, multiSelect: Boolean = false) {
         clearColorSpans(start, end, multiSelect)
         clearBoldSpans(start, end, multiSelect)
     }
 
-    private fun applyStyleToMathNode (mathNode: MathResolverNodeBase, styleLambda: (start: Int, end: Int) -> Unit) {
+    private fun applyStyleToMathNode(mathNode: MathResolverNodeBase, styleLambda: (start: Int, end: Int) -> Unit) {
         if (tree != null) {
             for (i in mathNode.leftTop.y..mathNode.rightBottom.y) {
                 val start = i * (tree.length + 1) + mathNode.leftTop.x

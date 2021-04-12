@@ -1,10 +1,8 @@
 package mathhelper.games.matify.level
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Build
 import mathhelper.games.matify.common.ColorName
-import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
 

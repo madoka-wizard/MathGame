@@ -9,7 +9,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.PlayActivity
-import mathhelper.games.matify.level.*
+import mathhelper.games.matify.level.AwardType
+import mathhelper.games.matify.level.Level
 import java.util.*
 
 class LevelScene {

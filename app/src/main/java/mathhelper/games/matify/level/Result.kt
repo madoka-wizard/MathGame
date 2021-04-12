@@ -10,7 +10,7 @@ class Result(val steps: Double, val time: Long, val award: Award, var expression
 
     override fun toString(): String {
         val sec = "${time % 60}".padStart(2, '0')
-        val stepsStr = if (steps.equals(steps.toInt().toFloat())) {
+        val stepsStr = if (steps.equals(steps.toInt().toDouble())) {
             "${steps.toInt()}"
         } else {
             "%.1f".format(steps)

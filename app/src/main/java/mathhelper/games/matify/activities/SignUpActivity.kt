@@ -5,21 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.ScrollView
+import android.widget.Switch
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
-import org.json.JSONObject
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.statistics.Pages
-import mathhelper.games.matify.statistics.Request
-import mathhelper.games.matify.statistics.RequestData
 
-class SignUpActivity: AppCompatActivity() {
+class SignUpActivity : AppCompatActivity() {
     private val TAG = "SignUpActivity"
     private lateinit var loginView: TextView
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private lateinit var additionalSwitch: Switch
     private lateinit var additionalList: ScrollView
     private lateinit var nameView: TextView
@@ -60,8 +60,9 @@ class SignUpActivity: AppCompatActivity() {
     }
 
     private fun checkInput() {
-        signButton.isEnabled = !loginView.text.isNullOrBlank() && !passwordView.text.isNullOrBlank() && !repeatView.text.isNullOrBlank() &&
-            passwordView.text.toString() == repeatView.text.toString()
+        signButton.isEnabled =
+            !loginView.text.isNullOrBlank() && !passwordView.text.isNullOrBlank() && !repeatView.text.isNullOrBlank() &&
+                passwordView.text.toString() == repeatView.text.toString()
     }
 
     fun toggleAdditionalInfo(v: View?) {

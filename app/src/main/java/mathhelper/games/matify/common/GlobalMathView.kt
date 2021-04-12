@@ -2,7 +2,6 @@ package mathhelper.games.matify.common
 
 import android.content.Context
 import android.graphics.Typeface
-import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -12,8 +11,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.content.res.TypedArrayUtils.getText
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.text.getSpans
 import api.findLowestSubtreeTopOfSelectedNodesInExpression
 import api.structureStringToExpression
@@ -26,24 +24,24 @@ import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.MathResolverPair
 import mathhelper.games.matify.mathResolver.TaskType
 
-class GlobalMathView: TextView {
+class GlobalMathView : AppCompatTextView {
     private val TAG = "GlobalMathView"
     var expression: ExpressionNode? = null
         private set
     var currentAtoms: MutableList<ExpressionNode> = mutableListOf()
         private set
     var multiselectionMode = false
-    var currentRulesToResult : Map<ExpressionSubstitution, ExpressionNode>? = null
+    var currentRulesToResult: Map<ExpressionSubstitution, ExpressionNode>? = null
     private var mathPair: MathResolverPair? = null
     private var type: Type = Type.OTHER
 
     /** INITIALIZATION **/
-    constructor(context: Context): super(context) {
+    constructor(context: Context) : super(context) {
         Log.d(TAG, "constructor from context")
         setDefaults()
     }
 
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         Log.d(TAG, "constructor from attrs")
         setDefaults()
     }
@@ -57,7 +55,8 @@ class GlobalMathView: TextView {
         setLineSpacing(0f, Constants.mathLineSpacing)
         setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
-            Constants.defaultPadding, Constants.defaultPadding)
+            Constants.defaultPadding, Constants.defaultPadding
+        )
     }
 
     fun setExpression(expressionStr: String, type: Type) {
@@ -157,7 +156,11 @@ class GlobalMathView: TextView {
                         currentAtoms.add(atom)
                     }
                     val topNode = findLowestSubtreeTopOfSelectedNodesInExpression(expression!!, currentAtoms)
-                    mathPair!!.recolorExpressionInMultiSelectionMode(currentAtoms, topNode, atomMultiColor)//, atomSecondColor)
+                    mathPair!!.recolorExpressionInMultiSelectionMode(
+                        currentAtoms,
+                        topNode,
+                        atomMultiColor
+                    )//, atomSecondColor)
                 } else {
                     currentAtoms.clear()
                     currentAtoms.add(atom)
@@ -186,7 +189,7 @@ class GlobalMathView: TextView {
 
     private fun setTextFromExpression() {
         Log.d(TAG, "setTextFromExpression")
-        mathPair = when(type) {
+        mathPair = when (type) {
             Type.SET -> MathResolver.resolveToPlain(expression!!, taskType = TaskType.SET)
             else -> MathResolver.resolveToPlain(expression!!)
         }

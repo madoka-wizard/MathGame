@@ -10,7 +10,7 @@ class MathResolverNodeLog(
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
 
-    override fun setNodesFromExpression()  {
+    override fun setNodesFromExpression() {
         super.setNodesFromExpression()
         length += op!!.name.length + 2
         for (node in origin.children) {
@@ -22,8 +22,7 @@ class MathResolverNodeLog(
         baseLineOffset = children[0].baseLineOffset
         height = if (children[0].height >= children[1].height + baseLineOffset + 1) {
             children[0].height
-        }
-        else {
+        } else {
             children[1].height + children[0].baseLineOffset + 1
         }
     }
