@@ -2,19 +2,18 @@ package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.GridLayout
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -29,7 +28,6 @@ class GamesActivity : AppCompatActivity() {
     private val TAG = "GamesActivity"
     private lateinit var gamesViews: ArrayList<TextView>
     private lateinit var gamesList: GridLayout
-    private lateinit var searchView: EditText
     private var gameTouched: View? = null
     private lateinit var serverDivider: View
     private lateinit var serverLabel: TextView
@@ -63,13 +61,10 @@ class GamesActivity : AppCompatActivity() {
         GlobalScene.shared.gamesActivity = this
         gamesViews = ArrayList()
         gamesList = findViewById(R.id.games_list)
-        searchView = findViewById(R.id.search)
-        searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
         serverDivider = findViewById(R.id.server_divider)
         serverLabel = findViewById(R.id.server_games_label)
         serverList = findViewById(R.id.server_games_list)
         serverScroll = findViewById(R.id.server_scroll)
-        setSearchEngine()
         generateList()
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
@@ -83,7 +78,6 @@ class GamesActivity : AppCompatActivity() {
         serverLabel.visibility = View.GONE
         serverList.visibility = View.GONE
         serverScroll.visibility = View.GONE
-        clearSearch()
         if (askForTutorial) {
             askForTutorialDialog()
             askForTutorial = false
@@ -94,57 +88,9 @@ class GamesActivity : AppCompatActivity() {
         startActivity(Intent(this, SettingsActivity::class.java))
     }
 
-    private fun clearSearch() {
-        searchView.text.clear()
-        searchView.clearFocus()
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        imm?.hideSoftInputFromWindow(this.window.decorView.windowToken, 0)
-    }
-
     @SuppressLint("ClickableViewAccessibility")
-    private fun setSearchEngine() {
-        searchView.setOnTouchListener { v, event ->
-            var res = false
-            if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = searchView.compoundDrawables[Constants.drawableEnd]
-                if (drawableEnd != null) {
-                    if (event.x >= (searchView.width - searchView.paddingRight - drawableEnd.intrinsicWidth)) {
-                        clearSearch()
-                        filterList()
-                        res = true
-                    }
-                }
-            }
-            res
-        }
-        searchView.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {}
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
-            ) {
-                searchView.compoundDrawables[Constants.drawableEnd].setVisible(true, true)
-            }
-
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
-                filterList(search = s)
-            }
-        })
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun generateList(search: CharSequence? = null) {
+    private fun generateList() {
         GlobalScene.shared.games.forEachIndexed { i, game ->
-            if (search != null) {
-                if (!game.getNameByLanguage(resources.configuration.locale.language)
-                        .contains(search, ignoreCase = true)
-                ) {
-                    return
-                }
-            }
             val gameView = AndroidUtil.createSquareButtonView(this)
 
             var text = game.getNameByLanguage(resources.configuration.locale.language)
@@ -183,36 +129,6 @@ class GamesActivity : AppCompatActivity() {
             }
             gamesList.addView(gameView)
             gamesViews.add(gameView)
-        }
-    }
-
-    private fun filterList(search: CharSequence? = null) {
-        if (search != null && search.isNotBlank()) {
-            GlobalScene.shared.games.forEachIndexed { i, game ->
-                if (!game.getNameByLanguage(resources.configuration.locale.language)
-                        .contains(search, ignoreCase = true)
-                ) {
-                    gamesViews[i].visibility = View.GONE
-                } else {
-                    gamesViews[i].visibility = View.VISIBLE
-                }
-            }
-            serverDivider.visibility = View.VISIBLE
-            serverLabel.visibility = View.VISIBLE
-            serverScroll.visibility = View.VISIBLE
-            serverList.visibility = View.VISIBLE
-            // TODO: games from server
-            // val view = AndroidUtil.createButtonView(this)
-            // view.text = search
-            // serverList.addView(view)
-        } else {
-            serverDivider.visibility = View.GONE
-            serverLabel.visibility = View.GONE
-            serverList.removeAllViews()
-            serverList.visibility = View.GONE
-            serverScroll.visibility = View.GONE
-            searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
-            gamesViews.map { it.visibility = View.VISIBLE }
         }
     }
 
