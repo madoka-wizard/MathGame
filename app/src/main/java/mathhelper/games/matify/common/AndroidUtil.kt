@@ -12,10 +12,7 @@ import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.ColorInt
 import mathhelper.games.matify.R
 import kotlin.math.pow
@@ -104,7 +101,28 @@ class AndroidUtil {
                 dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             }
         }
-        
+
+        fun createSquareButtonView(context: Context): TextView {
+            val view = Button(context)
+            view.typeface = Typeface.MONOSPACE
+            view.textSize = Constants.buttonDefaultSize
+            view.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            view.isAllCaps = false
+
+            view.gravity = Gravity.CENTER
+            val layoutParams = GridLayout.LayoutParams()
+            layoutParams.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
+            layoutParams.width = 0
+            layoutParams.height = 200
+            layoutParams.setGravity(Gravity.FILL_HORIZONTAL)
+            layoutParams.setMargins(Constants.defaultPadding, Constants.defaultPadding, Constants.defaultPadding, Constants.defaultPadding)
+            view.layoutParams = layoutParams
+
+            val themeName = Storage.shared.theme(context)
+            view.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
+            return view
+        }
+
         fun createButtonView(context: Context): TextView {
             val view = Button(context)
             view.typeface = Typeface.MONOSPACE

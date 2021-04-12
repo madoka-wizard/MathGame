@@ -28,7 +28,7 @@ import kotlin.collections.ArrayList
 class GamesActivity: AppCompatActivity() {
     private val TAG = "GamesActivity"
     private lateinit var gamesViews: ArrayList<TextView>
-    private lateinit var gamesList: LinearLayout
+    private lateinit var gamesList: GridLayout
     private lateinit var searchView: EditText
     private var gameTouched: View? = null
     private lateinit var serverDivider: View
@@ -138,7 +138,7 @@ class GamesActivity: AppCompatActivity() {
                     return
                 }
             }
-            val gameView = AndroidUtil.createButtonView(this)
+            val gameView = AndroidUtil.createSquareButtonView(this)
 
             gameView.text = game.getNameByLanguage(resources.configuration.locale.language)
             val themeName = Storage.shared.theme(this)
