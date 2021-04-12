@@ -147,7 +147,11 @@ class GamesActivity : AppCompatActivity() {
             }
             val gameView = AndroidUtil.createSquareButtonView(this)
 
-            gameView.text = game.getNameByLanguage(resources.configuration.locale.language)
+            var text = game.getNameByLanguage(resources.configuration.locale.language)
+            if (text.length > 12) {
+                text = text.take(12) + ".."
+            }
+            gameView.text = text
             val themeName = Storage.shared.theme(this)
             gameView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
             /*

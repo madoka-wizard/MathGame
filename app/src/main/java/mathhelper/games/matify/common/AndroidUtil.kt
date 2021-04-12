@@ -116,7 +116,7 @@ class AndroidUtil {
             val layoutParams = GridLayout.LayoutParams()
             layoutParams.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
             layoutParams.width = 0
-            layoutParams.height = 200
+            layoutParams.height = 250
             layoutParams.setGravity(Gravity.FILL_HORIZONTAL)
             layoutParams.setMargins(
                 Constants.defaultPadding,

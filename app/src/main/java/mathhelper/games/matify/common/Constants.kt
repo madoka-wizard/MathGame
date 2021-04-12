@@ -5,10 +5,10 @@ class Constants {
         const val centralExpressionDefaultSize = 28f
         const val centralExpressionMaxSize = 48f
         const val ruleDefaultSize = 23f
-        const val buttonDefaultSize = 21f
+        const val buttonDefaultSize = 19f
         const val mathLineSpacing = 0.5f
         const val levelLineSpacing = 1.2f
-        const val defaultPadding = 10
+        const val defaultPadding = 8
         const val drawableEnd = 2
         const val timeDeviation = 0.2f
         const val awardDeviation = 0.1f
