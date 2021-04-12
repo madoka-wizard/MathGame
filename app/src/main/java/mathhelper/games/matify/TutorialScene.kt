@@ -78,15 +78,20 @@ class TutorialScene {
             }
         }
 
-    fun getNotNullActivity() = if (tutorialGamesActivity != null) {
-        tutorialGamesActivity
-    } else if (tutorialLevelsActivity != null) {
-        tutorialLevelsActivity
-    } else if (tutorialPlayActivity != null) {
-        tutorialPlayActivity
-    } else null
+    private fun getNotNullActivity() = when {
+        tutorialGamesActivity != null -> {
+            tutorialGamesActivity
+        }
+        tutorialLevelsActivity != null -> {
+            tutorialLevelsActivity
+        }
+        tutorialPlayActivity != null -> {
+            tutorialPlayActivity
+        }
+        else -> null
+    }
 
-    fun getResourceString(id: Int) = getNotNullActivity()?.resources?.getString(id) ?: null
+    private fun getResourceString(id: Int) = getNotNullActivity()?.resources?.getString(id)
 
     lateinit var tutorialLevel: Level
 
@@ -162,7 +167,7 @@ class TutorialScene {
         currentStep = -1
     }
 
-    fun nextStep() {
+    private fun nextStep() {
         currentStep++
         if (currentStep == steps.size) {
             return
@@ -181,11 +186,15 @@ class TutorialScene {
         }
     }
 
-    private fun stepToDisplay() = if (currentStep <= 1) {
-        1
-    } else if (currentStep > 3) {
-        currentStep - 1
-    } else 2
+    private fun stepToDisplay() = when {
+        currentStep <= 1 -> {
+            1
+        }
+        currentStep > 3 -> {
+            currentStep - 1
+        }
+        else -> 2
+    }
 
     fun loadLevel() {
         Log.d(TAG, "loadLevel")
