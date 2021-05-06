@@ -301,8 +301,7 @@ class Level {
             resultStepsNum < stepsNum -> 1.0
 //            resultTime > time -> 0.0
             else -> (
-                1 - resultTime.toDouble() / (10 * time) +
-                    3 * stepsNum.toDouble() / resultStepsNum
+                1 * (1 - resultTime.toDouble() / (10 * time)) + 3 * stepsNum.toDouble() / resultStepsNum
                 ) / (1 + 3)
         }
         return Award(context, getAwardByCoeff(mark), mark)
