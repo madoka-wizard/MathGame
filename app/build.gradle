@@ -6,7 +6,7 @@ android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "mathhelper.games.matify"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 26
         versionName "2.0.26"

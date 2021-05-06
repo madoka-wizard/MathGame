@@ -7,6 +7,9 @@ import mathhelper.games.matify.common.Constants.Companion.defaultRulePriority
 import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.level.Type.valueOf
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 enum class PackageField(val str: String) {
     RULE_PACK("rulePack"),
@@ -45,9 +48,9 @@ private constructor(
             if (packJson.has(PackageField.TYPE.str)) {
                 val typeStr = packJson.getString(PackageField.TYPE.str)
                 try {
-                    type = valueOf(typeStr.toUpperCase())
+                    type = valueOf(typeStr.uppercase(Locale.getDefault()))
                 } catch (e: Exception) {
-                    Log.e("RulePackage::parse", e.message)
+                    Log.e("RulePackage::parse", e.message.toString())
                     return null
                 }
             }

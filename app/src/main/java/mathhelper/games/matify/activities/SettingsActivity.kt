@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -190,8 +191,10 @@ class SettingsActivity : AppCompatActivity() {
         builder
             .setTitle(R.string.change_theme)
             .setMessage(
-                "${resources.getString(R.string.change_theme_to)} '${themeToChoose.toString()
-                    .toUpperCase(config.locale)}'?"
+                "${resources.getString(R.string.change_theme_to)} '${
+                    themeToChoose.toString()
+                        .uppercase(config.locales[0])
+                }'?"
             )
             .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
                 Storage.shared.setTheme(this, themeToChoose)
@@ -210,7 +213,7 @@ class SettingsActivity : AppCompatActivity() {
         )
 
         val config = Configuration(resources.configuration)
-        val languageToChoose = if (config.locale.language == "ru") {
+        val languageToChoose = if (config.locales[0].language == "ru") {
             "en"
         } else {
             "ru"
@@ -218,9 +221,9 @@ class SettingsActivity : AppCompatActivity() {
 
         builder
             .setTitle(R.string.change_language)
-            .setMessage("${resources.getString(R.string.change_language_to)} '${languageToChoose.toUpperCase(config.locale)}'?")
+            .setMessage("${resources.getString(R.string.change_language_to)} '${languageToChoose.uppercase(config.locales[0])}'?")
             .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
-                config.locale = Locale(languageToChoose); //locale
+                config.setLocales(LocaleList(Locale(languageToChoose))) //locale
                 resources.updateConfiguration(config, resources.displayMetrics)
                 finishAffinity()
                 startActivity(Intent(this, GamesActivity::class.java))

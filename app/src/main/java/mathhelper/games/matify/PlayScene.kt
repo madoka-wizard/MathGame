@@ -136,7 +136,7 @@ class PlayScene() {
                 redrawRules(rules)
             }
         }
-        Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms!!)
+        Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
 
     fun loadLevel(context: Context, continueGame: Boolean, languageCode: String): Boolean {

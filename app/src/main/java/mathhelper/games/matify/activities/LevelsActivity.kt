@@ -78,7 +78,7 @@ class LevelsActivity : AppCompatActivity() {
     fun updateResult() {
         val i = LevelScene.shared.currentLevelIndex
         levelViews[i].text =
-            "${LevelScene.shared.levels[i].getNameByLanguage(resources.configuration.locale.language)}" +
+            LevelScene.shared.levels[i].getNameByLanguage(resources.configuration.locales[0].language) +
                 if (LevelScene.shared.levels[i].lastResult != null) {
                     "\n${LevelScene.shared.levels[i].lastResult}"
                 } else {
@@ -90,10 +90,10 @@ class LevelsActivity : AppCompatActivity() {
     private fun generateList() {
         LevelScene.shared.levels.forEachIndexed { i, level ->
             val levelView = AndroidUtil.createButtonView(this)
-            levelView.text = level.getNameByLanguage(resources.configuration.locale.language)
+            levelView.text = level.getNameByLanguage(resources.configuration.locales[0].language)
             if (level.lastResult != null) {
                 levelView.text =
-                    "${level.getNameByLanguage(resources.configuration.locale.language)}\n${level.lastResult!!}"
+                    "${level.getNameByLanguage(resources.configuration.locales[0].language)}\n${level.lastResult!!}"
             }
             val themeName = Storage.shared.theme(this)
             levelView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))

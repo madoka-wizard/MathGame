@@ -185,7 +185,7 @@ class Statistics {
         fun getHwInfo(): String {
             return "Model: ${Build.MODEL}; Id: ${Build.ID}; Manufacture: ${Build.MANUFACTURER}; " +
                 "Incremental: ${Build.VERSION.INCREMENTAL}; " +
-                "Sdk: ${Build.VERSION.SDK}; Board: ${Build.BOARD}; Brand: ${Build.BRAND}; " +
+                "Sdk: ${Build.VERSION.SDK_INT}; Board: ${Build.BOARD}; Brand: ${Build.BRAND}; " +
                 "Host: ${Build.HOST}; Fingerprint: ${Build.FINGERPRINT}; Version Code: ${Build.VERSION.RELEASE}"
         }
 

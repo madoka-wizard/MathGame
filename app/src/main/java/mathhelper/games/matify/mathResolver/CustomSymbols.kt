@@ -1,6 +1,7 @@
 package mathhelper.games.matify.mathResolver
 
 import expressiontree.ExpressionNode
+import java.util.*
 
 class CustomSymbolsHandler {
     companion object {
@@ -47,8 +48,8 @@ class CustomSymbolsHandler {
                 return Pair(origin.value, false)
             }
             return when {
-                style == VariableStyle.GREEK && greekSymbols.containsKey(origin.value.toUpperCase()) ->
-                    Pair(greekSymbols[origin.value.toUpperCase()]!!, true)
+                style == VariableStyle.GREEK && greekSymbols.containsKey(origin.value.uppercase(Locale.getDefault())) ->
+                    Pair(greekSymbols[origin.value.uppercase(Locale.getDefault())]!!, true)
                 taskType == TaskType.SET && setCustomSymbols.containsKey(origin.value) ->
                     Pair(setCustomSymbols[origin.value]!!, true)
                 otherCustomSymbols.containsKey(origin.value) -> Pair(otherCustomSymbols[origin.value]!!, true)

@@ -181,7 +181,7 @@ class PlayActivity : AppCompatActivity() {
         endExpressionView.text = ""
         progress.visibility = View.VISIBLE
         try {
-            PlayScene.shared.loadLevel(this, continueGame, resources.configuration.locale.language)
+            PlayScene.shared.loadLevel(this, continueGame, resources.configuration.locales[0].language)
         } catch (e: Exception) {
             Log.e(TAG, "Error while level loading")
             Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
@@ -203,7 +203,7 @@ class PlayActivity : AppCompatActivity() {
     fun restart(v: View?) {
         if (!loading) {
             scale = 1f
-            PlayScene.shared.restart(this, resources.configuration.locale.language)
+            PlayScene.shared.restart(this, resources.configuration.locales[0].language)
         }
     }
 
@@ -229,7 +229,7 @@ class PlayActivity : AppCompatActivity() {
     }
 
     fun info(v: View?) {
-        PlayScene.shared.info(resources.configuration.locale.language)
+        PlayScene.shared.info(resources.configuration.locales[0].language)
     }
 
 
@@ -339,7 +339,7 @@ class PlayActivity : AppCompatActivity() {
         restartButton.setOnClickListener {
             scale = 1f
             dialog.dismiss()
-            PlayScene.shared.restart(this, resources.configuration.locale.language)
+            PlayScene.shared.restart(this, resources.configuration.locales[0].language)
         }
 
         dialog.setOnShowListener {

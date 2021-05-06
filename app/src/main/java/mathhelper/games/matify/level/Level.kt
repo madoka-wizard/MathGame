@@ -14,6 +14,8 @@ import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.game.PackageField
 import mathhelper.games.matify.game.RulePackage
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
 
 data class RuleStr(val left: String, val right: String)
 
@@ -170,7 +172,7 @@ class Level {
         difficulty = levelJson.getDouble(LevelField.DIFFICULTY.str)
         val typeStr = levelJson.getString(LevelField.TYPE.str)
         try {
-            type = Type.valueOf(typeStr.toUpperCase())
+            type = Type.valueOf(typeStr.uppercase(Locale.getDefault()))
         } catch (e: Exception) {
             return false
         }
@@ -182,7 +184,7 @@ class Level {
         showSubstResult = levelJson.optBoolean(LevelField.SHOW_SUBST_RESULT.str, showSubstResult)
         val undoPolicyStr = levelJson.optString(LevelField.UNDO_CONSIDERING_POLICY.str, UndoPolicy.NONE.str)
         try {
-            undoPolicy = UndoPolicy.valueOf(undoPolicyStr.toUpperCase())
+            undoPolicy = UndoPolicy.valueOf(undoPolicyStr.uppercase(Locale.getDefault()))
         } catch (e: Exception) {
             return false
         }
