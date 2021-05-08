@@ -54,9 +54,9 @@ data class ActivityLog(
     fun additionalFrom(activity: PlayActivity, level: Level, action: Action) {
         this.activityTypeCode = action.str
         // Level consts
-        this.taskCode = level.levelCode
+        this.taskCode = level.code
         // TODO: this.taskVersion
-        this.tasksetCode = level.game.gameCode
+        this.tasksetCode = level.game.code
         // TODO: this.tasksetVersion
 
         this.originalExpression = level.startExpressionStr

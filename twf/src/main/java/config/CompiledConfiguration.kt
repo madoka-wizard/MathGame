@@ -27,22 +27,21 @@ class CompiledConfiguration(
     val noTransformationDefinedFunctionNameNumberOfArgsSet = mutableSetOf<String>()
     var configurationErrors = mutableListOf<ConfigurationError>()
 
-    val factComporator: FactComporator
+    val factComporator: FactComporator = FactComporator()
 
-    fun parseStringExpression(expression: String, nameForRuleDesignationsPossible: Boolean = false): ExpressionNode? {
+    private fun parseStringExpression(expression: String, nameForRuleDesignationsPossible: Boolean = false): ExpressionNode? {
         val expressionTreeParser = ExpressionTreeParser(expression, nameForRuleDesignationsPossible, functionConfiguration, compiledImmediateVariableReplacements)
         val error = expressionTreeParser.parse()
-        if (error != null) {
+        return if (error != null) {
             configurationErrors.add(ConfigurationError(error.description, "TreeTransformationRule", expression, error.position))
-            return null
+            null
         } else {
-            return expressionTreeParser.root
+            expressionTreeParser.root
         }
     }
 
 
     init {
-        factComporator = FactComporator()
         factComporator.init(this)
 
         functionConfiguration.notChangesOnVariablesInComparisonFunction

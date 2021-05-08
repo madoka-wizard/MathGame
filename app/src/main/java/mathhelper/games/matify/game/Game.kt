@@ -5,27 +5,29 @@ import android.util.Log
 import mathhelper.games.matify.level.Level
 import org.json.JSONObject
 
-enum class GameField(val str: String) {
-    GAMESPACE("gameSpace"),
-    GAME_CODE("gameCode"),
-    NAME("name"),
-    NAME_RU("ru"),
-    NAME_EN("en"),
-    VERSION("version"),
-    LEVELS("levels"),
-    RULE_PACKS("rulePacks")
+enum class TaskSetField(val str: String) {
+    NAMESPACE_CODE("namespaceCode"),
+    CODE("code"),
+    NAME_EN("nameEn"),
+    NAME_RU("nameRu"),
+    SUBJECT_TYPES("subjectTypes"),
+    TASKS("tasks"),
+    RECOMMENDED_BY_COMMUNITY("recommendedByCommunity"),
+    OTHER_DATA("otherData"),
+    DESCRIPTION_SHORT_EN("descriptionShortEn"),
+    DESCRIPTION_SHORT_RU("descriptionShortRu"),
+    DESCRIPTION_EN("descriptionEn"),
+    DESCRIPTION_RU("descriptionRu")
 }
 
-class Game(var fileName: String) {
-    lateinit var levels: ArrayList<Level>
-    lateinit var levelsJsons: ArrayList<JSONObject>
-    lateinit var rulePacks: HashMap<String, RulePackage>
-    lateinit var rulePacksJsons: HashMap<String, JSONObject>
-    lateinit var gameSpace: String
-    lateinit var gameCode: String
-    lateinit var name: String
-    lateinit var nameRu: String
-    lateinit var nameEn: String
+class Game(var fileName: String, val allRulePacks: HashMap<String, RulePack>) {
+    lateinit var tasks: ArrayList<Level>
+    lateinit var tasksJsons: ArrayList<JSONObject>
+    lateinit var subjectTypes: ArrayList<String>
+    lateinit var namespaceCode: String
+    lateinit var code: String
+    private var nameRu: String? = null
+    private var nameEn: String? = null
     var version: Long = 0
     var loaded = false
 
@@ -38,13 +40,11 @@ class Game(var fileName: String) {
     companion object {
         private val TAG = "Game"
 
-        fun create(fileName: String, context: Context): Game? {
+        fun create(fileName: String, allRulePacks: HashMap<String, RulePack>, context: Context): Game? {
             Log.d(TAG, "create")
-            var res: Game? = Game(fileName)
-            if (res!!.preload(context)) {
-                res.loadResult(context)
-            } else {
-                res = null
+            val res = Game(fileName, allRulePacks)
+            if (!res.preload(context)) {
+                return null
             }
             return res
         }
@@ -54,7 +54,7 @@ class Game(var fileName: String) {
         Log.d(TAG, "preload")
         return when {
             context.assets != null -> {
-                val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
+                val json = context.assets.open("games/$fileName").bufferedReader().use { it.readText() }
                 val gameJson = JSONObject(json)
                 preparse(gameJson)
             }
@@ -68,58 +68,46 @@ class Game(var fileName: String) {
     }
 
     private fun preparse(gameJson: JSONObject): Boolean {
-        if (!gameJson.has(GameField.GAMESPACE.str) || !gameJson.has(GameField.GAME_CODE.str) ||
-            !gameJson.has(GameField.NAME.str) || !gameJson.has(GameField.VERSION.str) ||
-            !gameJson.has(GameField.LEVELS.str)
+        val nameEnIsPresent = gameJson.has(TaskSetField.NAME_EN.str)
+        val nameRuIsPresent = gameJson.has(TaskSetField.NAME_RU.str)
+        if (!gameJson.has(TaskSetField.CODE.str) ||
+            !gameJson.has(TaskSetField.NAMESPACE_CODE.str) ||
+            !gameJson.has(TaskSetField.SUBJECT_TYPES.str) ||
+            !gameJson.has(TaskSetField.TASKS.str) ||
+            (!nameEnIsPresent && !nameRuIsPresent)
         ) {
             return false
         }
-        gameSpace = gameJson.getString(GameField.GAMESPACE.str)
-        gameCode = gameJson.getString(GameField.GAME_CODE.str)
-        name = gameJson.getString(GameField.NAME.str)
-        nameRu = gameJson.optString(GameField.NAME_RU.str, name)
-        nameEn = gameJson.optString(GameField.NAME_EN.str, name)
-        version = gameJson.getLong(GameField.VERSION.str)
-        rulePacks = HashMap()
-        rulePacksJsons = HashMap()
-        val packsJson = gameJson.getJSONArray(GameField.RULE_PACKS.str)
-        for (i in 0 until packsJson.length()) {
-            val packInfo = packsJson.getJSONObject(i)
-            val name = packInfo.getString(PackageField.NAME.str)
-            if (!rulePacksJsons.containsKey(name)) {
-                rulePacksJsons[name] = packInfo
-            }
+
+        namespaceCode = gameJson.getString(TaskSetField.NAMESPACE_CODE.str)
+        code = gameJson.getString(TaskSetField.CODE.str)
+        nameRu = if (nameRuIsPresent) gameJson.getString(TaskSetField.NAME_RU.str) else null
+        nameEn = if (nameEnIsPresent) gameJson.getString(TaskSetField.NAME_EN.str) else null
+        tasks = ArrayList()
+
+        tasksJsons = ArrayList()
+        val tasksJson = gameJson.getJSONArray(TaskSetField.TASKS.str)
+        for (i in 0 until tasksJson.length()) {
+            tasksJsons.add(tasksJson.getJSONObject(i))
         }
-        levels = ArrayList()
-        levelsJsons = ArrayList()
-        val levelsJson = gameJson.getJSONArray(GameField.LEVELS.str)
-        for (i in 0 until levelsJson.length()) {
-            levelsJsons.add(levelsJson.getJSONObject(i))
+
+        subjectTypes = ArrayList()
+        val subjectTypesJson = gameJson.getJSONArray(TaskSetField.SUBJECT_TYPES.str)
+        for (i in 0 until subjectTypesJson.length()) {
+            subjectTypes.add(subjectTypesJson.getString(i))
         }
+
         return true
     }
 
     private fun parse(context: Context): Boolean {
-        for (key in rulePacksJsons.keys) {
-            if (!rulePacks.containsKey(key)) {
-                val pack = RulePackage.parse(key, rulePacksJsons, rulePacks)
-                if (pack != null) {
-                    rulePacks[key] = pack
-                }
-            }
-        }
-        for (json in levelsJsons) {
-            val level = Level.parse(this, json, context)
-            if (level != null) {
-                levels.add(level)
+        for (json in tasksJsons) {
+            val task = Level.parse(this, json, context)
+            if (task != null) {
+                tasks.add(task)
             }
         }
         loaded = true
         return true
-    }
-
-    private fun save(context: Context) {}
-    private fun loadResult(context: Context) {
-        // TODO: read from storage levels passed percentage
     }
 }

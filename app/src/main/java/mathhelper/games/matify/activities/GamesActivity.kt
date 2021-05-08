@@ -93,7 +93,7 @@ class GamesActivity : AppCompatActivity() {
         GlobalScene.shared.games.forEachIndexed { i, game ->
             val gameView = AndroidUtil.createSquareButtonView(this)
 
-            var text = game.getNameByLanguage(resources.configuration.locales[0].language)
+            var text = game.getNameByLanguage(resources.configuration.locales[0].language)!!
             if (text.length > 12) {
                 text = text.take(12) + ".."
             }

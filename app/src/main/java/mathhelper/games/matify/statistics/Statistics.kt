@@ -11,7 +11,8 @@ import mathhelper.games.matify.BuildConfig
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.game.PackageField
+import mathhelper.games.matify.game.RuleField
+import mathhelper.games.matify.game.RulePackField
 import mathhelper.games.matify.level.Award
 import java.sql.Timestamp
 
@@ -40,8 +41,8 @@ class Statistics {
                 null
             } else {
                 mutableMapOf(
-                    PackageField.RULE_LEFT.str to expressionToStructureString(currRule.left),
-                    PackageField.RULE_RIGHT.str to expressionToStructureString(currRule.right)
+                    RuleField.RULE_LEFT.str to expressionToStructureString(currRule.left),
+                    RuleField.RULE_RIGHT.str to expressionToStructureString(currRule.right)
                 )
             }
             val activityLog = ActivityLog(

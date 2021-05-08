@@ -29,7 +29,7 @@ class LevelScene {
                         val loaded = GlobalScene.shared.currentGame?.load(value) ?: false
                         value.runOnUiThread {
                             if (loaded) {
-                                levels = GlobalScene.shared.currentGame!!.levels
+                                levels = GlobalScene.shared.currentGame!!.tasks
                                 value.onLevelsLoaded()
                             } else {
                                 value.loading = false
@@ -86,8 +86,8 @@ class LevelScene {
     }
 
     fun back() {
-        GlobalScene.shared.currentGame?.rulePacks?.clear()
-        GlobalScene.shared.currentGame?.levels?.clear()
+        GlobalScene.shared.currentGame?.allRulePacks?.clear()
+        GlobalScene.shared.currentGame?.tasks?.clear()
         GlobalScene.shared.currentGame?.loaded = false
         levelsActivity?.finish()
     }

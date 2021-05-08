@@ -16,6 +16,8 @@ import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.game.Game
+import mathhelper.games.matify.game.RulePack
+import mathhelper.games.matify.game.RulePackField
 import mathhelper.games.matify.level.UndoPolicy
 import mathhelper.games.matify.statistics.Pages
 import mathhelper.games.matify.statistics.Request
@@ -23,6 +25,7 @@ import mathhelper.games.matify.statistics.RequestData
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 enum class AuthStatus(val str: String) {
     GUEST("guest"),
@@ -35,6 +38,48 @@ enum class AuthStatus(val str: String) {
     }
 }
 
+data class RulePackDependencyNode(
+    val code: String,
+    var visited: Boolean,
+    val dependencies: ArrayList<RulePackDependencyNode>,
+    val json: JSONObject
+) {
+    companion object {
+        fun create(rulePackJson: JSONObject): RulePackDependencyNode? {
+            if (!rulePackJson.has(RulePackField.CODE.str)) {
+                return null
+            }
+            return RulePackDependencyNode(
+                code = rulePackJson.getString(RulePackField.CODE.str),
+                visited = false,
+                dependencies = ArrayList(),
+                json = rulePackJson
+            )
+        }
+    }
+}
+
+fun topologicalSort(rulePacks: ArrayList<JSONObject>): ArrayList<JSONObject> {
+    val graph: ArrayList<RulePackDependencyNode> = ArrayList()
+    rulePacks.forEach { rulePackJson -> RulePackDependencyNode.create(rulePackJson)?.let { graph.add(it) } }
+
+    val res: ArrayList<JSONObject> = ArrayList()
+    fun recursiveDfs(node: RulePackDependencyNode) {
+        if (node.visited) {
+            return
+        }
+        node.visited = true
+        for (dependency in node.dependencies) {
+            recursiveDfs(dependency)
+        }
+        res.add(node.json)
+    }
+    for (node in graph) {
+        recursiveDfs(node)
+    }
+    return res
+}
+
 class GlobalScene {
     companion object {
         private const val TAG = "GlobalScene"
@@ -45,6 +90,7 @@ class GlobalScene {
     var authStatus = AuthStatus.GUEST
     var googleSignInClient: GoogleSignInClient? = null
     var tutorialProcessing = false
+    var rulePacks: HashMap<String, RulePack> = HashMap()
     var games: ArrayList<Game> = ArrayList()
     var gamesActivity: GamesActivity? = null
         set(value) {
@@ -52,13 +98,32 @@ class GlobalScene {
             if (value != null) {
                 Request.startWorkCycle()
                 tutorialProcessing = false
-                val gameNames = value.assets.list("")!!
-                    .filter { """game.*.json""".toRegex(RegexOption.DOT_MATCHES_ALL).matches(it) }
+
+                rulePacks = HashMap()
+                value.assets.list("rule_packs")?.let { rulePacksNames ->
+                    val rulePacksJsons: ArrayList<JSONObject> = ArrayList()
+                    for (fileName in rulePacksNames) {
+                        value.assets?.let { assets ->
+                            val json = JSONObject(
+                                value.assets.open("rule_packs/$fileName").bufferedReader().use { it.readText() })
+                            rulePacksJsons.add(json)
+                        }
+                    }
+
+                    for (rulePackJson in topologicalSort(rulePacksJsons)) {
+                        RulePack.create(rulePackJson, rulePacks, value)?.let {
+                            rulePacks[it.code] = it
+                        }
+                    }
+                }
+
                 games = ArrayList()
-                for (name in gameNames) {
-                    val loadedGame = Game.create(name, value)
-                    if (loadedGame != null) {
-                        games.add(loadedGame)
+                value.assets.list("games")?.let {
+                    for (fileName in it) {
+                        val loadedGame = Game.create(fileName, rulePacks, value)
+                        if (loadedGame != null) {
+                            games.add(loadedGame)
+                        }
                     }
                 }
                 authStatus = Storage.shared.authStatus(value)
@@ -89,7 +154,7 @@ class GlobalScene {
         if (LevelScene.shared.levelsActivity != null) {
             LevelScene.shared.back()
         }
-        games.map { Storage.shared.resetGame(gamesActivity!!, it.gameCode) }
+        games.map { Storage.shared.resetGame(gamesActivity!!, it.code) }
     }
 
     fun logout() {

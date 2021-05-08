@@ -58,7 +58,7 @@ class TutorialScene {
                         value.runOnUiThread {
                             if (loaded) {
                                 value.onLoad()
-                                tutorialLevel = tutorialGame!!.levels[0]
+                                tutorialLevel = tutorialGame!!.tasks[0]
                                 nextStep()
                             }
                         }
@@ -115,7 +115,7 @@ class TutorialScene {
 
     fun start(context: Context) {
         GlobalScene.shared.tutorialProcessing = true
-        tutorialGame = Game.create("tutorial.json", context)
+//        tutorialGame = Game.create("old/tutorial.json", context) // TODO
         if (tutorialGame == null) {
             return
         }
