@@ -6,20 +6,20 @@ import config.CheckingKeyWords.Companion.transformationNotFound
 import config.CheckingKeyWords.Companion.transformationVerified
 import config.ComparisonType
 import config.CompiledConfiguration
-import expressiontree.ExpressionComporator
+import expressiontree.ExpressionComparator
 import expressiontree.ExpressionNode
 import logs.MessageType
 import logs.log
 
-class FactComporator(
+class FactComparator(
 ) {
     lateinit var compiledConfiguration: CompiledConfiguration
-    lateinit var expressionComporator: ExpressionComporator
+    lateinit var expressionComparator: ExpressionComparator
 
-    fun init(compiledConfiguration: CompiledConfiguration, expressionComporator: ExpressionComporator = ExpressionComporator()) {
+    fun init(compiledConfiguration: CompiledConfiguration, expressionComparator: ExpressionComparator = ExpressionComparator()) {
         this.compiledConfiguration = compiledConfiguration
-        this.expressionComporator = expressionComporator
-        this.expressionComporator.init(compiledConfiguration)
+        this.expressionComparator = expressionComparator
+        this.expressionComparator.init(compiledConfiguration)
     }
 
     fun compareAsIs(left: MainChainPart, right: MainChainPart,
@@ -35,7 +35,7 @@ class FactComporator(
         return when (left.type()) {
             ComparableTransformationPartType.EXPRESSION -> {
                 log.addMessage({ "Expression pribability comparison" }, level = currentLogLevel)
-                expressionComporator.probabilityTestComparison((left as Expression).data.clone(), (right as Expression).data.clone())
+                expressionComparator.probabilityTestComparison((left as Expression).data.clone(), (right as Expression).data.clone())
             }
 //            ComparableTransformationPartType.EXPRESSION_CHAIN -> {
 //                val leftChain = (left as ExpressionChain).chain
@@ -192,15 +192,15 @@ class FactComporator(
 //            return probabilityTestComprarison(l, r)
         } else if (compiledConfiguration.comparisonSettings.compareExpressionsWithProbabilityRulesWhenComparingFacts) {
             val functionIdentifierToVariableMap = mutableMapOf<ExpressionNode, String>()
-            l.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, expressionComporator.definedFunctionNameNumberOfArgsSet)
-            r.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, expressionComporator.definedFunctionNameNumberOfArgsSet)
+            l.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, expressionComparator.definedFunctionNameNumberOfArgsSet)
+            r.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, expressionComparator.definedFunctionNameNumberOfArgsSet)
             log.addMessageWithFactShort({ "Left fact after complicated function replacement: " }, l, level = currentLogLevel)
             log.addMessageWithFactShort({ "Right fact after complicated function replacement: " }, r, level = currentLogLevel)
             if (compareAsIs(l, r, additionalFactsSortedIdentifiers, true)) {
                 return true
             }
-            l.computeExpressionTrees(expressionComporator.baseOperationsDefinitions)
-            r.computeExpressionTrees(expressionComporator.baseOperationsDefinitions)
+            l.computeExpressionTrees(expressionComparator.baseOperationsDefinitions)
+            r.computeExpressionTrees(expressionComparator.baseOperationsDefinitions)
             log.addMessage({ "Expression numeric trees computed. " }, level = currentLogLevel)
             val res = compareAsIs(l, r, additionalFactsSortedIdentifiers, true)
             return res
@@ -310,8 +310,8 @@ class FactComporator(
                 return true
             }
             additionalFactInCurrentTransformationApplicationUsed.clear()
-            left.computeExpressionTrees(expressionComporator.baseOperationsDefinitions)
-            right.computeExpressionTrees(expressionComporator.baseOperationsDefinitions)
+            left.computeExpressionTrees(expressionComparator.baseOperationsDefinitions)
+            right.computeExpressionTrees(expressionComparator.baseOperationsDefinitions)
 
             if (compareWithTreeTransformationRules(left, right, additionalFacts, compiledConfiguration.compiledFactTreeTransformationRules,
                             compiledConfiguration.comparisonSettings.maxTransformationWeight, compiledConfiguration.comparisonSettings.maxBustCount,

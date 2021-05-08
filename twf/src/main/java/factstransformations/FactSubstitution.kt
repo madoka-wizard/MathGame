@@ -23,7 +23,7 @@ class FactSubstitution( //try to make substitution only on top level, not on Exp
         val basedOnTaskContext: Boolean = false,
         val direction: SubstitutionDirection = SubstitutionDirection.ALL_TO_ALL, //todo: support
         val name: String = "",
-        val factComporator: FactComporator
+        val factComparator: FactComparator
 ) {
     var identifier = ""
     fun computeIdentifier(recomputeIfComputed: Boolean): String {
@@ -79,7 +79,7 @@ class FactSubstitution( //try to make substitution only on top level, not on Exp
                             return
                         }
                     } else {
-                        if (!factComporator.compareAsIs(varValue as MainChainPart, factNode as MainChainPart, listOf())) {
+                        if (!factComparator.compareAsIs(varValue as MainChainPart, factNode as MainChainPart, listOf())) {
                             substitutionInstance.isApplicable = false
                             return
                         }
@@ -193,10 +193,10 @@ class FactSubstitution( //try to make substitution only on top level, not on Exp
                             val conditionFact = conditionFacts[j]
                             val isNumericAndCorrect = when (conditionFact.type()) {
                                 ComparableTransformationPartType.EXPRESSION_COMPARISON -> {
-                                    (conditionFact as ExpressionComparison).computeIfNumeric(substitutionInstance, factComporator.expressionComporator.baseOperationsDefinitions)
+                                    (conditionFact as ExpressionComparison).computeIfNumeric(substitutionInstance, factComparator.expressionComparator.baseOperationsDefinitions)
                                 }
                                 ComparableTransformationPartType.MAIN_LINE_AND_NODE, ComparableTransformationPartType.MAIN_LINE_OR_NODE -> {
-                                    (conditionFact as MainLineNode).computeIfNumeric(substitutionInstance, factComporator.expressionComporator.baseOperationsDefinitions, true)
+                                    (conditionFact as MainLineNode).computeIfNumeric(substitutionInstance, factComparator.expressionComparator.baseOperationsDefinitions, true)
                                 }
                                 else -> false
                             }
@@ -404,4 +404,4 @@ class FactSubstitution( //try to make substitution only on top level, not on Exp
     }
 }
 
-fun emptyFactSubstitution() = FactSubstitution(emptyExpression(), emptyExpression(), factComporator = FactComporator(), name = "")
+fun emptyFactSubstitution() = FactSubstitution(emptyExpression(), emptyExpression(), factComparator = FactComparator(), name = "")

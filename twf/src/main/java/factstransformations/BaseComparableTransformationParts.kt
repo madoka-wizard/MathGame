@@ -21,7 +21,7 @@ interface ComparableTransformationsPart : TransformationsPart {
     fun cloneWithNormalization(nameArgsMap: MutableMap<String, String>, sorted: Boolean): ComparableTransformationsPart
     fun variableReplacement(replacements: Map<String, String>)
 
-    fun check(factComporator: FactComporator, onExpressionLevel: Boolean,
+    fun check(factComparator: FactComparator, onExpressionLevel: Boolean,
               factsTransformations: List<FactSubstitution>, //not map with key <name> because it can be substitutions without names
               expressionTransformations: List<ExpressionSubstitution>, //not map with key <name> because it can be substitutions without names
               additionalFacts: List<MainChainPart>): ComparisonResult
@@ -49,9 +49,9 @@ interface MainChainPart : ComparableTransformationsPart {
 
     fun getLastExpression (): Expression?
     fun isSolutionForVariables (targetVariables: MutableMap<String, Boolean>, left: Boolean = false, allowedVariables: Set<String>): GeneralError?
-    fun isFactorizationForVariables(minNumberOfMultipliers: Int, targetVariables: Set<String>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError?
-    fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError?
-    fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError?
+    fun isFactorizationForVariables(minNumberOfMultipliers: Int, targetVariables: Set<String>, targetExpression: ExpressionNode, factComparator: FactComparator): GeneralError?
+    fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComparator: FactComparator): GeneralError?
+    fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComparator: FactComparator): GeneralError?
 }
 
 interface MainLineNode : MainChainPart {
@@ -85,7 +85,7 @@ class Expression(
 ) : MainChainPart {
     override fun getLastExpression() = this
 
-    override fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError?{
+    override fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComparator: FactComparator): GeneralError?{
         for (function in forbidden) {
             if (data.containsFunction(function.first, function.second)){
                 return GeneralError("Answer contains forbidden function or operation")
@@ -97,8 +97,8 @@ class Expression(
     override fun isFactorizationForVariables(minNumberOfMultipliers: Int,
                                              targetVariables: Set<String>,
                                              targetExpression: ExpressionNode,
-                                             factComporator: FactComporator): GeneralError?{
-        val comparisonResult = factComporator.expressionComporator.compareWithoutSubstitutions(data, targetExpression,
+                                             factComparator: FactComparator): GeneralError?{
+        val comparisonResult = factComparator.expressionComparator.compareWithoutSubstitutions(data, targetExpression,
                 definedFunctionNameNumberOfArgs = FunctionConfiguration().notChangesOnVariablesInComparisonFunction
                         .map { it.getIdentifier() }.toSet())
         if (!comparisonResult){
@@ -128,8 +128,8 @@ class Expression(
         return null
     }
 
-    override fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? {
-        val comparisonResult = factComporator.expressionComporator.compareWithoutSubstitutions(data, targetExpression,
+    override fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComparator: FactComparator): GeneralError? {
+        val comparisonResult = factComparator.expressionComparator.compareWithoutSubstitutions(data, targetExpression,
                 definedFunctionNameNumberOfArgs = FunctionConfiguration().notChangesOnVariablesInComparisonFunction
                         .map { it.getIdentifier() }.toSet())
         if (!comparisonResult){
@@ -204,7 +204,7 @@ class Expression(
     }
 
     override fun copyNode() = Expression(startPosition, endPosition, ExpressionNode(NodeType.EMPTY, ""), parent = parent)
-    override fun check(factComporator: FactComporator, onExpressionLevel: Boolean,
+    override fun check(factComparator: FactComparator, onExpressionLevel: Boolean,
                        factsTransformations: List<FactSubstitution>,
                        expressionTransformations: List<ExpressionSubstitution>,
                        additionalFacts: List<MainChainPart>): ComparisonResult {
@@ -275,7 +275,7 @@ class ExpressionChain(
     override fun computeOutIdentifier(recomputeIfComputed: Boolean) = computeIdentifier(recomputeIfComputed)
     override fun computeSortedOutIdentifier(recomputeIfComputed: Boolean) = computeIdentifier(recomputeIfComputed)
 
-    override fun check(factComporator: FactComporator, onExpressionLevel: Boolean,
+    override fun check(factComparator: FactComparator, onExpressionLevel: Boolean,
                        factsTransformations: List<FactSubstitution>,
                        expressionTransformations: List<ExpressionSubstitution>,
                        additionalFacts: List<MainChainPart>): ComparisonResult {
@@ -292,7 +292,7 @@ class ExpressionChain(
                 val transformation = if (chain[currentRightIndex].type() == ComparableTransformationPartType.RULE) {
                     val rule = chain[currentRightIndex] as Rule
                     log.addMessageWithFactDetail({ "Check ${CheckingKeyWords.rule}" }, rule.root, MessageType.USER, level = currentLogLevel)
-                    val checkingResult = rule.check(factComporator, false, factsTransformations, expressionTransformations, additionalFacts)
+                    val checkingResult = rule.check(factComparator, false, factsTransformations, expressionTransformations, additionalFacts)
                     if (checkingResult.isCorrect && rule.expressionSubstitution != null) {
                         log.addMessageWithExpressionSubstitutionShort({ "Expression transformation recognized:" }, rule.expressionSubstitution!!, MessageType.USER,
                                 level = currentLogLevel)
@@ -306,10 +306,10 @@ class ExpressionChain(
                         } else {
                             log.addMessage({ "${CheckingKeyWords.rule} ${CheckingKeyWords.isNotExpressionRule} -> ${CheckingKeyWords.verificationFailed}" }, MessageType.USER, level = currentLogLevel)
                             log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
-                                    factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factNotHelpFactColor,
+                                    factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factNotHelpFactColor,
                                     { "Coloring task on positions: '" }, { "' - '" }, { "', factNotHelpFactColor = '" }, { "" }, level = currentLogLevel)
                             coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
-                                    factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factNotHelpFactColor))
+                                    factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factNotHelpFactColor))
                             return ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex + 1],
                                     "${CheckingKeyWords.rule} ${CheckingKeyWords.isNotExpressionRule}")
                         }
@@ -321,10 +321,10 @@ class ExpressionChain(
                     if (rules.isEmpty()) {
                         log.add(ruleName, { "ERROR: ${CheckingKeyWords.ruleReference} '" }, { "' not found" }, messageType = MessageType.USER, level = currentLogLevel)
                         log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
-                                factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor,
+                                factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor,
                                 { "Coloring task on positions: '" }, { "' - '" }, { "', wrongFactColor = '" }, { "" }, level = currentLogLevel)
                         coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
-                                factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor))
+                                factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor))
                         return ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex + 1],
                                 "Rule with name '$ruleName' not found. Exists only rules with names: ${expressionTransformations.map { it.code }.filter { it.isNotBlank() }.joinToString { "'$it'" }}")
                     }
@@ -336,26 +336,26 @@ class ExpressionChain(
                 log.addMessageWithExpression({ "Left expression: " }, (chain[currentLeftIndex] as Expression).data, MessageType.USER, level = currentLogLevel)
                 log.addMessageWithExpression({ "Right expression: " }, (chain[currentRightIndex] as Expression).data, MessageType.USER, level = currentLogLevel)
 
-                val result = factComporator.expressionComporator.compareWithTreeTransformationRules(
+                val result = factComparator.expressionComparator.compareWithTreeTransformationRules(
                         (chain[currentLeftIndex] as Expression).data, (chain[currentRightIndex] as Expression).data,
                         listOf(transformation), expressionChainComparisonType = comparisonType,
-                        maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
+                        maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
                 if (result) {
                     log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
                             { "Coloring task on positions: '" }, { "' - '" }, { "', color = '" }, { "" }, level = currentLogLevel)
                     coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
                     log.add(transformation.basedOnTaskContext, { "Transformation verified, isInTaskContext: '" }, { "'" }, messageType = MessageType.USER, level = currentLogLevel)
                     if (transformation.basedOnTaskContext) {
                         additionalFactUsed = log.assignAndLog(true, currentLogLevel, { "additionalFactUsed" })//todo: check, may be should be something about task context
                     }
                 } else {
                     log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factNotHelpFactColor,
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factNotHelpFactColor,
                             { "Coloring task on positions: '" }, { "' - '" }, { "', factNotHelpFactColor = '" }, { "" }, level = currentLogLevel)
                     coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factNotHelpFactColor))
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factNotHelpFactColor))
                     log.addMessage({ "${CheckingKeyWords.verificationFailed}" }, MessageType.USER, level = currentLogLevel)
                     return ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex],
                             "Unclear transformation between '${(chain[currentLeftIndex] as Expression).data}' and '${(chain[currentRightIndex] as Expression).data}' even with rule")
@@ -365,52 +365,52 @@ class ExpressionChain(
                 log.addMessageWithExpression({ "Left expression: " }, (chain[currentLeftIndex] as Expression).data, MessageType.USER, level = currentLogLevel)
                 log.addMessageWithExpression({ "Right expression: " }, (chain[currentRightIndex] as Expression).data, MessageType.USER, level = currentLogLevel)
 
-                val result = factComporator.expressionComporator.compareWithTreeTransformationRules(
+                val result = factComparator.expressionComparator.compareWithTreeTransformationRules(
                         (chain[currentLeftIndex] as Expression).data, (chain[currentRightIndex] as Expression).data,
                         expressionTransformations.filter { !it.basedOnTaskContext } +
-                                factComporator.compiledConfiguration.compiledExpressionTreeTransformationRules.filter { !it.basedOnTaskContext },
+                                factComparator.compiledConfiguration.compiledExpressionTreeTransformationRules.filter { !it.basedOnTaskContext },
                         expressionChainComparisonType = comparisonType,
-                        maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
+                        maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
                 if (result) {
                     log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
                             { "Coloring task on positions: '" }, { "' - '" }, { "', correctFactColor = '" }, { "" }, level = currentLogLevel)
                     coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
                     log.addMessage({ "${CheckingKeyWords.transformationVerified} and correct not only in task context" }, MessageType.USER, level = currentLogLevel)
                 } else {
                     log.addMessage({ "${CheckingKeyWords.verificationFailed} not only in task context. Try to check transformation only in task context" }, MessageType.USER, level = currentLogLevel)
-                    val resultInContext = factComporator.expressionComporator.compareWithTreeTransformationRules(
+                    val resultInContext = factComparator.expressionComparator.compareWithTreeTransformationRules(
                             (chain[currentLeftIndex] as Expression).data, (chain[currentRightIndex] as Expression).data,
-                            expressionTransformations/*.filter { it.basedOnTaskContext }*/ + factComporator.compiledConfiguration.compiledExpressionTreeTransformationRules,
+                            expressionTransformations/*.filter { it.basedOnTaskContext }*/ + factComparator.compiledConfiguration.compiledExpressionTreeTransformationRules,
                             expressionChainComparisonType = comparisonType,
-                            maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
+                            maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
                     if (resultInContext) {
                         log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                                factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
+                                factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
                                 { "Coloring task on positions: '" }, { "' - '" }, { "', correctFactColor = '" }, { "" }, level = currentLogLevel)
                         coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                                factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
+                                factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
                         log.addMessage({ "${CheckingKeyWords.transformationVerified} and correct only in task context" }, MessageType.USER, level = currentLogLevel)
                         additionalFactUsed = log.assignAndLog(true, currentLogLevel, { "additionalFactUsed" }) //todo: check, may be should be something about task context
                     } else {
                         log.addMessage({ "Transformation not verified, try to check transformation with rules and additional facts" })
                         val fullFact = ExpressionComparison(leftExpression = chain[currentLeftIndex] as Expression, rightExpression = chain[currentRightIndex] as Expression, comparisonType = comparisonType)
-                        val result = factComporator.compareAsIs(
+                        val result = factComparator.compareAsIs(
                                 MainLineAndNode(), MainLineAndNode(inFacts = mutableListOf(fullFact)), additionalFacts.map { it.computeOutIdentifier(true) }.sorted())
                         if (result) {
                             log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                                    factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor,
+                                    factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor,
                                     { "Coloring task on positions: '" }, { "' - '" }, { "', color = '" }, { "" }, level = currentLogLevel)
                             coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                                    factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor))
+                                    factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor))
                             additionalFactUsed = log.assignAndLog(true, currentLogLevel, { "additionalFactUsed" })
                         } else {
                             log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                                    factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor,
+                                    factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor,
                                     { "Coloring task on positions: '" }, { "' - '" }, { "', wrongFactColor = '" }, { "" }, level = currentLogLevel)
                             coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                                    factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor))
+                                    factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor))
                             log.addMessage({ "${CheckingKeyWords.verificationFailed}" }, MessageType.USER, level = currentLogLevel)
                             return ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex],
                                     if (comparisonType == ComparisonType.EQUAL) {
@@ -442,25 +442,25 @@ class ExpressionComparison(
 ) : MainChainPart {
     override fun getLastExpression() = rightExpression.getLastExpression()
 
-    override fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError?{
-        if (targetExpression.children.isNotEmpty() && !factComporator.expressionComporator.compareAsIs(leftExpression.data, targetExpression)){
+    override fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComparator: FactComparator): GeneralError?{
+        if (targetExpression.children.isNotEmpty() && !factComparator.expressionComparator.compareAsIs(leftExpression.data, targetExpression)){
             return GeneralError("Wrong start expression")
         }
-        return rightExpression.isSolutionWithoutFunctions(forbidden, targetExpression, factComporator)
+        return rightExpression.isSolutionWithoutFunctions(forbidden, targetExpression, factComparator)
     }
 
-    override fun isFactorizationForVariables(minNumberOfMultipliers: Int, targetVariables: Set<String>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? {
-        if (!factComporator.expressionComporator.compareAsIs(leftExpression.data, targetExpression)){
+    override fun isFactorizationForVariables(minNumberOfMultipliers: Int, targetVariables: Set<String>, targetExpression: ExpressionNode, factComparator: FactComparator): GeneralError? {
+        if (!factComparator.expressionComparator.compareAsIs(leftExpression.data, targetExpression)){
             return GeneralError("Wrong start expression")
         }
-        return rightExpression.isFactorizationForVariables(minNumberOfMultipliers, targetVariables, targetExpression, factComporator)
+        return rightExpression.isFactorizationForVariables(minNumberOfMultipliers, targetVariables, targetExpression, factComparator)
     }
 
-    override fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? {
-        if (!factComporator.expressionComporator.compareAsIs(leftExpression.data, targetExpression)){
+    override fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComparator: FactComparator): GeneralError? {
+        if (!factComparator.expressionComparator.compareAsIs(leftExpression.data, targetExpression)){
             return GeneralError("Wrong start expression")
         }
-        return rightExpression.hasNoFractions(maxNumberOfDivisions, targetExpression, factComporator)
+        return rightExpression.hasNoFractions(maxNumberOfDivisions, targetExpression, factComparator)
     }
 
     override fun isSolutionForVariables(targetVariables: MutableMap<String, Boolean>, left: Boolean, allowedVariables: Set<String>): GeneralError? {
@@ -476,7 +476,7 @@ class ExpressionComparison(
         rightExpression.variableReplacement(replacements)
     }
 
-    override fun check(factComporator: FactComporator, onExpressionLevel: Boolean,
+    override fun check(factComparator: FactComparator, onExpressionLevel: Boolean,
                        factsTransformations: List<FactSubstitution>,
                        expressionTransformations: List<ExpressionSubstitution>,
                        additionalFacts: List<MainChainPart>): ComparisonResult {
@@ -487,50 +487,50 @@ class ExpressionComparison(
         log.addMessageWithExpression({ "Right expression: " }, rightExpression.data, MessageType.USER, level = currentLogLevel)
         val coloringTasks = mutableListOf<ColoringTask>()
         var additionalFactUsed = false
-        val result = factComporator.expressionComporator.compareWithTreeTransformationRules(
+        val result = factComparator.expressionComparator.compareWithTreeTransformationRules(
                 leftExpression.data, rightExpression.data,
-                expressionTransformations.filter { !it.basedOnTaskContext } + factComporator.compiledConfiguration.compiledExpressionTreeTransformationRules,
+                expressionTransformations.filter { !it.basedOnTaskContext } + factComparator.compiledConfiguration.compiledExpressionTreeTransformationRules,
                 expressionChainComparisonType = comparisonType,
-                maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
+                maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
         if (result) {
             log.add(leftExpression.endPosition, rightExpression.startPosition,
-                    factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
+                    factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
                     { "Coloring task on positions: '" }, { "' - '" }, { "', correctFactColor = '" }, { "" }, level = currentLogLevel)
             coloringTasks.add(ColoringTask(leftExpression.endPosition, rightExpression.startPosition,
-                    factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
+                    factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
             log.addMessage({ "${CheckingKeyWords.transformationVerified} and correct not only in task context" }, MessageType.USER, level = currentLogLevel)
         } else {
             log.addMessage({ "${CheckingKeyWords.verificationFailed} not only in task context. Try to check transformation only in task context" }, MessageType.USER, level = currentLogLevel)
-            val resultInContext = factComporator.expressionComporator.compareWithTreeTransformationRules(
+            val resultInContext = factComparator.expressionComparator.compareWithTreeTransformationRules(
                     leftExpression.data, rightExpression.data,
                     expressionTransformations.filter { it.basedOnTaskContext },
                     expressionChainComparisonType = comparisonType,
-                    maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
+                    maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
             if (resultInContext) {
                 log.add(leftExpression.endPosition, rightExpression.startPosition,
-                        factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
+                        factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
                         { "Coloring task on positions: '" }, { "' - '" }, { "', correctFactColor = '" }, { "" }, level = currentLogLevel)
                 coloringTasks.add(ColoringTask(leftExpression.endPosition, rightExpression.startPosition,
-                        factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
+                        factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
                 log.addMessage({ "${CheckingKeyWords.transformationVerified} and correct only in task context" }, MessageType.USER, level = currentLogLevel)
                 additionalFactUsed = log.assignAndLog(true, currentLogLevel, { "additionalFactUsed" }) //todo: check, may be should be something about task context
             } else {
                 log.addMessage({ "Transformation not verified, try to check transformation with rules and additional facts" })
-                val result = factComporator.compareAsIs(
+                val result = factComparator.compareAsIs(
                         MainLineAndNode(), MainLineAndNode(inFacts = mutableListOf(this)), additionalFacts.map { it.computeOutIdentifier(true) }.sorted())
                 if (result) {
                     log.add(leftExpression.endPosition, rightExpression.startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor,
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor,
                             { "Coloring task on positions: '" }, { "' - '" }, { "', color = '" }, { "" }, level = currentLogLevel)
                     coloringTasks.add(ColoringTask(leftExpression.endPosition, rightExpression.startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor))
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor))
                     additionalFactUsed = log.assignAndLog(true, currentLogLevel, { "additionalFactUsed" })
                 } else {
                     log.add(leftExpression.endPosition, rightExpression.startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor,
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor,
                             { "Coloring task on positions: '" }, { "' - '" }, { "', wrongFactColor = '" }, { "" }, level = currentLogLevel)
                     coloringTasks.add(ColoringTask(leftExpression.endPosition, rightExpression.startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor))
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor))
                     log.addMessage({ "${CheckingKeyWords.verificationFailed}" }, MessageType.USER, level = currentLogLevel)
                     return ComparisonResult(false, coloringTasks, leftExpression, rightExpression,
                             if (comparisonType == ComparisonType.EQUAL) {

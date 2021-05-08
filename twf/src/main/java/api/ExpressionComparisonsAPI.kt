@@ -15,7 +15,7 @@ fun compareWithoutSubstitutions(
         notChangesOnVariablesFunction: Set<String> = setOf("+", "-", "*", "/", "^"),
         functionConfiguration: FunctionConfiguration = FunctionConfiguration(scope, notChangesOnVariablesFunction),
         compiledConfiguration: CompiledConfiguration = CompiledConfiguration(functionConfiguration = functionConfiguration)
-) = compiledConfiguration.factComporator.expressionComporator.compareWithoutSubstitutions(left, right)
+) = compiledConfiguration.factComparator.expressionComparator.compareWithoutSubstitutions(left, right)
 
 
 //compare expression by pattern

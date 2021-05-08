@@ -50,10 +50,10 @@ fun checkFactsInTex(
     } else {
         log.addMessage({ "input transformations are parsed successfully" }, MessageType.USER, level = 0)
         log.addMessageWithFactDetail({ "parsed input transformations: " }, transformationChainParser.root, MessageType.USER)
-        val factComporator = compiledConfiguration.factComporator
+        val factComparator = compiledConfiguration.factComparator
         val solutionRoot = combineSolutionRoot(targetFactIdentifier, transformationChainParser, compiledConfiguration, startExpressionIdentifier, endExpressionIdentifier, comparisonSign)
         log.addMessage({ "input transformations checking started" }, MessageType.USER, level = 0)
-        val checkingResult = solutionRoot.check(factComporator, false,
+        val checkingResult = solutionRoot.check(factComparator, false,
                 listOf(),
                 listOf(),
                 log.factConstructorViewer.additionalFactsFromItsIdentifiers(additionalFactsIdentifiers))

@@ -1,7 +1,7 @@
 package config
 
 import expressiontree.*
-import factstransformations.FactComporator
+import factstransformations.FactComparator
 import factstransformations.FactSubstitution
 import factstransformations.parseFromFactIdentifier
 import platformdependent.toShortString
@@ -27,7 +27,7 @@ class CompiledConfiguration(
     val noTransformationDefinedFunctionNameNumberOfArgsSet = mutableSetOf<String>()
     var configurationErrors = mutableListOf<ConfigurationError>()
 
-    val factComporator: FactComporator = FactComporator()
+    val factComparator: FactComparator = FactComparator()
 
     private fun parseStringExpression(expression: String, nameForRuleDesignationsPossible: Boolean = false): ExpressionNode? {
         val expressionTreeParser = ExpressionTreeParser(expression, nameForRuleDesignationsPossible, functionConfiguration, compiledImmediateVariableReplacements)
@@ -42,7 +42,7 @@ class CompiledConfiguration(
 
 
     init {
-        factComporator.init(this)
+        factComparator.init(this)
 
         functionConfiguration.notChangesOnVariablesInComparisonFunction
                 .forEach { definedFunctionNameNumberOfArgsSet.add(it.getIdentifier()) }
@@ -111,11 +111,11 @@ class CompiledConfiguration(
                 leftTree.variableReplacement(compiledImmediateVariableReplacements)
                 rightTree.variableReplacement(compiledImmediateVariableReplacements)
                 compiledFactTreeTransformationRules.add(
-                        FactSubstitution(leftTree, rightTree, factTransformation.weight, direction = factTransformation.direction, factComporator = factComporator)
+                        FactSubstitution(leftTree, rightTree, factTransformation.weight, direction = factTransformation.direction, factComparator = factComparator)
                 )
                 if (!factTransformation.isOneDirection) {
                     compiledFactTreeTransformationRules.add(
-                            FactSubstitution(rightTree, leftTree, factTransformation.weight, direction = factTransformation.direction, factComporator = factComporator)
+                            FactSubstitution(rightTree, leftTree, factTransformation.weight, direction = factTransformation.direction, factComparator = factComparator)
                     )
                 }
             }

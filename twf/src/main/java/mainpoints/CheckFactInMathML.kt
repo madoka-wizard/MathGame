@@ -65,10 +65,10 @@ fun checkFactsInMathML(
     } else {
         log.addMessage({ "input transformations are parsed successfully" }, MessageType.USER, level = 0)
         log.addMessageWithFactDetail({ "parsed input transformations: " }, transformationChainParser.root, MessageType.USER)
-        val factComporator = compiledConfiguration.factComporator
+        val factComparator = compiledConfiguration.factComparator
         val solutionRoot = combineSolutionRoot(targetFactIdentifier, transformationChainParser, compiledConfiguration)
         log.addMessage({ "input transformations checking started" }, MessageType.USER, level = 0)
-        val checkingResult = solutionRoot.check(factComporator, false,
+        val checkingResult = solutionRoot.check(factComparator, false,
                 listOf(),
                 listOf(),
                 log.factConstructorViewer.additionalFactsFromItsIdentifiers(additionalFactsIdentifiers))
@@ -95,7 +95,7 @@ fun checkFactsInMathML(
             val targetVariables = targetVariablesNames.split(configSeparator)
                     .map { it.trim() }.toSet()
             val targetExpression = (log.factConstructorViewer.constructFactByIdentifier(targetFactIdentifier) as Expression).data
-            val error = solutionRoot.isFactorizationForVariables(minNumberOfMultipliers, targetVariables, targetExpression, factComporator)
+            val error = solutionRoot.isFactorizationForVariables(minNumberOfMultipliers, targetVariables, targetExpression, factComparator)
             if (error != null) {
                 log.addMessage({ error.description }, MessageType.USER, level = 0)
                 return addErrorStringToMathMLSolution(result, error.description, errorPrefix)
@@ -103,7 +103,7 @@ fun checkFactsInMathML(
         } else if (maxNumberOfDivisionsInAnswer.isNotBlank()) {
             val maxNumberOfDivisions = maxNumberOfDivisionsInAnswer.toInt()
             val targetExpression = (log.factConstructorViewer.constructFactByIdentifier(targetFactIdentifier) as Expression).data
-            val error = solutionRoot.hasNoFractions(maxNumberOfDivisions, targetExpression, factComporator)
+            val error = solutionRoot.hasNoFractions(maxNumberOfDivisions, targetExpression, factComparator)
             if (error != null) {
                 log.addMessage({ error.description }, MessageType.USER, level = 0)
                 return addErrorStringToMathMLSolution(result, error.description, errorPrefix)
@@ -131,7 +131,7 @@ fun checkFactsInMathML(
             if (forbiddenFunctions.isNotBlank()){
                 val forbidden = pairsStringIntFromString(forbiddenFunctions)
                 val targetExpression = (log.factConstructorViewer.constructFactByIdentifier(targetFactIdentifier) as Expression).data
-                val error = solutionRoot.isSolutionWithoutFunctions(forbidden, targetExpression, factComporator)
+                val error = solutionRoot.isSolutionWithoutFunctions(forbidden, targetExpression, factComparator)
                 if (error != null) {
                     log.addMessage({ error.description }, MessageType.USER, level = 0)
                     return addErrorStringToMathMLSolution(result, error.description, errorPrefix)

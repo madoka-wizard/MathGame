@@ -14,19 +14,20 @@ import standartlibextensions.splitBySubstringOnTopLevel
 import standartlibextensions.splitStringByBracketsOnTopLevel
 import visualization.ColoringTask
 
-
 class RulePointer(
-        override val startPosition: Int,
-        override val endPosition: Int,
-        override var parent: MainLineNode? = null,
-        val nameLink: String = "",
-        override var identifier: String = ""
+    override val startPosition: Int,
+    override val endPosition: Int,
+    override var parent: MainLineNode? = null,
+    val nameLink: String = "",
+    override var identifier: String = ""
 ) : MainChainPart {
 
-    override fun check(factComporator: FactComporator, onExpressionLevel: Boolean,
-                       factsTransformations: List<FactSubstitution>,
-                       expressionTransformations: List<ExpressionSubstitution>,
-                       additionalFacts: List<MainChainPart>): ComparisonResult {
+    override fun check(
+        factComparator: FactComparator, onExpressionLevel: Boolean,
+        factsTransformations: List<FactSubstitution>,
+        expressionTransformations: List<ExpressionSubstitution>,
+        additionalFacts: List<MainChainPart>
+    ): ComparisonResult {
         log.addMessage({ "ERROR: This RulePointer method must not been called. Undefined behaviour. " })
         return ComparisonResult(true, mutableListOf(), this, this)
     }
@@ -35,7 +36,8 @@ class RulePointer(
     override fun toString() = "[$nameLink:]"
     override fun copyNode() = RulePointer(startPosition, endPosition, parent, nameLink)
     override fun clone() = RulePointer(startPosition, endPosition, parent, nameLink)
-    override fun cloneWithNormalization(nameArgsMap: MutableMap<String, String>, sorted: Boolean) = RulePointer(startPosition, endPosition, parent, nameLink)
+    override fun cloneWithNormalization(nameArgsMap: MutableMap<String, String>, sorted: Boolean) =
+        RulePointer(startPosition, endPosition, parent, nameLink)
 
     override fun computeIdentifier(recomputeIfComputed: Boolean): String {
         identifier = "[$nameLink:]"
@@ -49,64 +51,120 @@ class RulePointer(
     override fun normalizeSubTree(currentDeep: Int, nameArgsMap: MutableMap<String, String>, sorted: Boolean) {}
     override fun applyAllExpressionSubstitutions(expressionSubstitutions: Collection<ExpressionSubstitution>) {}
     override fun computeExpressionTrees(baseOperationsDefinitions: BaseOperationsDefinitions) {}
-    override fun replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>, definedFunctionNameNumberOfArgsSet: MutableSet<String>) {}
-    override fun isSolutionForVariables(targetVariables: MutableMap<String, Boolean>, left: Boolean, allowedVariables: Set<String>): GeneralError? = null
-    override fun isFactorizationForVariables(minNumberOfMultipliers: Int, targetVariables: Set<String>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? = null
-    override fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? = null
-    override fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? = null
+    override fun replaceNotDefinedFunctionsOnVariables(
+        functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>,
+        definedFunctionNameNumberOfArgsSet: MutableSet<String>
+    ) {
+    }
+
+    override fun isSolutionForVariables(
+        targetVariables: MutableMap<String, Boolean>,
+        left: Boolean,
+        allowedVariables: Set<String>
+    ): GeneralError? = null
+
+    override fun isFactorizationForVariables(
+        minNumberOfMultipliers: Int,
+        targetVariables: Set<String>,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? = null
+
+    override fun hasNoFractions(
+        maxNumberOfDivisions: Int,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? = null
+
+    override fun isSolutionWithoutFunctions(
+        forbidden: List<Pair<String, Int>>,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? = null
+
     override fun getLastExpression() = null
 }
 
 class Rule(
-        override val startPosition: Int,
-        override val endPosition: Int,
-        override var parent: MainLineNode? = null,
-        val root: MainLineAndNode,
-        val name: String = "",
-        override var identifier: String = "",
-        var factSubstitution: FactSubstitution? = null,
-        var expressionSubstitution: ExpressionSubstitution? = null
+    override val startPosition: Int,
+    override val endPosition: Int,
+    override var parent: MainLineNode? = null,
+    val root: MainLineAndNode,
+    val name: String = "",
+    override var identifier: String = "",
+    var factSubstitution: FactSubstitution? = null,
+    var expressionSubstitution: ExpressionSubstitution? = null
 ) : MainChainPart {
-    override fun check(factComporator: FactComporator, onExpressionLevel: Boolean,
-                       factsTransformations: List<FactSubstitution>,
-                       expressionTransformations: List<ExpressionSubstitution>,
-                       additionalFacts: List<MainChainPart>): ComparisonResult {
-        log.addMessageWithFactDetail({ "Start checking rule ${if (name.isNotBlank()) " '$name'" else ""}: " }, this.root, MessageType.USER, levelChange = 1)
-        var currentLogLevel = log.currentLevel
+    override fun check(
+        factComparator: FactComparator, onExpressionLevel: Boolean,
+        factsTransformations: List<FactSubstitution>,
+        expressionTransformations: List<ExpressionSubstitution>,
+        additionalFacts: List<MainChainPart>
+    ): ComparisonResult {
+        log.addMessageWithFactDetail(
+            { "Start checking rule ${if (name.isNotBlank()) " '$name'" else ""}: " },
+            this.root,
+            MessageType.USER,
+            levelChange = 1
+        )
+        val currentLogLevel = log.currentLevel
         log.addMessage({ "Current log level: ${currentLogLevel}" }, level = currentLogLevel)
-        log.logCheckParams(onExpressionLevel = onExpressionLevel, factsTransformations = factsTransformations,
-                expressionTransformations = expressionTransformations, additionalFacts = additionalFacts)
-        val comparisonResult = root.check(factComporator, false,
-                factsTransformations, expressionTransformations, additionalFacts)
+        log.logCheckParams(
+            onExpressionLevel = onExpressionLevel, factsTransformations = factsTransformations,
+            expressionTransformations = expressionTransformations, additionalFacts = additionalFacts
+        )
+        val comparisonResult = root.check(
+            factComparator, false,
+            factsTransformations, expressionTransformations, additionalFacts
+        )
         if (comparisonResult.isCorrect) {
-            log.addMessage({ "${CheckingKeyWords.rule}${if (name.isNotBlank()) " '$name'" else ""} is correct" }, level = currentLogLevel)
+            log.addMessage(
+                { "${CheckingKeyWords.rule}${if (name.isNotBlank()) " '$name'" else ""} is correct" },
+                level = currentLogLevel
+            )
             if (root.expressionTransformationChains.isNotEmpty()) {
                 val left = root.expressionTransformationChains.first().chain.first() as Expression
                 val right = root.expressionTransformationChains.first().chain.last() as Expression
-                left.data.applyAllImmediateSubstitutions(factComporator.compiledConfiguration)
-                right.data.applyAllImmediateSubstitutions(factComporator.compiledConfiguration)
-                if (!factComporator.expressionComporator.compareAsIs(left.data, right.data)) {
+                left.data.applyAllImmediateSubstitutions(factComparator.compiledConfiguration)
+                right.data.applyAllImmediateSubstitutions(factComparator.compiledConfiguration)
+                if (!factComparator.expressionComparator.compareAsIs(left.data, right.data)) {
                     expressionSubstitution = ExpressionSubstitution(
-                            left.data,
-                            right.data,
-                            basedOnTaskContext = comparisonResult.additionalFactUsed,
-                            code = name,
-                            comparisonType = root.expressionTransformationChains.first().comparisonType)
-                    log.addMessageWithExpressionSubstitutionShort({ "Expression substitution deduced from rule: " }, expressionSubstitution!!, MessageType.USER, level = currentLogLevel)
+                        left.data,
+                        right.data,
+                        basedOnTaskContext = comparisonResult.additionalFactUsed,
+                        code = name,
+                        comparisonType = root.expressionTransformationChains.first().comparisonType
+                    )
+                    log.addMessageWithExpressionSubstitutionShort(
+                        { "Expression substitution deduced from rule: " },
+                        expressionSubstitution!!,
+                        MessageType.USER,
+                        level = currentLogLevel
+                    )
                 }
             } else if (root.factTransformationChains.isNotEmpty()) {
                 val left = root.factTransformationChains.first().chain.first()
                 val right = root.factTransformationChains.first().chain.last()
-                if (!factComporator.compareAsIs(left, right)) {
-                    factSubstitution = FactSubstitution(left, right,
-                            basedOnTaskContext = comparisonResult.additionalFactUsed,
-                            name = name,
-                            factComporator = factComporator)//todo: add direction (and ability for user to declare it)
-                    log.addMessageWithFactSubstitutionDetail({ "Fact substitution deduced from rule: " }, factSubstitution!!, MessageType.USER, level = currentLogLevel)
+                if (!factComparator.compareAsIs(left, right)) {
+                    factSubstitution = FactSubstitution(
+                        left, right,
+                        basedOnTaskContext = comparisonResult.additionalFactUsed,
+                        name = name,
+                        factComparator = factComparator
+                    )//todo: add direction (and ability for user to declare it)
+                    log.addMessageWithFactSubstitutionDetail(
+                        { "Fact substitution deduced from rule: " },
+                        factSubstitution!!,
+                        MessageType.USER,
+                        level = currentLogLevel
+                    )
                 }
             }
         } else {
-            log.addMessage({ "${CheckingKeyWords.rule}${if (name.isNotBlank()) " '$name'" else ""} $verificationFailed" }, level = currentLogLevel)
+            log.addMessage(
+                { "${CheckingKeyWords.rule}${if (name.isNotBlank()) " '$name'" else ""} $verificationFailed" },
+                level = currentLogLevel
+            )
         }
         return comparisonResult
     }
@@ -116,7 +174,9 @@ class Rule(
     override fun toString() = "[$name:$root]"
     override fun copyNode() = Rule(startPosition, endPosition, parent, root, name)
     override fun clone() = Rule(startPosition, endPosition, parent, root.clone(), name)
-    override fun cloneWithNormalization(nameArgsMap: MutableMap<String, String>, sorted: Boolean) = Rule(startPosition, endPosition, parent, root.cloneWithNormalization(nameArgsMap, sorted), name)
+    override fun cloneWithNormalization(nameArgsMap: MutableMap<String, String>, sorted: Boolean) =
+        Rule(startPosition, endPosition, parent, root.cloneWithNormalization(nameArgsMap, sorted), name)
+
     override fun variableReplacement(replacements: Map<String, String>) {
         root.variableReplacement(replacements)
     }
@@ -135,16 +195,42 @@ class Rule(
     override fun normalizeSubTree(currentDeep: Int, nameArgsMap: MutableMap<String, String>, sorted: Boolean) {}
     override fun applyAllExpressionSubstitutions(expressionSubstitutions: Collection<ExpressionSubstitution>) {}
     override fun computeExpressionTrees(baseOperationsDefinitions: BaseOperationsDefinitions) {}
-    override fun replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>, definedFunctionNameNumberOfArgsSet: MutableSet<String>) {}
-    override fun isSolutionForVariables(targetVariables: MutableMap<String, Boolean>, left: Boolean, allowedVariables: Set<String>): GeneralError? = null
-    override fun isFactorizationForVariables(minNumberOfMultipliers: Int, targetVariables: Set<String>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? = null
-    override fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? = null
-    override fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? = null
+    override fun replaceNotDefinedFunctionsOnVariables(
+        functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>,
+        definedFunctionNameNumberOfArgsSet: MutableSet<String>
+    ) {
+    }
+
+    override fun isSolutionForVariables(
+        targetVariables: MutableMap<String, Boolean>,
+        left: Boolean,
+        allowedVariables: Set<String>
+    ): GeneralError? = null
+
+    override fun isFactorizationForVariables(
+        minNumberOfMultipliers: Int,
+        targetVariables: Set<String>,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? = null
+
+    override fun hasNoFractions(
+        maxNumberOfDivisions: Int,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? = null
+
+    override fun isSolutionWithoutFunctions(
+        forbidden: List<Pair<String, Int>>,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? = null
+
     override fun getLastExpression() = null
 }
 
 class MainChain(
-        val chain: MutableList<MainChainPart> = mutableListOf()
+    val chain: MutableList<MainChainPart> = mutableListOf()
 ) {
     var identifier = ""
     override fun toString() = chain.joinToString(separator = ";") { "(${it.toString()})" }
@@ -155,16 +241,20 @@ class MainChain(
         return identifier
     }
 
-    fun check(factComporator: FactComporator, onExpressionLevel: Boolean,
-              factsTransformations: List<FactSubstitution>,
-              expressionTransformations: List<ExpressionSubstitution>,
-              additionalFacts: List<MainChainPart>): ComparisonResult {
+    fun check(
+        factComparator: FactComparator, onExpressionLevel: Boolean,
+        factsTransformations: List<FactSubstitution>,
+        expressionTransformations: List<ExpressionSubstitution>,
+        additionalFacts: List<MainChainPart>
+    ): ComparisonResult {
         log.addMessage({ "Start checking fact chain" }, MessageType.USER, levelChange = 1)
         log.add(chain.toString(), { "fact chain: " }, { "" })
         var currentLogLevel = log.currentLevel
         log.addMessage({ "Current log level: ${currentLogLevel}" }, level = currentLogLevel)
-        log.logCheckParams(onExpressionLevel = onExpressionLevel, factsTransformations = factsTransformations,
-                expressionTransformations = expressionTransformations, additionalFacts = additionalFacts)
+        log.logCheckParams(
+            onExpressionLevel = onExpressionLevel, factsTransformations = factsTransformations,
+            expressionTransformations = expressionTransformations, additionalFacts = additionalFacts
+        )
         val coloringTasks = mutableListOf<ColoringTask>()
         var currentLeftIndex = log.assignAndLog(0, currentLogLevel, { "currentLeftIndex" })
         var currentRightIndex = log.assignAndLog(1, currentLogLevel, { "currentRightIndex" })
@@ -173,62 +263,132 @@ class MainChain(
             var actualFactsTransformations: List<FactSubstitution>? = null
             var actualExpressionTransformations: List<ExpressionSubstitution>? = null
             if (chain[currentRightIndex].type() == ComparableTransformationPartType.RULE ||
-                    chain[currentRightIndex].type() == ComparableTransformationPartType.RULE_POINTER) {
+                chain[currentRightIndex].type() == ComparableTransformationPartType.RULE_POINTER
+            ) {
                 if (chain[currentRightIndex].type() == ComparableTransformationPartType.RULE) {
                     val rule = chain[currentRightIndex] as Rule
-                    log.addMessageWithFactDetail({ "Check ${CheckingKeyWords.rule}" }, rule.root, MessageType.USER, level = currentLogLevel)
-                    val checkingResult = rule.check(factComporator, false, factsTransformations, expressionTransformations, additionalFacts)
+                    log.addMessageWithFactDetail(
+                        { "Check ${CheckingKeyWords.rule}" },
+                        rule.root,
+                        MessageType.USER,
+                        level = currentLogLevel
+                    )
+                    val checkingResult = rule.check(
+                        factComparator,
+                        false,
+                        factsTransformations,
+                        expressionTransformations,
+                        additionalFacts
+                    )
                     if (checkingResult.isCorrect) {
                         if (rule.factSubstitution != null) {
                             actualFactsTransformations = listOf(rule.factSubstitution!!)
-                            log.addMessageWithFactSubstitutionDetail({ "Fact transformation recognized:" }, rule.factSubstitution!!, MessageType.USER,
-                                    level = currentLogLevel)
+                            log.addMessageWithFactSubstitutionDetail(
+                                { "Fact transformation recognized:" }, rule.factSubstitution!!, MessageType.USER,
+                                level = currentLogLevel
+                            )
                             //todo: may be we need to add also some expression substitutions here, like in fact checking
                         } else if (rule.expressionSubstitution != null) {
                             actualExpressionTransformations = listOf(rule.expressionSubstitution!!)
-                            log.addMessageWithExpressionSubstitutionShort({ "Expression transformation recognized:" }, rule.expressionSubstitution!!, MessageType.USER,
-                                    level = currentLogLevel)
+                            log.addMessageWithExpressionSubstitutionShort(
+                                { "Expression transformation recognized:" },
+                                rule.expressionSubstitution!!,
+                                MessageType.USER,
+                                level = currentLogLevel
+                            )
                         }
                     } else {
-                        log.addMessage({ "${CheckingKeyWords.rule} $verificationFailed" }, MessageType.USER, level = currentLogLevel)
-                        ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex + 1],
-                                "${CheckingKeyWords.rule} $verificationFailed")
+                        log.addMessage(
+                            { "${CheckingKeyWords.rule} $verificationFailed" },
+                            MessageType.USER,
+                            level = currentLogLevel
+                        )
+                        ComparisonResult(
+                            false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex + 1],
+                            "${CheckingKeyWords.rule} $verificationFailed"
+                        )
                     }
                 } else {
                     val ruleName = (chain[currentRightIndex] as RulePointer).nameLink
-                    log.add(ruleName, { "Handling ${CheckingKeyWords.ruleReference} '" }, { "'" }, messageType = MessageType.USER, level = currentLogLevel)
+                    log.add(
+                        ruleName,
+                        { "Handling ${CheckingKeyWords.ruleReference} '" },
+                        { "'" },
+                        messageType = MessageType.USER,
+                        level = currentLogLevel
+                    )
                     actualFactsTransformations = factsTransformations.filter { it.name == ruleName }
                     actualExpressionTransformations = expressionTransformations.filter { it.code == ruleName }
                     if (actualFactsTransformations.isEmpty() && actualExpressionTransformations.isEmpty()) {
-                        log.add(ruleName, { "ERROR: ${CheckingKeyWords.ruleReference} '" }, { "' not found" }, messageType = MessageType.USER, level = currentLogLevel)
-                        log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
-                                factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor,
-                                { "Coloring task on positions: '" }, { "' - '" }, { "', wrongFactColor = '" }, { "" }, level = currentLogLevel)
-                        coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
-                                factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor))
-                        return ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex + 1],
-                                "Rule with name '$ruleName' not found. Exists only rules with names: ${expressionTransformations.map { it.code }.filter { it.isNotBlank() }.joinToString { "'$it'" }}")
+                        log.add(
+                            ruleName,
+                            { "ERROR: ${CheckingKeyWords.ruleReference} '" },
+                            { "' not found" },
+                            messageType = MessageType.USER,
+                            level = currentLogLevel
+                        )
+                        log.add(
+                            chain[currentLeftIndex].endPosition,
+                            chain[currentRightIndex + 1].startPosition,
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor,
+                            { "Coloring task on positions: '" },
+                            { "' - '" },
+                            { "', wrongFactColor = '" },
+                            { "" },
+                            level = currentLogLevel
+                        )
+                        coloringTasks.add(
+                            ColoringTask(
+                                chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
+                                factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor
+                            )
+                        )
+                        return ComparisonResult(false,
+                            coloringTasks,
+                            chain[currentLeftIndex],
+                            chain[currentRightIndex + 1],
+                            "Rule with name '$ruleName' not found. Exists only rules with names: ${
+                                expressionTransformations.map { it.code }.filter { it.isNotBlank() }
+                                    .joinToString { "'$it'" }
+                            }"
+                        )
                     }
                 }
                 currentRightIndex = log.assignAndLog(currentRightIndex + 1, currentLogLevel, { "currentRightIndex" })
             }
 
-            actualExpressionTransformations = if (actualExpressionTransformations != null) actualExpressionTransformations
-            else expressionTransformations// + factComporator.compiledConfiguration.compiledExpressionTreeTransformationRules
+            actualExpressionTransformations =
+                if (actualExpressionTransformations != null) actualExpressionTransformations
+                else expressionTransformations// + factComparator.compiledConfiguration.compiledExpressionTreeTransformationRules
             actualFactsTransformations = if (actualFactsTransformations != null) actualFactsTransformations
-            else factsTransformations// + factComporator.compiledConfiguration.compiledFactTreeTransformationRules
+            else factsTransformations// + factComparator.compiledConfiguration.compiledFactTreeTransformationRules
 
             if (chain[currentRightIndex].type() == ComparableTransformationPartType.MAIN_LINE_AND_NODE ||
-                    chain[currentRightIndex].type() == ComparableTransformationPartType.MAIN_LINE_OR_NODE) {
+                chain[currentRightIndex].type() == ComparableTransformationPartType.MAIN_LINE_OR_NODE
+            ) {
                 for (transformationChain in (chain[currentRightIndex] as MainLineNode).factTransformationChains) {
                     (chain[currentRightIndex] as MainLineNode).inFacts.add(transformationChain.chain.first())
                 }
             }
 
-            log.addMessage({ "Check transformation from left fact to right fact:" }, MessageType.USER, level = currentLogLevel)
+            log.addMessage(
+                { "Check transformation from left fact to right fact:" },
+                MessageType.USER,
+                level = currentLogLevel
+            )
             currentLogLevel++
-            log.addMessageWithFactDetail({ "Left fact: " }, chain[currentLeftIndex], MessageType.USER, level = currentLogLevel)
-            log.addMessageWithFactDetail({ "Right fact: " }, chain[currentRightIndex], MessageType.USER, level = currentLogLevel)
+            log.addMessageWithFactDetail(
+                { "Left fact: " },
+                chain[currentLeftIndex],
+                MessageType.USER,
+                level = currentLogLevel
+            )
+            log.addMessageWithFactDetail(
+                { "Right fact: " },
+                chain[currentRightIndex],
+                MessageType.USER,
+                level = currentLogLevel
+            )
 
             var transformationVerified = log.assignAndLog(false, currentLogLevel, { "transformationVerified" })
             if (chain[currentLeftIndex].type() == chain[currentRightIndex].type()) {
@@ -238,89 +398,216 @@ class MainChain(
                     val rightExpressionComparison = chain[currentRightIndex] as ExpressionComparison
                     if (leftExpressionComparison.comparisonType == rightExpressionComparison.comparisonType) {
                         log.addMessage({ "Comparison types are the same" }, MessageType.USER, level = currentLogLevel)
-                        val leftSubtraction = subtractionTree(leftExpressionComparison.leftExpression.data, leftExpressionComparison.rightExpression.data)
-                        val rightSubtraction = subtractionTree(rightExpressionComparison.leftExpression.data, rightExpressionComparison.rightExpression.data)
-                        val subtractionResult = factComporator.expressionComporator.compareWithoutSubstitutions(leftSubtraction, rightSubtraction, ComparisonType.EQUAL)
+                        val leftSubtraction = subtractionTree(
+                            leftExpressionComparison.leftExpression.data,
+                            leftExpressionComparison.rightExpression.data
+                        )
+                        val rightSubtraction = subtractionTree(
+                            rightExpressionComparison.leftExpression.data,
+                            rightExpressionComparison.rightExpression.data
+                        )
+                        val subtractionResult = factComparator.expressionComparator.compareWithoutSubstitutions(
+                            leftSubtraction,
+                            rightSubtraction,
+                            ComparisonType.EQUAL
+                        )
                         if (subtractionResult) {
-                            transformationVerified = log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
-                            log.addMessage({ "Transformation verified: 'left.left - left.right = right.left - right.right'" }, MessageType.USER, level = currentLogLevel)
+                            transformationVerified =
+                                log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
+                            log.addMessage(
+                                { "Transformation verified: 'left.left - left.right = right.left - right.right'" },
+                                MessageType.USER,
+                                level = currentLogLevel
+                            )
                         }
                         if (!transformationVerified) {
                             when (leftExpressionComparison.comparisonType) {
                                 ComparisonType.EQUAL -> {
-                                    val ll = factComporator.expressionComporator.compareWithTreeTransformationRules(leftExpressionComparison.leftExpression.data,
-                                            rightExpressionComparison.leftExpression.data, actualExpressionTransformations,
-                                            maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
-                                    log.add(ll, { "Left expressions are equal: '" }, { "'" }, level = currentLogLevel, messageType = MessageType.USER)
-                                    val rr = factComporator.expressionComporator.compareWithTreeTransformationRules(leftExpressionComparison.rightExpression.data,
-                                            rightExpressionComparison.rightExpression.data, actualExpressionTransformations,
-                                            maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
-                                    log.add(rr, { "Right expressions are equal: '" }, { "'" }, level = currentLogLevel, messageType = MessageType.USER)
+                                    val ll = factComparator.expressionComparator.compareWithTreeTransformationRules(
+                                        leftExpressionComparison.leftExpression.data,
+                                        rightExpressionComparison.leftExpression.data, actualExpressionTransformations,
+                                        maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps
+                                    )
+                                    log.add(
+                                        ll,
+                                        { "Left expressions are equal: '" },
+                                        { "'" },
+                                        level = currentLogLevel,
+                                        messageType = MessageType.USER
+                                    )
+                                    val rr = factComparator.expressionComparator.compareWithTreeTransformationRules(
+                                        leftExpressionComparison.rightExpression.data,
+                                        rightExpressionComparison.rightExpression.data, actualExpressionTransformations,
+                                        maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps
+                                    )
+                                    log.add(
+                                        rr,
+                                        { "Right expressions are equal: '" },
+                                        { "'" },
+                                        level = currentLogLevel,
+                                        messageType = MessageType.USER
+                                    )
                                     if (ll && rr) {
-                                        transformationVerified = log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
-                                        log.addMessage({ "Transformation verified: 'left.left = right.left' and 'left.right = right.right'" }, MessageType.USER, level = currentLogLevel)
+                                        transformationVerified =
+                                            log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
+                                        log.addMessage(
+                                            { "Transformation verified: 'left.left = right.left' and 'left.right = right.right'" },
+                                            MessageType.USER,
+                                            level = currentLogLevel
+                                        )
                                     } else {
                                         log.addMessage({ "Transformation not verified" })
-                                        val lr = factComporator.expressionComporator.compareWithTreeTransformationRules(leftExpressionComparison.leftExpression.data,
-                                                rightExpressionComparison.rightExpression.data, actualExpressionTransformations,
-                                                maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
-                                        log.add(lr, { "left.left are equal to right.right: '" }, { "'" }, level = currentLogLevel, messageType = MessageType.USER)
-                                        val rl = factComporator.expressionComporator.compareWithTreeTransformationRules(leftExpressionComparison.rightExpression.data,
-                                                rightExpressionComparison.leftExpression.data, actualExpressionTransformations,
-                                                maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
-                                        log.add(lr, { "left.right are equal to right.left: '" }, { "'" }, level = currentLogLevel, messageType = MessageType.USER)
+                                        val lr = factComparator.expressionComparator.compareWithTreeTransformationRules(
+                                            leftExpressionComparison.leftExpression.data,
+                                            rightExpressionComparison.rightExpression.data,
+                                            actualExpressionTransformations,
+                                            maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps
+                                        )
+                                        log.add(
+                                            lr,
+                                            { "left.left are equal to right.right: '" },
+                                            { "'" },
+                                            level = currentLogLevel,
+                                            messageType = MessageType.USER
+                                        )
+                                        val rl = factComparator.expressionComparator.compareWithTreeTransformationRules(
+                                            leftExpressionComparison.rightExpression.data,
+                                            rightExpressionComparison.leftExpression.data,
+                                            actualExpressionTransformations,
+                                            maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps
+                                        )
+                                        log.add(
+                                            lr,
+                                            { "left.right are equal to right.left: '" },
+                                            { "'" },
+                                            level = currentLogLevel,
+                                            messageType = MessageType.USER
+                                        )
                                         if (lr && rl) {
-                                            transformationVerified = log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
-                                            log.addMessage({ "Transformation verified: 'left.left = right.right' and 'left.right = right.left'" }, MessageType.USER, level = currentLogLevel)
+                                            transformationVerified =
+                                                log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
+                                            log.addMessage(
+                                                { "Transformation verified: 'left.left = right.right' and 'left.right = right.left'" },
+                                                MessageType.USER,
+                                                level = currentLogLevel
+                                            )
                                         } else {
-                                            log.addMessage({ "Transformation not verified" }, MessageType.USER, level = currentLogLevel)
+                                            log.addMessage(
+                                                { "Transformation not verified" },
+                                                MessageType.USER,
+                                                level = currentLogLevel
+                                            )
                                         }
                                     }
                                     if (!transformationVerified) {
-                                        val leftDivision = divisionTree(leftExpressionComparison.leftExpression.data, leftExpressionComparison.rightExpression.data)
-                                        val rightDivision = divisionTree(rightExpressionComparison.leftExpression.data, rightExpressionComparison.rightExpression.data)
-                                        val divisionResult = factComporator.expressionComporator.compareWithoutSubstitutions(leftDivision, rightDivision, ComparisonType.EQUAL,
-                                                justInDomainsIntersection = true)
+                                        val leftDivision = divisionTree(
+                                            leftExpressionComparison.leftExpression.data,
+                                            leftExpressionComparison.rightExpression.data
+                                        )
+                                        val rightDivision = divisionTree(
+                                            rightExpressionComparison.leftExpression.data,
+                                            rightExpressionComparison.rightExpression.data
+                                        )
+                                        val divisionResult =
+                                            factComparator.expressionComparator.compareWithoutSubstitutions(
+                                                leftDivision, rightDivision, ComparisonType.EQUAL,
+                                                justInDomainsIntersection = true
+                                            )
                                         if (divisionResult) {
-                                            transformationVerified = log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
-                                            log.addMessage({ "Transformation verified: 'left.left / left.right = right.left / right.right'" }, MessageType.USER, level = currentLogLevel)
+                                            transformationVerified =
+                                                log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
+                                            log.addMessage(
+                                                { "Transformation verified: 'left.left / left.right = right.left / right.right'" },
+                                                MessageType.USER,
+                                                level = currentLogLevel
+                                            )
                                         }
                                     }
                                 }
                                 ComparisonType.LEFT_MORE, ComparisonType.LEFT_MORE_OR_EQUAL -> {
-                                    val ll = factComporator.expressionComporator.compareWithTreeTransformationRules(leftExpressionComparison.leftExpression.data,
-                                            rightExpressionComparison.leftExpression.data, actualExpressionTransformations,
-                                            expressionChainComparisonType = ComparisonType.LEFT_LESS_OR_EQUAL,
-                                            maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
-                                    log.add(ll, { "left.left <= right.left: '" }, { "'" }, level = currentLogLevel, messageType = MessageType.USER)
-                                    val rr = factComporator.expressionComporator.compareWithTreeTransformationRules(leftExpressionComparison.rightExpression.data,
-                                            rightExpressionComparison.rightExpression.data, actualExpressionTransformations,
-                                            expressionChainComparisonType = ComparisonType.LEFT_MORE_OR_EQUAL,
-                                            maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
-                                    log.add(rr, { "left.right >= right.right: '" }, { "'" }, level = currentLogLevel, messageType = MessageType.USER)
+                                    val ll = factComparator.expressionComparator.compareWithTreeTransformationRules(
+                                        leftExpressionComparison.leftExpression.data,
+                                        rightExpressionComparison.leftExpression.data, actualExpressionTransformations,
+                                        expressionChainComparisonType = ComparisonType.LEFT_LESS_OR_EQUAL,
+                                        maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps
+                                    )
+                                    log.add(
+                                        ll,
+                                        { "left.left <= right.left: '" },
+                                        { "'" },
+                                        level = currentLogLevel,
+                                        messageType = MessageType.USER
+                                    )
+                                    val rr = factComparator.expressionComparator.compareWithTreeTransformationRules(
+                                        leftExpressionComparison.rightExpression.data,
+                                        rightExpressionComparison.rightExpression.data, actualExpressionTransformations,
+                                        expressionChainComparisonType = ComparisonType.LEFT_MORE_OR_EQUAL,
+                                        maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps
+                                    )
+                                    log.add(
+                                        rr,
+                                        { "left.right >= right.right: '" },
+                                        { "'" },
+                                        level = currentLogLevel,
+                                        messageType = MessageType.USER
+                                    )
                                     if (ll && rr) {
-                                        transformationVerified = log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
-                                        log.addMessage({ "Transformation verified: 'left.left <= right.left' and 'left.right >= right.right'" }, MessageType.USER, level = currentLogLevel)
+                                        transformationVerified =
+                                            log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
+                                        log.addMessage(
+                                            { "Transformation verified: 'left.left <= right.left' and 'left.right >= right.right'" },
+                                            MessageType.USER,
+                                            level = currentLogLevel
+                                        )
                                     } else {
-                                        log.addMessage({ "Transformation not verified" }, MessageType.USER, level = currentLogLevel)
+                                        log.addMessage(
+                                            { "Transformation not verified" },
+                                            MessageType.USER,
+                                            level = currentLogLevel
+                                        )
                                     }
                                 }
                                 ComparisonType.LEFT_LESS, ComparisonType.LEFT_LESS_OR_EQUAL -> {
-                                    val ll = factComporator.expressionComporator.compareWithTreeTransformationRules(leftExpressionComparison.leftExpression.data,
-                                            rightExpressionComparison.leftExpression.data, actualExpressionTransformations,
-                                            expressionChainComparisonType = ComparisonType.LEFT_MORE_OR_EQUAL,
-                                            maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
-                                    log.add(ll, { "left.left >= right.left: '" }, { "'" }, level = currentLogLevel, messageType = MessageType.USER)
-                                    val rr = factComporator.expressionComporator.compareWithTreeTransformationRules(leftExpressionComparison.rightExpression.data,
-                                            rightExpressionComparison.rightExpression.data, actualExpressionTransformations,
-                                            expressionChainComparisonType = ComparisonType.LEFT_LESS_OR_EQUAL,
-                                            maxDistBetweenDiffSteps = factComporator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps)
-                                    log.add(rr, { "left.right <= right.right: '" }, { "'" }, level = currentLogLevel, messageType = MessageType.USER)
+                                    val ll = factComparator.expressionComparator.compareWithTreeTransformationRules(
+                                        leftExpressionComparison.leftExpression.data,
+                                        rightExpressionComparison.leftExpression.data, actualExpressionTransformations,
+                                        expressionChainComparisonType = ComparisonType.LEFT_MORE_OR_EQUAL,
+                                        maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps
+                                    )
+                                    log.add(
+                                        ll,
+                                        { "left.left >= right.left: '" },
+                                        { "'" },
+                                        level = currentLogLevel,
+                                        messageType = MessageType.USER
+                                    )
+                                    val rr = factComparator.expressionComparator.compareWithTreeTransformationRules(
+                                        leftExpressionComparison.rightExpression.data,
+                                        rightExpressionComparison.rightExpression.data, actualExpressionTransformations,
+                                        expressionChainComparisonType = ComparisonType.LEFT_LESS_OR_EQUAL,
+                                        maxDistBetweenDiffSteps = factComparator.compiledConfiguration.comparisonSettings.maxDistBetweenDiffSteps
+                                    )
+                                    log.add(
+                                        rr,
+                                        { "left.right <= right.right: '" },
+                                        { "'" },
+                                        level = currentLogLevel,
+                                        messageType = MessageType.USER
+                                    )
                                     if (ll && rr) {
-                                        transformationVerified = log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
-                                        log.addMessage({ "Transformation verified: 'left.left >= right.left' and 'left.right <= right.right'" }, MessageType.USER, level = currentLogLevel)
+                                        transformationVerified =
+                                            log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
+                                        log.addMessage(
+                                            { "Transformation verified: 'left.left >= right.left' and 'left.right <= right.right'" },
+                                            MessageType.USER,
+                                            level = currentLogLevel
+                                        )
                                     } else {
-                                        log.addMessage({ "Transformation not verified" }, MessageType.USER, level = currentLogLevel)
+                                        log.addMessage(
+                                            { "Transformation not verified" },
+                                            MessageType.USER,
+                                            level = currentLogLevel
+                                        )
                                     }
                                 }
                             }
@@ -330,56 +617,99 @@ class MainChain(
                     var leftFacts: List<MainChainPart>? = null
                     var rightFacts: List<MainChainPart>? = null
                     if (chain[currentLeftIndex].type() == ComparableTransformationPartType.MAIN_LINE_AND_NODE &&
-                            (chain[currentLeftIndex] as MainLineAndNode).outFacts.size == (chain[currentRightIndex] as MainLineAndNode).inFacts.size &&
-                            (chain[currentLeftIndex] as MainLineAndNode).outFacts.count { it.type() != ComparableTransformationPartType.EXPRESSION_COMPARISON } == 0 &&
-                            (chain[currentRightIndex] as MainLineAndNode).inFacts.count { it.type() != ComparableTransformationPartType.EXPRESSION_COMPARISON } == 0) {
+                        (chain[currentLeftIndex] as MainLineAndNode).outFacts.size == (chain[currentRightIndex] as MainLineAndNode).inFacts.size &&
+                        (chain[currentLeftIndex] as MainLineAndNode).outFacts.count { it.type() != ComparableTransformationPartType.EXPRESSION_COMPARISON } == 0 &&
+                        (chain[currentRightIndex] as MainLineAndNode).inFacts.count { it.type() != ComparableTransformationPartType.EXPRESSION_COMPARISON } == 0
+                    ) {
                         leftFacts = (chain[currentLeftIndex] as MainLineAndNode).outFacts
                         rightFacts = (chain[currentRightIndex] as MainLineAndNode).inFacts
                     } else if (chain[currentLeftIndex].type() == ComparableTransformationPartType.MAIN_LINE_OR_NODE &&
-                            (chain[currentLeftIndex] as MainLineOrNode).outFacts.size == (chain[currentRightIndex] as MainLineOrNode).inFacts.size &&
-                            (chain[currentLeftIndex] as MainLineOrNode).outFacts.count { it.type() != ComparableTransformationPartType.EXPRESSION_COMPARISON } == 0 &&
-                            (chain[currentRightIndex] as MainLineOrNode).inFacts.count { it.type() != ComparableTransformationPartType.EXPRESSION_COMPARISON } == 0) {
+                        (chain[currentLeftIndex] as MainLineOrNode).outFacts.size == (chain[currentRightIndex] as MainLineOrNode).inFacts.size &&
+                        (chain[currentLeftIndex] as MainLineOrNode).outFacts.count { it.type() != ComparableTransformationPartType.EXPRESSION_COMPARISON } == 0 &&
+                        (chain[currentRightIndex] as MainLineOrNode).inFacts.count { it.type() != ComparableTransformationPartType.EXPRESSION_COMPARISON } == 0
+                    ) {
                         leftFacts = (chain[currentLeftIndex] as MainLineOrNode).outFacts
                         rightFacts = (chain[currentRightIndex] as MainLineOrNode).inFacts
                     }
                     if (leftFacts != null && rightFacts != null) {
-                        log.addMessage({ "Two expression comparisons systems with equal sizes identified" }, MessageType.USER, level = currentLogLevel)
+                        log.addMessage(
+                            { "Two expression comparisons systems with equal sizes identified" },
+                            MessageType.USER,
+                            level = currentLogLevel
+                        )
                         log.logSystemFacts(chain[currentLeftIndex].type(), leftFacts, { "left" }, MessageType.USER)
                         log.logSystemFacts(chain[currentRightIndex].type(), rightFacts, { "right" }, MessageType.USER)
-                        var hasDifferentComparisonType = log.assignAndLog(false, currentLogLevel, { "hasDifferentComparisonType" })
+                        var hasDifferentComparisonType =
+                            log.assignAndLog(false, currentLogLevel, { "hasDifferentComparisonType" })
                         var expressionTransformationRulesFromLeftFact = mutableListOf<ExpressionSubstitution>()
                         for (i in 0..leftFacts.lastIndex) {
-                            expressionTransformationRulesFromLeftFact.add(ExpressionSubstitution(
+                            expressionTransformationRulesFromLeftFact.add(
+                                ExpressionSubstitution(
                                     left = (leftFacts[i] as ExpressionComparison).leftExpression.data,
                                     right = (leftFacts[i] as ExpressionComparison).rightExpression.data,
                                     basedOnTaskContext = true,
-                                    comparisonType = (leftFacts[i] as ExpressionComparison).comparisonType)
+                                    comparisonType = (leftFacts[i] as ExpressionComparison).comparisonType
+                                )
                             )
-                            log.addMessageWithExpressionSubstitutionShort({ "Expression substitution got from left system: " }, expressionTransformationRulesFromLeftFact.last(), MessageType.USER, level = currentLogLevel)
+                            log.addMessageWithExpressionSubstitutionShort(
+                                { "Expression substitution got from left system: " },
+                                expressionTransformationRulesFromLeftFact.last(),
+                                MessageType.USER,
+                                level = currentLogLevel
+                            )
                         }
                         for (i in 0..leftFacts.lastIndex) {
                             if ((leftFacts[i] as ExpressionComparison).comparisonType != (rightFacts[i] as ExpressionComparison).comparisonType) {
-                                log.add(i, { "Two expression comparisons has different signs at facts number '" }, { "'" }, messageType = MessageType.USER, level = currentLogLevel)
-                                hasDifferentComparisonType = log.assignAndLog(true, currentLogLevel, { "hasDifferentComparisonType" })
+                                log.add(
+                                    i,
+                                    { "Two expression comparisons has different signs at facts number '" },
+                                    { "'" },
+                                    messageType = MessageType.USER,
+                                    level = currentLogLevel
+                                )
+                                hasDifferentComparisonType =
+                                    log.assignAndLog(true, currentLogLevel, { "hasDifferentComparisonType" })
                                 break
                             }
                         }
                         if (!hasDifferentComparisonType) {
-                            log.addMessage({ "Check expression comparisons pairs on the same positions" }, MessageType.USER, level = currentLogLevel)
-                            var uncorrectTransformationFound = log.assignAndLog(false, currentLogLevel, { "uncorrectTransformationFound" })
+                            log.addMessage(
+                                { "Check expression comparisons pairs on the same positions" },
+                                MessageType.USER,
+                                level = currentLogLevel
+                            )
+                            var uncorrectTransformationFound =
+                                log.assignAndLog(false, currentLogLevel, { "uncorrectTransformationFound" })
                             for (i in 0..leftFacts.lastIndex) {
                                 val mainChain = MainChain(mutableListOf(leftFacts[i], rightFacts[i]))
-                                val result = mainChain.check(factComporator, true, actualFactsTransformations,
-                                        actualExpressionTransformations + expressionTransformationRulesFromLeftFact, listOf())
+                                val result = mainChain.check(
+                                    factComparator,
+                                    true,
+                                    actualFactsTransformations,
+                                    actualExpressionTransformations + expressionTransformationRulesFromLeftFact,
+                                    listOf()
+                                )
                                 if (!result.isCorrect) {
-                                    uncorrectTransformationFound = log.assignAndLog(true, currentLogLevel, { "uncorrectTransformationFound" })
-                                    log.add(i, { "Uncorrect transformation found at '" }, { "'" }, messageType = MessageType.USER, level = currentLogLevel)
+                                    uncorrectTransformationFound =
+                                        log.assignAndLog(true, currentLogLevel, { "uncorrectTransformationFound" })
+                                    log.add(
+                                        i,
+                                        { "Uncorrect transformation found at '" },
+                                        { "'" },
+                                        messageType = MessageType.USER,
+                                        level = currentLogLevel
+                                    )
                                     break
                                 }
                             }
                             if (!uncorrectTransformationFound) {
-                                log.addMessage({ "Transformation verified, all pairs of expression comparisons are transformed correctly" }, MessageType.USER, level = currentLogLevel)
-                                transformationVerified = log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
+                                log.addMessage(
+                                    { "Transformation verified, all pairs of expression comparisons are transformed correctly" },
+                                    MessageType.USER,
+                                    level = currentLogLevel
+                                )
+                                transformationVerified =
+                                    log.assignAndLog(true, currentLogLevel, { "transformationVerified" })
                             }
                         }
                     }
@@ -388,41 +718,91 @@ class MainChain(
             if (!transformationVerified) {
                 log.addMessage({ "Transformation not verified, try to check transformation with rules and additional facts" })
                 val additionalFactInCurrentTransformationApplicationUsed = mutableListOf<Boolean>()
-                val result = factComporator.compareWithTreeTransformationRules(
-                        chain[currentLeftIndex], chain[currentRightIndex], additionalFacts,
-                        actualFactsTransformations, additionalFactUsed = additionalFactInCurrentTransformationApplicationUsed)
+                val result = factComparator.compareWithTreeTransformationRules(
+                    chain[currentLeftIndex],
+                    chain[currentRightIndex],
+                    additionalFacts,
+                    actualFactsTransformations,
+                    additionalFactUsed = additionalFactInCurrentTransformationApplicationUsed
+                )
                 if (result) {
-                    log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor,
-                            { "Coloring task on positions: '" }, { "' - '" }, { "', factHelpFactColor = '" }, { "" }, level = currentLogLevel)
-                    coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor))
+                    log.add(
+                        chain[currentLeftIndex].endPosition,
+                        chain[currentRightIndex].startPosition,
+                        factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor,
+                        { "Coloring task on positions: '" },
+                        { "' - '" },
+                        { "', factHelpFactColor = '" },
+                        { "" },
+                        level = currentLogLevel
+                    )
+                    coloringTasks.add(
+                        ColoringTask(
+                            chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.factHelpFactColor
+                        )
+                    )
                     val isInTaskContext = additionalFactInCurrentTransformationApplicationUsed.isNotEmpty()
-                    log.add(isInTaskContext, { "Transformation verified, isInTaskContext: '" }, { "'" }, messageType = MessageType.USER, level = currentLogLevel)
+                    log.add(
+                        isInTaskContext,
+                        { "Transformation verified, isInTaskContext: '" },
+                        { "'" },
+                        messageType = MessageType.USER,
+                        level = currentLogLevel
+                    )
                     if (isInTaskContext) {
                         additionalFactUsed = log.assignAndLog(true, currentLogLevel, { "additionalFactUsed" })
                     }
                 } else {
-                    log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor,
-                            { "Coloring task on positions: '" }, { "' - '" }, { "', wrongFactColor = '" }, { "" }, level = currentLogLevel)
-                    coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                            factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor))
+                    log.add(
+                        chain[currentLeftIndex].endPosition,
+                        chain[currentRightIndex].startPosition,
+                        factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor,
+                        { "Coloring task on positions: '" },
+                        { "' - '" },
+                        { "', wrongFactColor = '" },
+                        { "" },
+                        level = currentLogLevel
+                    )
+                    coloringTasks.add(
+                        ColoringTask(
+                            chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
+                            factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor
+                        )
+                    )
                     log.addMessage({ "$verificationFailed" }, MessageType.USER, level = currentLogLevel)
-                    return ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex],
-                            "Unclear transformation between '${chain[currentLeftIndex]}' and '${chain[currentRightIndex]}' ")
+                    return ComparisonResult(
+                        false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex],
+                        "Unclear transformation between '${chain[currentLeftIndex]}' and '${chain[currentRightIndex]}' "
+                    )
                 }
             } else {
-                log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                        factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
-                        { "Coloring task on positions: '" }, { "' - '" }, { "', correctFactColor = '" }, { "" }, level = currentLogLevel)
-                coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
-                        factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor))
-                log.addMessage({ "${CheckingKeyWords.transformationVerified}" }, MessageType.USER, level = currentLogLevel)
+                log.add(
+                    chain[currentLeftIndex].endPosition,
+                    chain[currentRightIndex].startPosition,
+                    factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor,
+                    { "Coloring task on positions: '" },
+                    { "' - '" },
+                    { "', correctFactColor = '" },
+                    { "" },
+                    level = currentLogLevel
+                )
+                coloringTasks.add(
+                    ColoringTask(
+                        chain[currentLeftIndex].endPosition, chain[currentRightIndex].startPosition,
+                        factComparator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.correctFactColor
+                    )
+                )
+                log.addMessage(
+                    { "${CheckingKeyWords.transformationVerified}" },
+                    MessageType.USER,
+                    level = currentLogLevel
+                )
             }
 
             if (chain[currentRightIndex].type() == ComparableTransformationPartType.MAIN_LINE_AND_NODE ||
-                    chain[currentRightIndex].type() == ComparableTransformationPartType.MAIN_LINE_OR_NODE) {
+                chain[currentRightIndex].type() == ComparableTransformationPartType.MAIN_LINE_OR_NODE
+            ) {
                 for (transformationChain in (chain[currentRightIndex] as MainLineNode).factTransformationChains) {
                     (chain[currentRightIndex] as MainLineNode).outFacts.add(transformationChain.chain.last())
                 }
@@ -432,9 +812,17 @@ class MainChain(
             currentLeftIndex = log.assignAndLog(currentRightIndex, currentLogLevel, { "currentLeftIndex" })
             currentRightIndex = log.assignAndLog(currentRightIndex + 1, currentLogLevel, { "currentRightIndex" })
         }
-        log.addMessage({ "$factChainVerified. '${chain.first()}' -> '${chain.last()}'" },
-                messageType = MessageType.USER, level = currentLogLevel)
-        return ComparisonResult(true, coloringTasks, chain.first(), chain.last(), additionalFactUsed = additionalFactUsed)
+        log.addMessage(
+            { "$factChainVerified. '${chain.first()}' -> '${chain.last()}'" },
+            messageType = MessageType.USER, level = currentLogLevel
+        )
+        return ComparisonResult(
+            true,
+            coloringTasks,
+            chain.first(),
+            chain.last(),
+            additionalFactUsed = additionalFactUsed
+        )
     }
 
     fun variableReplacement(replacements: Map<String, String>) {
@@ -443,20 +831,24 @@ class MainChain(
 }
 
 class MainLineAndNode(
-        override val startPosition: Int = 0,
-        override val endPosition: Int = 0,
-        override var parent: MainLineNode? = null,
-        override val factTransformationChains: MutableList<MainChain> = mutableListOf(),
-        override val inFacts: MutableList<MainChainPart> = mutableListOf(),
-        override val outFacts: MutableList<MainChainPart> = mutableListOf(),
-        override val expressionTransformationChains: MutableList<ExpressionChain> = mutableListOf(), //correct chains have to be packed in in and out node
-        override val rules: MutableList<Rule> = mutableListOf(),
-        override var identifier: String = ""
+    override val startPosition: Int = 0,
+    override val endPosition: Int = 0,
+    override var parent: MainLineNode? = null,
+    override val factTransformationChains: MutableList<MainChain> = mutableListOf(),
+    override val inFacts: MutableList<MainChainPart> = mutableListOf(),
+    override val outFacts: MutableList<MainChainPart> = mutableListOf(),
+    override val expressionTransformationChains: MutableList<ExpressionChain> = mutableListOf(), //correct chains have to be packed in in and out node
+    override val rules: MutableList<Rule> = mutableListOf(),
+    override var identifier: String = ""
 //todo: add not data transformation rules (rules for facts and solution nodes)
 ) : MainLineNode {
     override fun getLastExpression() = outFacts.last().getLastExpression()
 
-    override fun isSolutionForVariables(targetVariables: MutableMap<String, Boolean>, left: Boolean, allowedVariables: Set<String>): GeneralError? {
+    override fun isSolutionForVariables(
+        targetVariables: MutableMap<String, Boolean>,
+        left: Boolean,
+        allowedVariables: Set<String>
+    ): GeneralError? {
         for (fact in outFacts) {
             val error = fact.isSolutionForVariables(targetVariables, allowedVariables = allowedVariables)
             if (error != null) return error
@@ -468,7 +860,11 @@ class MainLineAndNode(
         return null
     }
 
-    override fun computeIfNumeric(substitutionInstance: SubstitutionInstance, baseOperationsDefinitions: BaseOperationsDefinitions, checkOutMainLineNodePart: Boolean): Boolean? {
+    override fun computeIfNumeric(
+        substitutionInstance: SubstitutionInstance,
+        baseOperationsDefinitions: BaseOperationsDefinitions,
+        checkOutMainLineNodePart: Boolean
+    ): Boolean? {
         val actualFacts = if (checkOutMainLineNodePart) getOutFactsFromMainLineNode(this)
         else getInFactsFromMainLineNode(this)
         var isNull = false
@@ -478,7 +874,11 @@ class MainLineAndNode(
                     (fact as ExpressionComparison).computeIfNumeric(substitutionInstance, baseOperationsDefinitions)
                 }
                 ComparableTransformationPartType.MAIN_LINE_AND_NODE, ComparableTransformationPartType.MAIN_LINE_OR_NODE -> {
-                    (fact as MainLineNode).computeIfNumeric(substitutionInstance, baseOperationsDefinitions, checkOutMainLineNodePart)
+                    (fact as MainLineNode).computeIfNumeric(
+                        substitutionInstance,
+                        baseOperationsDefinitions,
+                        checkOutMainLineNodePart
+                    )
                 }
                 else -> null
             }
@@ -492,13 +892,18 @@ class MainLineAndNode(
     }
 
     override fun copyNode() = MainLineAndNode(startPosition, endPosition, parent)
-    override fun clone() = MainLineAndNode(startPosition, endPosition, parent,
-            inFacts = inFacts.map { it.clone() }.toMutableList(),
-            outFacts = outFacts.map { it.clone() }.toMutableList())
+    override fun clone() = MainLineAndNode(
+        startPosition, endPosition, parent,
+        inFacts = inFacts.map { it.clone() }.toMutableList(),
+        outFacts = outFacts.map { it.clone() }.toMutableList()
+    )
 
-    override fun cloneWithNormalization(nameArgsMap: MutableMap<String, String>, sorted: Boolean) = MainLineAndNode(startPosition, endPosition, parent,
+    override fun cloneWithNormalization(nameArgsMap: MutableMap<String, String>, sorted: Boolean) =
+        MainLineAndNode(
+            startPosition, endPosition, parent,
             inFacts = inFacts.map { it.cloneWithNormalization(nameArgsMap, sorted) }.toMutableList(),
-            outFacts = outFacts.map { it.cloneWithNormalization(nameArgsMap, sorted) }.toMutableList())
+            outFacts = outFacts.map { it.cloneWithNormalization(nameArgsMap, sorted) }.toMutableList()
+        )
 
     override fun normalizeSubTree(currentDeep: Int, nameArgsMap: MutableMap<String, String>, sorted: Boolean) {
         inFacts.forEach { it.normalizeSubTree(currentDeep, nameArgsMap, sorted) }
@@ -523,30 +928,53 @@ class MainLineAndNode(
         outFacts.forEach { it.computeExpressionTrees(baseOperationsDefinitions) }
     }
 
-    override fun replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>, definedFunctionNameNumberOfArgsSet: MutableSet<String>) {
-        inFacts.forEach { it.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, definedFunctionNameNumberOfArgsSet) }
-        outFacts.forEach { it.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, definedFunctionNameNumberOfArgsSet) }
+    override fun replaceNotDefinedFunctionsOnVariables(
+        functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>,
+        definedFunctionNameNumberOfArgsSet: MutableSet<String>
+    ) {
+        inFacts.forEach {
+            it.replaceNotDefinedFunctionsOnVariables(
+                functionIdentifierToVariableMap,
+                definedFunctionNameNumberOfArgsSet
+            )
+        }
+        outFacts.forEach {
+            it.replaceNotDefinedFunctionsOnVariables(
+                functionIdentifierToVariableMap,
+                definedFunctionNameNumberOfArgsSet
+            )
+        }
     }
 
-    override fun check(factComporator: FactComporator, onExpressionLevel: Boolean,
-                       factsTransformations: List<FactSubstitution>,
-                       expressionTransformations: List<ExpressionSubstitution>,
-                       additionalFacts: List<MainChainPart>): ComparisonResult {
+    override fun check(
+        factComparator: FactComparator, onExpressionLevel: Boolean,
+        factsTransformations: List<FactSubstitution>,
+        expressionTransformations: List<ExpressionSubstitution>,
+        additionalFacts: List<MainChainPart>
+    ): ComparisonResult {
         log.addMessageWithFactDetail({ "Start checking fact: " }, this, MessageType.USER, levelChange = 1)
         var currentLogLevel = log.currentLevel
         log.addMessage({ "Current log level: ${currentLogLevel}" }, level = currentLogLevel)
-        log.logCheckParams(onExpressionLevel = onExpressionLevel, factsTransformations = factsTransformations,
-                expressionTransformations = expressionTransformations, additionalFacts = additionalFacts)
+        log.logCheckParams(
+            onExpressionLevel = onExpressionLevel, factsTransformations = factsTransformations,
+            expressionTransformations = expressionTransformations, additionalFacts = additionalFacts
+        )
         val coloringTasks = mutableListOf<ColoringTask>()
         var additionalFactUsed = log.assignAndLog(false, currentLogLevel, { "additionalFactUsed" })
         val nodeExpressionTransformations = mutableListOf<ExpressionSubstitution>()
         val nodeFactsTransformations = mutableListOf<FactSubstitution>()
         log.addMessage({ "0. $inFact extraction" }, MessageType.USER, level = currentLogLevel)
         for (factChain in factTransformationChains) {
-            val checkingResult = factChain.chain.first().check(factComporator, false, factsTransformations, expressionTransformations, additionalFacts)
+            val checkingResult = factChain.chain.first()
+                .check(factComparator, false, factsTransformations, expressionTransformations, additionalFacts)
             coloringTasks.addAll(checkingResult.coloringTasks)
             if (checkingResult.isCorrect) {
-                log.addMessageWithFactDetail({ "fact checked: " }, factChain.chain.first(), MessageType.USER, level = currentLogLevel)
+                log.addMessageWithFactDetail(
+                    { "fact checked: " },
+                    factChain.chain.first(),
+                    MessageType.USER,
+                    level = currentLogLevel
+                )
                 if (checkingResult.additionalFactUsed) {
                     additionalFactUsed = log.assignAndLog(true, currentLogLevel, { "additionalFactUsed" })
                 }
@@ -560,34 +988,50 @@ class MainLineAndNode(
         currentLogLevel += 1
         val knownFacts = (additionalFacts + inFacts).toMutableList()
         for (rule in rules) {
-            val checkingResult = rule.check(factComporator, false,
-                    factsTransformations + nodeFactsTransformations,
-                    expressionTransformations + nodeExpressionTransformations,
-                    additionalFacts + inFacts)
+            val checkingResult = rule.check(
+                factComparator, false,
+                factsTransformations + nodeFactsTransformations,
+                expressionTransformations + nodeExpressionTransformations,
+                additionalFacts + inFacts
+            )
             coloringTasks.addAll(checkingResult.coloringTasks)
             if (checkingResult.isCorrect) {
                 if ((rule.factSubstitution != null || rule.expressionSubstitution != null)) {
                     if (rule.factSubstitution != null) {
                         nodeFactsTransformations.add(rule.factSubstitution!!)
-                        log.addMessageWithFactSubstitutionDetail({ "${CheckingKeyWords.factSubstitution} $ruleAddedInContext:" }, rule.factSubstitution!!, MessageType.USER, level = currentLogLevel)
+                        log.addMessageWithFactSubstitutionDetail(
+                            { "${CheckingKeyWords.factSubstitution} $ruleAddedInContext:" },
+                            rule.factSubstitution!!,
+                            MessageType.USER,
+                            level = currentLogLevel
+                        )
                         var leftFactIsKnown = log.assignAndLog(false, currentLogLevel, { "leftFactIsKnown" })
                         for (knownFact in knownFacts) {
-                            log.addMessageWithFactShort({ "compare left rule part with known fact: " }, knownFact, level = currentLogLevel)
-                            if (factComporator.compareAsIs(knownFact, rule.factSubstitution!!.left)) {
+                            log.addMessageWithFactShort(
+                                { "compare left rule part with known fact: " },
+                                knownFact,
+                                level = currentLogLevel
+                            )
+                            if (factComparator.compareAsIs(knownFact, rule.factSubstitution!!.left)) {
                                 leftFactIsKnown = log.assignAndLog(true, currentLogLevel, { "leftFactIsKnown" })
                                 break
                             }
                         }
                         if (leftFactIsKnown) {
                             knownFacts.add(rule.factSubstitution!!.right)
-                            log.addMessage({ "left rule fact is known, so right rule fact is added to known facts" }, MessageType.USER, level = currentLogLevel)
+                            log.addMessage(
+                                { "left rule fact is known, so right rule fact is added to known facts" },
+                                MessageType.USER,
+                                level = currentLogLevel
+                            )
                             if (rule.factSubstitution!!.right.type() == ComparableTransformationPartType.EXPRESSION_COMPARISON) {
                                 val ruleData = rule.factSubstitution!!.right as ExpressionComparison
                                 val expressionSubstitution = ExpressionSubstitution(
-                                        ruleData.leftExpression.data,
-                                        ruleData.rightExpression.data,
-                                        basedOnTaskContext = true,
-                                        comparisonType = ruleData.comparisonType)
+                                    ruleData.leftExpression.data,
+                                    ruleData.rightExpression.data,
+                                    basedOnTaskContext = true,
+                                    comparisonType = ruleData.comparisonType
+                                )
                                 nodeExpressionTransformations.add(expressionSubstitution)
                                 log.addMessageWithExpressionSubstitutionShort({
                                     "rule is expression comparison, so ${CheckingKeyWords.expressionSubstitution} " + ruleAddedInContext
@@ -596,60 +1040,125 @@ class MainLineAndNode(
                         }
                     } else {
                         nodeExpressionTransformations.add(rule.expressionSubstitution!!)
-                        log.addMessageWithExpressionSubstitutionShort({ "${CheckingKeyWords.expressionSubstitution} $ruleAddedInContext:" }, rule.expressionSubstitution!!, MessageType.USER, level = currentLogLevel)
+                        log.addMessageWithExpressionSubstitutionShort(
+                            { "${CheckingKeyWords.expressionSubstitution} $ruleAddedInContext:" },
+                            rule.expressionSubstitution!!,
+                            MessageType.USER,
+                            level = currentLogLevel
+                        )
                     }
                 }
             } else {
-                log.addMessage({ "${CheckingKeyWords.rule} $verificationFailed" }, MessageType.USER, level = currentLogLevel)
-                log.add(rule, { "${CheckingKeyWords.rule} '''" }, { "''' $verificationFailed" }, level = currentLogLevel)
-                return ComparisonResult(false, coloringTasks,
-                        this, this, description = checkingResult.description)
+                log.addMessage(
+                    { "${CheckingKeyWords.rule} $verificationFailed" },
+                    MessageType.USER,
+                    level = currentLogLevel
+                )
+                log.add(
+                    rule,
+                    { "${CheckingKeyWords.rule} '''" },
+                    { "''' $verificationFailed" },
+                    level = currentLogLevel
+                )
+                return ComparisonResult(
+                    false, coloringTasks,
+                    this, this, description = checkingResult.description
+                )
             }
         }
-        log.addMessage({ "2. ${CheckingKeyWords.expressionChain} checking" }, MessageType.USER, level = currentLogLevel - 1)
+        log.addMessage(
+            { "2. ${CheckingKeyWords.expressionChain} checking" },
+            MessageType.USER,
+            level = currentLogLevel - 1
+        )
         for (expressionChain in expressionTransformationChains) {
-            val checkingResult = expressionChain.check(factComporator, false,
-                    factsTransformations + nodeFactsTransformations,
-                    expressionTransformations + nodeExpressionTransformations,
-                    additionalFacts + inFacts)
+            val checkingResult = expressionChain.check(
+                factComparator, false,
+                factsTransformations + nodeFactsTransformations,
+                expressionTransformations + nodeExpressionTransformations,
+                additionalFacts + inFacts
+            )
             coloringTasks.addAll(checkingResult.coloringTasks)
             if (checkingResult.isCorrect) {
-                outFacts.add(ExpressionComparison(leftExpression = expressionChain.chain.first() as Expression,
+                outFacts.add(
+                    ExpressionComparison(
+                        leftExpression = expressionChain.chain.first() as Expression,
                         rightExpression = expressionChain.chain.last() as Expression,
                         comparisonType = expressionChain.comparisonType,
-                        parent = this))
-                log.addMessageWithFactDetail({ "To out facts added fact: " }, outFacts.last(), MessageType.USER, level = currentLogLevel)
+                        parent = this
+                    )
+                )
+                log.addMessageWithFactDetail(
+                    { "To out facts added fact: " },
+                    outFacts.last(),
+                    MessageType.USER,
+                    level = currentLogLevel
+                )
                 if (checkingResult.additionalFactUsed) {
                     additionalFactUsed = log.assignAndLog(true, currentLogLevel, { "additionalFactUsed" })
                 }
             } else {
-                log.addMessage({ "${CheckingKeyWords.expressionChain} $verificationFailed" }, MessageType.USER, level = currentLogLevel)
-                log.add(expressionChain, { "${CheckingKeyWords.expressionChain} '''" }, { "''' $verificationFailed" }, level = currentLogLevel)
-                return ComparisonResult(false, coloringTasks,
-                        this, this, description = checkingResult.description)
+                log.addMessage(
+                    { "${CheckingKeyWords.expressionChain} $verificationFailed" },
+                    MessageType.USER,
+                    level = currentLogLevel
+                )
+                log.add(
+                    expressionChain,
+                    { "${CheckingKeyWords.expressionChain} '''" },
+                    { "''' $verificationFailed" },
+                    level = currentLogLevel
+                )
+                return ComparisonResult(
+                    false, coloringTasks,
+                    this, this, description = checkingResult.description
+                )
             }
         }
         log.addMessage({ "3. ${CheckingKeyWords.factChain} checking" }, MessageType.USER, level = currentLogLevel - 1)
         for (factChain in factTransformationChains) {
-            val checkingResult = factChain.check(factComporator, false,
-                    factsTransformations + nodeFactsTransformations,
-                    expressionTransformations + nodeExpressionTransformations,
-                    additionalFacts + inFacts)
+            val checkingResult = factChain.check(
+                factComparator, false,
+                factsTransformations + nodeFactsTransformations,
+                expressionTransformations + nodeExpressionTransformations,
+                additionalFacts + inFacts
+            )
             coloringTasks.addAll(checkingResult.coloringTasks)
             if (checkingResult.isCorrect) {
                 outFacts.add(factChain.chain.last())
-                log.addMessageWithFactDetail({ "To out facts added fact: " }, outFacts.last(), MessageType.USER, level = currentLogLevel)
+                log.addMessageWithFactDetail(
+                    { "To out facts added fact: " },
+                    outFacts.last(),
+                    MessageType.USER,
+                    level = currentLogLevel
+                )
                 if (checkingResult.additionalFactUsed) {
                     additionalFactUsed = log.assignAndLog(true, currentLogLevel, { "additionalFactUsed" })
                 }
             } else {
-                log.addMessage({ "${CheckingKeyWords.factChain} $verificationFailed" }, MessageType.USER, level = currentLogLevel)
-                log.add(factChain, { "${CheckingKeyWords.factChain} '''" }, { "''' $verificationFailed" }, level = currentLogLevel)
-                return ComparisonResult(false, coloringTasks,
-                        this, this, description = checkingResult.description)
+                log.addMessage(
+                    { "${CheckingKeyWords.factChain} $verificationFailed" },
+                    MessageType.USER,
+                    level = currentLogLevel
+                )
+                log.add(
+                    factChain,
+                    { "${CheckingKeyWords.factChain} '''" },
+                    { "''' $verificationFailed" },
+                    level = currentLogLevel
+                )
+                return ComparisonResult(
+                    false, coloringTasks,
+                    this, this, description = checkingResult.description
+                )
             }
         }
-        log.addMessageWithFactDetail({ "Fact node checked and it is correct, out facts are computed: " }, this, MessageType.USER, level = currentLogLevel - 1)
+        log.addMessageWithFactDetail(
+            { "Fact node checked and it is correct, out facts are computed: " },
+            this,
+            MessageType.USER,
+            level = currentLogLevel - 1
+        )
         return ComparisonResult(true, coloringTasks, this, this, additionalFactUsed = additionalFactUsed)
     }
 
@@ -668,38 +1177,47 @@ class MainLineAndNode(
 
     override fun type() = ComparableTransformationPartType.MAIN_LINE_AND_NODE
     override fun toString() = "AND_NODE(" +
-            if (rules.isNotEmpty()) {
-                "rules:(${rules.joinToString(separator = ";") { it.toString() }});"
-            } else {
-                ""
-            } +
-            if (expressionTransformationChains.isNotEmpty()) {
-                "transformation chains:(${expressionTransformationChains.joinToString(separator = ";") { it.toString() }});"
-            } else {
-                ""
-            } +
-            if (factTransformationChains.isNotEmpty()) {
-                "facts chains:(${factTransformationChains.joinToString(separator = ";") { it.toString() }})"
-            } else {
-                ""
-            } +
-            if (inFacts.isNotEmpty()) {
-                "in:(${inFacts.joinToString(separator = ";") { it.toString() }})"
-            } else {
-                ""
-            } +
-            if (outFacts.isNotEmpty()) {
-                "out:(${outFacts.joinToString(separator = ";") { it.toString() }})"
-            } else {
-                ""
-            } +
-            ")"
+        if (rules.isNotEmpty()) {
+            "rules:(${rules.joinToString(separator = ";") { it.toString() }});"
+        } else {
+            ""
+        } +
+        if (expressionTransformationChains.isNotEmpty()) {
+            "transformation chains:(${expressionTransformationChains.joinToString(separator = ";") { it.toString() }});"
+        } else {
+            ""
+        } +
+        if (factTransformationChains.isNotEmpty()) {
+            "facts chains:(${factTransformationChains.joinToString(separator = ";") { it.toString() }})"
+        } else {
+            ""
+        } +
+        if (inFacts.isNotEmpty()) {
+            "in:(${inFacts.joinToString(separator = ";") { it.toString() }})"
+        } else {
+            ""
+        } +
+        if (outFacts.isNotEmpty()) {
+            "out:(${outFacts.joinToString(separator = ";") { it.toString() }})"
+        } else {
+            ""
+        } +
+        ")"
 
 
     override fun computeIdentifier(recomputeIfComputed: Boolean): String {
         if (identifier.isBlank() || recomputeIfComputed) {
-            identifier = "AND_NODE(${inFacts.joinToString(separator = ";mn;") { it.computeIdentifier(recomputeIfComputed) }}" +
-                    "${if (outFacts.isNotEmpty()) ";-->>;(${outFacts.joinToString(separator = ";mn;") { it.computeIdentifier(recomputeIfComputed) }}" else ""})"
+            identifier =
+                "AND_NODE(${inFacts.joinToString(separator = ";mn;") { it.computeIdentifier(recomputeIfComputed) }}" +
+                    "${
+                        if (outFacts.isNotEmpty()) ";-->>;(${
+                            outFacts.joinToString(separator = ";mn;") {
+                                it.computeIdentifier(
+                                    recomputeIfComputed
+                                )
+                            }
+                        }" else ""
+                    })"
         }
         return identifier
     }
@@ -708,14 +1226,16 @@ class MainLineAndNode(
     var outIdentifier: String = ""
     override fun computeInIdentifier(recomputeIfComputed: Boolean): String {
         if (inIdentifier.isBlank() || recomputeIfComputed) {
-            inIdentifier = "AND_NODE(${inFacts.joinToString(separator = ";mn;") { it.computeInIdentifier(recomputeIfComputed) }})"
+            inIdentifier =
+                "AND_NODE(${inFacts.joinToString(separator = ";mn;") { it.computeInIdentifier(recomputeIfComputed) }})"
         }
         return inIdentifier
     }
 
     override fun computeOutIdentifier(recomputeIfComputed: Boolean): String {
         if (outIdentifier.isBlank() || recomputeIfComputed) {
-            outIdentifier = "AND_NODE(${outFacts.joinToString(separator = ";mn;") { it.computeOutIdentifier(recomputeIfComputed) }})"
+            outIdentifier =
+                "AND_NODE(${outFacts.joinToString(separator = ";mn;") { it.computeOutIdentifier(recomputeIfComputed) }})"
         }
         return outIdentifier
     }
@@ -725,34 +1245,61 @@ class MainLineAndNode(
         return "AND_NODE(${childrenFactsIdentifiers.sorted().joinToString(separator = ";mn;") { it }})"
     }
 
-    override fun isFactorizationForVariables(minNumberOfMultipliers: Int, targetVariables: Set<String>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? {
+    override fun isFactorizationForVariables(
+        minNumberOfMultipliers: Int,
+        targetVariables: Set<String>,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? {
         if (outFacts.isNotEmpty()) {
-            return outFacts.last().isFactorizationForVariables(minNumberOfMultipliers, targetVariables, targetExpression, factComporator)
+            return outFacts.last()
+                .isFactorizationForVariables(minNumberOfMultipliers, targetVariables, targetExpression, factComparator)
         }
         return GeneralError("No answer")
     }
 
-    override fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? {
+    override fun isSolutionWithoutFunctions(
+        forbidden: List<Pair<String, Int>>,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? {
         if (outFacts.isNotEmpty()) {
-            return outFacts.last().isSolutionWithoutFunctions(forbidden, targetExpression, factComporator)
+            return outFacts.last().isSolutionWithoutFunctions(forbidden, targetExpression, factComparator)
         }
         return GeneralError("No answer")
     }
 
-    override fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? {
+    override fun hasNoFractions(
+        maxNumberOfDivisions: Int,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? {
         if (outFacts.isNotEmpty()) {
-            return outFacts.last().hasNoFractions(maxNumberOfDivisions, targetExpression, factComporator)
+            return outFacts.last().hasNoFractions(maxNumberOfDivisions, targetExpression, factComparator)
         }
         return GeneralError("No answer")
     }
 
     companion object {
-        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration = FunctionConfiguration()): MainLineAndNode? {
+        fun parseFromFactIdentifier(
+            string: String,
+            parent: MainLineNode? = null,
+            functionConfiguration: FunctionConfiguration = FunctionConfiguration()
+        ): MainLineAndNode? {
             val mainPart = string.substring("AND_NODE(".length, string.length - ")".length)
-            val parts = splitBySubstringOnTopLevel(listOf(SplittingString(";-->>;")), mainPart).map { mainPart.substring(it.startPosition, it.endPosition) }
+            val parts = splitBySubstringOnTopLevel(
+                listOf(SplittingString(";-->>;")),
+                mainPart
+            ).map { mainPart.substring(it.startPosition, it.endPosition) }
             val result = MainLineAndNode(parent = parent)
             result.inFacts.addAll(parsePartsFromIdentifier(parts[0], parent, functionConfiguration))
-            result.outFacts.addAll(parsePartsFromIdentifier(if (parts.size > 1) parts[1] else parts[0], parent, functionConfiguration))
+            result.outFacts.addAll(
+                parsePartsFromIdentifier(
+                    if (parts.size > 1) parts[1] else parts[0],
+                    parent,
+                    functionConfiguration
+                )
+            )
             return result
         }
     }
@@ -760,20 +1307,24 @@ class MainLineAndNode(
 }
 
 class MainLineOrNode(
-        override val startPosition: Int = 0,
-        override val endPosition: Int = 0,
-        override var parent: MainLineNode? = null,
-        override val factTransformationChains: MutableList<MainChain> = mutableListOf(),
-        override val inFacts: MutableList<MainChainPart> = mutableListOf(),
-        override val outFacts: MutableList<MainChainPart> = mutableListOf(),
-        override val expressionTransformationChains: MutableList<ExpressionChain> = mutableListOf(), //correct chains have to be packed in in and out node
-        override val rules: MutableList<Rule> = mutableListOf(),
-        override var identifier: String = ""
-        // may be rules should be just in 'MainLineAndNode'. But if it here, notation will be easier
+    override val startPosition: Int = 0,
+    override val endPosition: Int = 0,
+    override var parent: MainLineNode? = null,
+    override val factTransformationChains: MutableList<MainChain> = mutableListOf(),
+    override val inFacts: MutableList<MainChainPart> = mutableListOf(),
+    override val outFacts: MutableList<MainChainPart> = mutableListOf(),
+    override val expressionTransformationChains: MutableList<ExpressionChain> = mutableListOf(), //correct chains have to be packed in in and out node
+    override val rules: MutableList<Rule> = mutableListOf(),
+    override var identifier: String = ""
+    // may be rules should be just in 'MainLineAndNode'. But if it here, notation will be easier
 ) : MainLineNode {
     override fun getLastExpression() = outFacts.last().getLastExpression()
 
-    override fun isSolutionForVariables(targetVariables: MutableMap<String, Boolean>, left: Boolean, allowedVariables: Set<String>): GeneralError? {
+    override fun isSolutionForVariables(
+        targetVariables: MutableMap<String, Boolean>,
+        left: Boolean,
+        allowedVariables: Set<String>
+    ): GeneralError? {
         for (fact in outFacts) {
             val error = fact.isSolutionForVariables(targetVariables, allowedVariables = allowedVariables)
             if (error != null) return error
@@ -781,7 +1332,11 @@ class MainLineOrNode(
         return null
     }
 
-    override fun computeIfNumeric(substitutionInstance: SubstitutionInstance, baseOperationsDefinitions: BaseOperationsDefinitions, checkOutMainLineNodePart: Boolean): Boolean? {
+    override fun computeIfNumeric(
+        substitutionInstance: SubstitutionInstance,
+        baseOperationsDefinitions: BaseOperationsDefinitions,
+        checkOutMainLineNodePart: Boolean
+    ): Boolean? {
         val actualFacts = if (checkOutMainLineNodePart) getOutFactsFromMainLineNode(this)
         else getInFactsFromMainLineNode(this)
         var isNull = false
@@ -791,7 +1346,11 @@ class MainLineOrNode(
                     (fact as ExpressionComparison).computeIfNumeric(substitutionInstance, baseOperationsDefinitions)
                 }
                 ComparableTransformationPartType.MAIN_LINE_AND_NODE, ComparableTransformationPartType.MAIN_LINE_OR_NODE -> {
-                    (fact as MainLineNode).computeIfNumeric(substitutionInstance, baseOperationsDefinitions, checkOutMainLineNodePart)
+                    (fact as MainLineNode).computeIfNumeric(
+                        substitutionInstance,
+                        baseOperationsDefinitions,
+                        checkOutMainLineNodePart
+                    )
                 }
                 else -> null
             }
@@ -805,13 +1364,18 @@ class MainLineOrNode(
     }
 
     override fun copyNode() = MainLineOrNode(startPosition, endPosition, parent)
-    override fun clone() = MainLineOrNode(startPosition, endPosition, parent,
-            inFacts = inFacts.map { it.clone() }.toMutableList(),
-            outFacts = outFacts.map { it.clone() }.toMutableList())
+    override fun clone() = MainLineOrNode(
+        startPosition, endPosition, parent,
+        inFacts = inFacts.map { it.clone() }.toMutableList(),
+        outFacts = outFacts.map { it.clone() }.toMutableList()
+    )
 
-    override fun cloneWithNormalization(nameArgsMap: MutableMap<String, String>, sorted: Boolean) = MainLineOrNode(startPosition, endPosition, parent,
+    override fun cloneWithNormalization(nameArgsMap: MutableMap<String, String>, sorted: Boolean) =
+        MainLineOrNode(
+            startPosition, endPosition, parent,
             inFacts = inFacts.map { it.cloneWithNormalization(nameArgsMap, sorted) }.toMutableList(),
-            outFacts = outFacts.map { it.cloneWithNormalization(nameArgsMap, sorted) }.toMutableList())
+            outFacts = outFacts.map { it.cloneWithNormalization(nameArgsMap, sorted) }.toMutableList()
+        )
 
     override fun normalizeSubTree(currentDeep: Int, nameArgsMap: MutableMap<String, String>, sorted: Boolean) {
         inFacts.forEach { it.normalizeSubTree(currentDeep, nameArgsMap, sorted) }
@@ -836,15 +1400,30 @@ class MainLineOrNode(
         outFacts.forEach { it.computeExpressionTrees(baseOperationsDefinitions) }
     }
 
-    override fun replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>, definedFunctionNameNumberOfArgsSet: MutableSet<String>) {
-        inFacts.forEach { it.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, definedFunctionNameNumberOfArgsSet) }
-        outFacts.forEach { it.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, definedFunctionNameNumberOfArgsSet) }
+    override fun replaceNotDefinedFunctionsOnVariables(
+        functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>,
+        definedFunctionNameNumberOfArgsSet: MutableSet<String>
+    ) {
+        inFacts.forEach {
+            it.replaceNotDefinedFunctionsOnVariables(
+                functionIdentifierToVariableMap,
+                definedFunctionNameNumberOfArgsSet
+            )
+        }
+        outFacts.forEach {
+            it.replaceNotDefinedFunctionsOnVariables(
+                functionIdentifierToVariableMap,
+                definedFunctionNameNumberOfArgsSet
+            )
+        }
     }
 
-    override fun check(factComporator: FactComporator, onExpressionLevel: Boolean,
-                       factsTransformations: List<FactSubstitution>,
-                       expressionTransformations: List<ExpressionSubstitution>,
-                       additionalFacts: List<MainChainPart>): ComparisonResult {
+    override fun check(
+        factComparator: FactComparator, onExpressionLevel: Boolean,
+        factsTransformations: List<FactSubstitution>,
+        expressionTransformations: List<ExpressionSubstitution>,
+        additionalFacts: List<MainChainPart>
+    ): ComparisonResult {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -863,37 +1442,46 @@ class MainLineOrNode(
 
     override fun type() = ComparableTransformationPartType.MAIN_LINE_OR_NODE
     override fun toString() = "OR_NODE(" +
-            if (rules.isNotEmpty()) {
-                "rules:(${rules.joinToString(separator = ";") { it.toString() }});"
-            } else {
-                ""
-            } +
-            if (expressionTransformationChains.isNotEmpty()) {
-                "transformation chains:(${expressionTransformationChains.joinToString(separator = ";") { it.toString() }});"
-            } else {
-                ""
-            } +
-            if (factTransformationChains.isNotEmpty()) {
-                "facts chains:(${factTransformationChains.joinToString(separator = ";") { it.toString() }})"
-            } else {
-                ""
-            } +
-            if (inFacts.isNotEmpty()) {
-                "in:(${inFacts.joinToString(separator = ";") { it.toString() }})"
-            } else {
-                ""
-            } +
-            if (outFacts.isNotEmpty()) {
-                "out:(${outFacts.joinToString(separator = ";") { it.toString() }})"
-            } else {
-                ""
-            } +
-            ")"
+        if (rules.isNotEmpty()) {
+            "rules:(${rules.joinToString(separator = ";") { it.toString() }});"
+        } else {
+            ""
+        } +
+        if (expressionTransformationChains.isNotEmpty()) {
+            "transformation chains:(${expressionTransformationChains.joinToString(separator = ";") { it.toString() }});"
+        } else {
+            ""
+        } +
+        if (factTransformationChains.isNotEmpty()) {
+            "facts chains:(${factTransformationChains.joinToString(separator = ";") { it.toString() }})"
+        } else {
+            ""
+        } +
+        if (inFacts.isNotEmpty()) {
+            "in:(${inFacts.joinToString(separator = ";") { it.toString() }})"
+        } else {
+            ""
+        } +
+        if (outFacts.isNotEmpty()) {
+            "out:(${outFacts.joinToString(separator = ";") { it.toString() }})"
+        } else {
+            ""
+        } +
+        ")"
 
     override fun computeIdentifier(recomputeIfComputed: Boolean): String {
         if (identifier.isBlank() || recomputeIfComputed) {
-            identifier = "OR_NODE(${inFacts.joinToString(separator = ";mn;") { it.computeIdentifier(recomputeIfComputed) }}" +
-                    "${if (outFacts.isNotEmpty()) ";-->>;(${outFacts.joinToString(separator = ";mn;") { it.computeIdentifier(recomputeIfComputed) }}" else ""})"
+            identifier =
+                "OR_NODE(${inFacts.joinToString(separator = ";mn;") { it.computeIdentifier(recomputeIfComputed) }}" +
+                    "${
+                        if (outFacts.isNotEmpty()) ";-->>;(${
+                            outFacts.joinToString(separator = ";mn;") {
+                                it.computeIdentifier(
+                                    recomputeIfComputed
+                                )
+                            }
+                        }" else ""
+                    })"
         }
         return identifier
     }
@@ -902,14 +1490,16 @@ class MainLineOrNode(
     var outIdentifier: String = ""
     override fun computeInIdentifier(recomputeIfComputed: Boolean): String {
         if (inIdentifier.isBlank() || recomputeIfComputed) {
-            inIdentifier = "OR_NODE(${inFacts.joinToString(separator = ";mn;") { it.computeInIdentifier(recomputeIfComputed) }})"
+            inIdentifier =
+                "OR_NODE(${inFacts.joinToString(separator = ";mn;") { it.computeInIdentifier(recomputeIfComputed) }})"
         }
         return inIdentifier
     }
 
     override fun computeOutIdentifier(recomputeIfComputed: Boolean): String {
         if (outIdentifier.isBlank() || recomputeIfComputed) {
-            outIdentifier = "OR_NODE(${outFacts.joinToString(separator = ";mn;") { it.computeOutIdentifier(recomputeIfComputed) }})"
+            outIdentifier =
+                "OR_NODE(${outFacts.joinToString(separator = ";mn;") { it.computeOutIdentifier(recomputeIfComputed) }})"
         }
         return outIdentifier
     }
@@ -920,49 +1510,85 @@ class MainLineOrNode(
     }
 
     companion object {
-        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration = FunctionConfiguration()): MainLineOrNode? {
+        fun parseFromFactIdentifier(
+            string: String,
+            parent: MainLineNode? = null,
+            functionConfiguration: FunctionConfiguration = FunctionConfiguration()
+        ): MainLineOrNode? {
             val mainPart = string.substring("OR_NODE(".length, string.length - ")".length)
-            val parts = splitBySubstringOnTopLevel(listOf(SplittingString(";-->>;")), mainPart).map { mainPart.substring(it.startPosition, it.endPosition) }
+            val parts = splitBySubstringOnTopLevel(
+                listOf(SplittingString(";-->>;")),
+                mainPart
+            ).map { mainPart.substring(it.startPosition, it.endPosition) }
             val result = MainLineOrNode(parent = parent)
             result.inFacts.addAll(parsePartsFromIdentifier(parts[0], parent, functionConfiguration))
-            result.outFacts.addAll(parsePartsFromIdentifier(if (parts.size > 1) parts[1] else parts[0], parent, functionConfiguration))
+            result.outFacts.addAll(
+                parsePartsFromIdentifier(
+                    if (parts.size > 1) parts[1] else parts[0],
+                    parent,
+                    functionConfiguration
+                )
+            )
             return result
         }
     }
 
-    override fun isFactorizationForVariables(minNumberOfMultipliers: Int, targetVariables: Set<String>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? {
+    override fun isFactorizationForVariables(
+        minNumberOfMultipliers: Int,
+        targetVariables: Set<String>,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? {
         if (outFacts.isNotEmpty()) {
-            return outFacts.last().isFactorizationForVariables(minNumberOfMultipliers, targetVariables, targetExpression, factComporator)
+            return outFacts.last()
+                .isFactorizationForVariables(minNumberOfMultipliers, targetVariables, targetExpression, factComparator)
         }
         return GeneralError("No answer")
     }
 
-    override fun isSolutionWithoutFunctions(forbidden: List<Pair<String,Int>>, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? {
+    override fun isSolutionWithoutFunctions(
+        forbidden: List<Pair<String, Int>>,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? {
         if (outFacts.isNotEmpty()) {
-            return outFacts.last().isSolutionWithoutFunctions(forbidden, targetExpression, factComporator)
+            return outFacts.last().isSolutionWithoutFunctions(forbidden, targetExpression, factComparator)
         }
         return GeneralError("No answer")
     }
 
-    override fun hasNoFractions(maxNumberOfDivisions: Int, targetExpression: ExpressionNode, factComporator: FactComporator): GeneralError? {
+    override fun hasNoFractions(
+        maxNumberOfDivisions: Int,
+        targetExpression: ExpressionNode,
+        factComparator: FactComparator
+    ): GeneralError? {
         if (outFacts.isNotEmpty()) {
-            return outFacts.last().hasNoFractions(maxNumberOfDivisions, targetExpression, factComporator)
+            return outFacts.last().hasNoFractions(maxNumberOfDivisions, targetExpression, factComparator)
         }
         return GeneralError("No answer")
     }
 }
 
 fun getInFactsFromMainLineNode(factNode: ComparableTransformationsPart) =
-        if (factNode.type() == ComparableTransformationPartType.MAIN_LINE_AND_NODE) (factNode as MainLineAndNode).inFacts
-        else (factNode as MainLineOrNode).inFacts
+    if (factNode.type() == ComparableTransformationPartType.MAIN_LINE_AND_NODE) (factNode as MainLineAndNode).inFacts
+    else (factNode as MainLineOrNode).inFacts
 
 fun getOutFactsFromMainLineNode(factNode: ComparableTransformationsPart) =
-        if (factNode.type() == ComparableTransformationPartType.MAIN_LINE_AND_NODE) (factNode as MainLineAndNode).outFacts
-        else (factNode as MainLineOrNode).outFacts
+    if (factNode.type() == ComparableTransformationPartType.MAIN_LINE_AND_NODE) (factNode as MainLineAndNode).outFacts
+    else (factNode as MainLineOrNode).outFacts
 
 
-fun parsePartsFromIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration): MutableList<MainChainPart> {
-    val parts = splitBySubstringOnTopLevel(listOf(SplittingString(";mn;")), string).map { string.substring(it.startPosition, it.endPosition) }
+fun parsePartsFromIdentifier(
+    string: String,
+    parent: MainLineNode? = null,
+    functionConfiguration: FunctionConfiguration
+): MutableList<MainChainPart> {
+    val parts = splitBySubstringOnTopLevel(listOf(SplittingString(";mn;")), string).map {
+        string.substring(
+            it.startPosition,
+            it.endPosition
+        )
+    }
     val result = mutableListOf<MainChainPart>()
     for (part in parts) {
         result.add(parseFromFactIdentifier(part, parent, functionConfiguration) ?: continue)
@@ -970,8 +1596,11 @@ fun parsePartsFromIdentifier(string: String, parent: MainLineNode? = null, funct
     return result
 }
 
-fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration = FunctionConfiguration())
-        = if (string.startsWith("AND_NODE(")) {
+fun parseFromFactIdentifier(
+    string: String,
+    parent: MainLineNode? = null,
+    functionConfiguration: FunctionConfiguration = FunctionConfiguration()
+) = if (string.startsWith("AND_NODE(")) {
     MainLineAndNode.parseFromFactIdentifier(string, parent, functionConfiguration)
 } else if (string.startsWith("OR_NODE(")) {
     MainLineOrNode.parseFromFactIdentifier(string, parent, functionConfiguration)
@@ -995,13 +1624,14 @@ fun normalizeFactsForComparison(left: MainChainPart, right: MainChainPart): Pair
 }
 
 fun factWrapperForCheckingTransformations(fact: MainChainPart, checkOutMainLineNodePart: Boolean): MainChainPart {
-    val actualFacts = if (fact.type() != ComparableTransformationPartType.MAIN_LINE_AND_NODE && fact.type() != ComparableTransformationPartType.MAIN_LINE_OR_NODE) {
-        mutableListOf(fact)
-    } else if (checkOutMainLineNodePart) {
-        getOutFactsFromMainLineNode(fact)
-    } else {
-        getInFactsFromMainLineNode(fact)
-    }
+    val actualFacts =
+        if (fact.type() != ComparableTransformationPartType.MAIN_LINE_AND_NODE && fact.type() != ComparableTransformationPartType.MAIN_LINE_OR_NODE) {
+            mutableListOf(fact)
+        } else if (checkOutMainLineNodePart) {
+            getOutFactsFromMainLineNode(fact)
+        } else {
+            getInFactsFromMainLineNode(fact)
+        }
     val wrapper = if (fact.type() != ComparableTransformationPartType.MAIN_LINE_OR_NODE) {
         MainLineAndNode(inFacts = actualFacts, outFacts = actualFacts)
     } else {
@@ -1011,28 +1641,32 @@ fun factWrapperForCheckingTransformations(fact: MainChainPart, checkOutMainLineN
 }
 
 fun MainLineAndNode.checkTransformationChain(
-        factComporator: FactComporator,
-        onExpressionLevel: Boolean,
-        additionalFacts: List<MainChainPart>): ComparisonResult {
-    val compiledConfiguration = factComporator.compiledConfiguration
+    factComparator: FactComparator,
+    onExpressionLevel: Boolean,
+    additionalFacts: List<MainChainPart>
+): ComparisonResult {
+    val compiledConfiguration = factComparator.compiledConfiguration
     this.variableReplacement(compiledConfiguration.compiledImmediateVariableReplacements)
     additionalFacts.forEach { it.variableReplacement(compiledConfiguration.compiledImmediateVariableReplacements) }
-    return this.check(factComporator,
-            onExpressionLevel,
-            compiledConfiguration.compiledFactTreeTransformationRules,
-            compiledConfiguration.compiledExpressionTreeTransformationRules,
-            additionalFacts)
+    return this.check(
+        factComparator,
+        onExpressionLevel,
+        compiledConfiguration.compiledFactTreeTransformationRules,
+        compiledConfiguration.compiledExpressionTreeTransformationRules,
+        additionalFacts
+    )
 }
 
 
 class FactConstructorViewer(
-        val compiledConfiguration: CompiledConfiguration = CompiledConfiguration(),
-        val expressionNodeConstructor: ExpressionNodeConstructor = ExpressionNodeConstructor(
-                compiledConfiguration.functionConfiguration,
-                compiledConfiguration.compiledImmediateVariableReplacements),
-        val openBracket: Char = '{',
-        val closeBracket: Char = '}',
-        val mainLineNodePartSuffix: String = ", "
+    val compiledConfiguration: CompiledConfiguration = CompiledConfiguration(),
+    val expressionNodeConstructor: ExpressionNodeConstructor = ExpressionNodeConstructor(
+        compiledConfiguration.functionConfiguration,
+        compiledConfiguration.compiledImmediateVariableReplacements
+    ),
+    val openBracket: Char = '{',
+    val closeBracket: Char = '}',
+    val mainLineNodePartSuffix: String = ", "
 ) {
     fun constructFactUserView(fact: MainChainPart): String {
         val result = StringBuilder()
@@ -1104,15 +1738,19 @@ class FactConstructorViewer(
                 fact as Rule
                 if (fact.factSubstitution != null || fact.expressionSubstitution != null) {
                     if (fact.factSubstitution != null) {
-                        "[${constructFactUserView(fact.factSubstitution!!.left)} ${fact.factSubstitution!!.direction.toUserString()} ${constructFactUserView(fact.factSubstitution!!.right)}" +
-                                ", actual " +
-                                "${if (fact.factSubstitution!!.basedOnTaskContext) "only in task context" else "everywhere"}]"
+                        "[${constructFactUserView(fact.factSubstitution!!.left)} ${fact.factSubstitution!!.direction.toUserString()} ${
+                            constructFactUserView(
+                                fact.factSubstitution!!.right
+                            )
+                        }" +
+                            ", actual " +
+                            "${if (fact.factSubstitution!!.basedOnTaskContext) "only in task context" else "everywhere"}]"
                     } else "" +
-                            if (fact.expressionSubstitution != null) {
-                                "[${fact.expressionSubstitution!!.left} -> ${fact.expressionSubstitution!!.right}, " +
-                                        "actual in ${fact.expressionSubstitution!!.comparisonType} context" +
-                                        "${if (fact.expressionSubstitution!!.basedOnTaskContext) "only in task" else "everywhere"}]"
-                            } else ""
+                        if (fact.expressionSubstitution != null) {
+                            "[${fact.expressionSubstitution!!.left} -> ${fact.expressionSubstitution!!.right}, " +
+                                "actual in ${fact.expressionSubstitution!!.comparisonType} context" +
+                                "${if (fact.expressionSubstitution!!.basedOnTaskContext) "only in task" else "everywhere"}]"
+                        } else ""
                 } else {
                     "[${fact.name}:${constructFactUserView(fact.root)}]"
                 }
@@ -1143,21 +1781,25 @@ class FactConstructorViewer(
                 })
                 result.append("}FACT_TRANSFORMATION_CHAINS{")
                 result.append(fact.factTransformationChains.joinToString(separator = "") {
-                    "{${it.chain.joinToString(separator = "") {
-                        "{${constructIdentifierByFact(it)}}"
-                    }}}"
+                    "{${
+                        it.chain.joinToString(separator = "") {
+                            "{${constructIdentifierByFact(it)}}"
+                        }
+                    }}"
                 })
                 result.append("}EXPRESSION_TRANSFORMATION_CHAINS{")
                 result.append(fact.expressionTransformationChains.joinToString(separator = "") {
-                    "${it.comparisonType.string}{${it.chain.joinToString(separator = "") {
-                        if (it.type() == ComparableTransformationPartType.EXPRESSION) {
-                            "{${constructIdentifierByFact(it as Expression)}}"
-                        } else if (it.type() == ComparableTransformationPartType.RULE) {
-                            "{${constructIdentifierByFact(it as Rule)}}"
-                        } else {
-                            "{${constructIdentifierByFact(it as RulePointer)}}"
+                    "${it.comparisonType.string}{${
+                        it.chain.joinToString(separator = "") {
+                            if (it.type() == ComparableTransformationPartType.EXPRESSION) {
+                                "{${constructIdentifierByFact(it as Expression)}}"
+                            } else if (it.type() == ComparableTransformationPartType.RULE) {
+                                "{${constructIdentifierByFact(it as Rule)}}"
+                            } else {
+                                "{${constructIdentifierByFact(it as RulePointer)}}"
+                            }
                         }
-                    }}}"
+                    }}"
                 })
                 result.append("}IN_FACTS{")
                 result.append(fact.inFacts.joinToString(separator = "") {
@@ -1182,16 +1824,22 @@ class FactConstructorViewer(
             }
             ComparableTransformationPartType.RULE -> {
                 fact as Rule
-                result.append("{${fact.name}{${constructIdentifierByFact(fact.root)}}" +
-                        "{EXPRESSION_SUBSTITUTION${if (fact.expressionSubstitution != null) {
-                            val subst = fact.expressionSubstitution!!
-                            "{${subst.left}}{${subst.right}}{${subst.comparisonType.string}}{${subst.basedOnTaskContext.data()}}{${subst.weight}}"
-                        } else ""}}" +
-                        "{FACT_SUBSTITUTION${if (fact.factSubstitution != null) {
-                            val subst = fact.factSubstitution!!
-                            "{${constructIdentifierByFact(subst.left)}}{${constructIdentifierByFact(subst.right)}}{${subst.direction}}{${subst.basedOnTaskContext.data()}}{${subst.weight}}"
-                        } else ""}}" +
-                        "}")
+                result.append(
+                    "{${fact.name}{${constructIdentifierByFact(fact.root)}}" +
+                        "{EXPRESSION_SUBSTITUTION${
+                            if (fact.expressionSubstitution != null) {
+                                val subst = fact.expressionSubstitution!!
+                                "{${subst.left}}{${subst.right}}{${subst.comparisonType.string}}{${subst.basedOnTaskContext.data()}}{${subst.weight}}"
+                            } else ""
+                        }}" +
+                        "{FACT_SUBSTITUTION${
+                            if (fact.factSubstitution != null) {
+                                val subst = fact.factSubstitution!!
+                                "{${constructIdentifierByFact(subst.left)}}{${constructIdentifierByFact(subst.right)}}{${subst.direction}}{${subst.basedOnTaskContext.data()}}{${subst.weight}}"
+                            } else ""
+                        }}" +
+                        "}"
+                )
             }
             ComparableTransformationPartType.RULE_POINTER -> {
                 fact as RulePointer
@@ -1204,7 +1852,8 @@ class FactConstructorViewer(
         return result.toString()
     }
 
-    private fun splitStringByBracketsOnTopLevel(identifier: String, startPosition: Int = 0) = splitStringByBracketsOnTopLevel(identifier, openBracket, closeBracket, startPosition)
+    private fun splitStringByBracketsOnTopLevel(identifier: String, startPosition: Int = 0) =
+        splitStringByBracketsOnTopLevel(identifier, openBracket, closeBracket, startPosition)
 
     fun constructFactByIdentifier(identifier: String, parent: MainLineNode? = null): MainChainPart {
         if (identifier.contains('{')) {
@@ -1231,7 +1880,12 @@ class FactConstructorViewer(
                                     newFact.factTransformationChains.add(MainChain())
                                     val factIdentifiers = splitStringByBracketsOnTopLevel(chain)
                                     for (factIdentifier in factIdentifiers.list) {
-                                        newFact.factTransformationChains.last().chain.add(constructFactByIdentifier(factIdentifier, newFact))
+                                        newFact.factTransformationChains.last().chain.add(
+                                            constructFactByIdentifier(
+                                                factIdentifier,
+                                                newFact
+                                            )
+                                        )
                                     }
                                 }
                             }
@@ -1239,9 +1893,17 @@ class FactConstructorViewer(
                                 val chains = splitStringByBracketsOnTopLevel(mainLineNodePartIdentifier)
                                 for (chain in chains.list) {
                                     val factIdentifiers = splitStringByBracketsOnTopLevel(chain)
-                                    newFact.expressionTransformationChains.add(ExpressionChain(comparisonType = valueOfComparisonType(factIdentifiers.name)))
+                                    newFact.expressionTransformationChains.add(
+                                        ExpressionChain(
+                                            comparisonType = valueOfComparisonType(
+                                                factIdentifiers.name
+                                            )
+                                        )
+                                    )
                                     for (factIdentifier in factIdentifiers.list) {
-                                        newFact.expressionTransformationChains.last().chain.add(constructFactByIdentifier(factIdentifier, newFact))
+                                        newFact.expressionTransformationChains.last().chain.add(
+                                            constructFactByIdentifier(factIdentifier, newFact)
+                                        )
                                     }
                                 }
                             }
@@ -1249,27 +1911,37 @@ class FactConstructorViewer(
                                 val rules = splitStringByBracketsOnTopLevel(mainLineNodePartIdentifier)
                                 for (rule in rules.list) {
                                     val ruleIdentifier = splitStringByBracketsOnTopLevel(rule)
-                                    val expressionSubstitutionData = splitStringByBracketsOnTopLevel(ruleIdentifier.list[1])
-                                    val expressionSubstitution = if (expressionSubstitutionData.list.isEmpty()) null else ExpressionSubstitution(
+                                    val expressionSubstitutionData =
+                                        splitStringByBracketsOnTopLevel(ruleIdentifier.list[1])
+                                    val expressionSubstitution =
+                                        if (expressionSubstitutionData.list.isEmpty()) null else ExpressionSubstitution(
                                             left = expressionNodeConstructor.construct(expressionSubstitutionData.list[0]),
                                             right = expressionNodeConstructor.construct(expressionSubstitutionData.list[1]),
                                             comparisonType = valueOfComparisonType(expressionSubstitutionData.list[2]),
                                             basedOnTaskContext = expressionSubstitutionData.list[3].booleanFromData(),
                                             weight = expressionSubstitutionData.list[4].toDouble()
-                                    )
+                                        )
                                     val factSubstitutionData = splitStringByBracketsOnTopLevel(ruleIdentifier.list[2])
-                                    val factSubstitution = if (factSubstitutionData.list.isEmpty()) null else FactSubstitution(
+                                    val factSubstitution =
+                                        if (factSubstitutionData.list.isEmpty()) null else FactSubstitution(
                                             left = constructFactByIdentifier(factSubstitutionData.list[0]),
                                             right = constructFactByIdentifier(factSubstitutionData.list[1]),
                                             direction = SubstitutionDirection.valueOf(factSubstitutionData.list[2]),
                                             basedOnTaskContext = factSubstitutionData.list[3].booleanFromData(),
                                             weight = factSubstitutionData.list[4].toDouble(),
-                                            factComporator = compiledConfiguration.factComporator
-                                    )
-                                    newFact.rules.add(Rule(0, 0, parent = newFact, name = ruleIdentifier.name,
-                                            root = constructFactByIdentifier(ruleIdentifier.list[0], newFact) as MainLineAndNode,
+                                            factComparator = compiledConfiguration.factComparator
+                                        )
+                                    newFact.rules.add(
+                                        Rule(
+                                            0, 0, parent = newFact, name = ruleIdentifier.name,
+                                            root = constructFactByIdentifier(
+                                                ruleIdentifier.list[0],
+                                                newFact
+                                            ) as MainLineAndNode,
                                             expressionSubstitution = expressionSubstitution,
-                                            factSubstitution = factSubstitution))
+                                            factSubstitution = factSubstitution
+                                        )
+                                    )
                                 }
                             }
                             "IN_FACTS" -> {
@@ -1289,8 +1961,10 @@ class FactConstructorViewer(
                     return newFact
                 }
                 ComparableTransformationPartType.EXPRESSION_COMPARISON.toString() -> {
-                    val newFact = ExpressionComparison(parent = parent, leftExpression = emptyExpression(), rightExpression = emptyExpression(),
-                            comparisonType = valueOfComparisonType(identifierData.list[1]))
+                    val newFact = ExpressionComparison(
+                        parent = parent, leftExpression = emptyExpression(), rightExpression = emptyExpression(),
+                        comparisonType = valueOfComparisonType(identifierData.list[1])
+                    )
                     newFact.leftExpression = constructFactByIdentifier(identifierData.list[0], parent) as Expression
                     newFact.rightExpression = constructFactByIdentifier(identifierData.list[2], parent) as Expression
                     return newFact

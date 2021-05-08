@@ -30,7 +30,7 @@ fun generateExpressionTask(
         val appropriateSubstitutions = mutableListOf<ExpressionSubstitution>()
         for (expressionSubstitution in expressionSubstitutions) {
             if (expressionSubstitution.leftFunctions.intersect(functionsInExpression).isNotEmpty() &&
-                    expressionSubstitution.findAllPossibleSubstitutionPlaces(currentExpression, compiledConfiguration.factComporator.expressionComporator).isNotEmpty()) {
+                    expressionSubstitution.findAllPossibleSubstitutionPlaces(currentExpression, compiledConfiguration.factComparator.expressionComparator).isNotEmpty()) {
                 appropriateSubstitutions.add(expressionSubstitution)
             }
         }
@@ -49,13 +49,13 @@ fun generateExpressionTask(
 
         val selectedSubstitution = appropriateSubstitutions[currentSubstitutionIndex]
         requiredSubstitutions.add(ExpressionSubstitution(selectedSubstitution.left, selectedSubstitution.right))
-        val places = selectedSubstitution.findAllPossibleSubstitutionPlaces(currentExpression, compiledConfiguration.factComporator.expressionComporator)
+        val places = selectedSubstitution.findAllPossibleSubstitutionPlaces(currentExpression, compiledConfiguration.factComparator.expressionComparator)
         if (places.size == 1) {
-            selectedSubstitution.applySubstitution(places, compiledConfiguration.factComporator.expressionComporator)
+            selectedSubstitution.applySubstitution(places, compiledConfiguration.factComparator.expressionComparator)
         } else {
             val partSize = selectedSubstitution.weight / places.size
             val index = (selector / partSize).toInt()
-            selectedSubstitution.applySubstitution(places.subList(index, index + 1), compiledConfiguration.factComporator.expressionComporator)
+            selectedSubstitution.applySubstitution(places.subList(index, index + 1), compiledConfiguration.factComparator.expressionComparator)
         }
     }
 

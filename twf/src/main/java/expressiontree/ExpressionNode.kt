@@ -1012,16 +1012,16 @@ data class ExpressionNode(
     }
 
     fun replaceNotDefinedFunctionsOnVariables(
-            functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>,
-            definedFunctionNameNumberOfArgsSet: Set<String>,
-            expressionComporator: ExpressionComporator? = null,
-            hasBoolFunctions: Boolean = false
+        functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>,
+        definedFunctionNameNumberOfArgsSet: Set<String>,
+        expressionComparator: ExpressionComparator? = null,
+        hasBoolFunctions: Boolean = false
     ) {
         for (child in children)
             child.replaceNotDefinedFunctionsOnVariables(
                     functionIdentifierToVariableMap,
                     definedFunctionNameNumberOfArgsSet,
-                    expressionComporator,
+                    expressionComparator,
                     hasBoolFunctions
             )
         if (nodeType == NodeType.FUNCTION && !definedFunctionNameNumberOfArgsSet.contains(value + "_" + children.size)
@@ -1031,18 +1031,18 @@ data class ExpressionNode(
 
             for ((expression, variable) in functionIdentifierToVariableMap) {
                 if (children.size == expression.children.size) {
-                    if (expressionComporator != null &&
-                            expressionComporator.compiledConfiguration.comparisonSettings.useTestingToCompareFunctionArgumentsInProbabilityComparison &&
+                    if (expressionComparator != null &&
+                            expressionComparator.compiledConfiguration.comparisonSettings.useTestingToCompareFunctionArgumentsInProbabilityComparison &&
                             !hasBoolFunctions
                     ) {
-                        if (expressionComporator.baseOperationsDefinitions.definedFunctionNameNumberOfArgsSet.contains(
+                        if (expressionComparator.baseOperationsDefinitions.definedFunctionNameNumberOfArgsSet.contains(
                                         value + "_" + children.size
                                 ) ||
-                                expressionComporator.baseOperationsDefinitions.definedFunctionNameNumberOfArgsSet.contains(
+                                expressionComparator.baseOperationsDefinitions.definedFunctionNameNumberOfArgsSet.contains(
                                         value + "_-1"
                                 )
                         ) { //if function is not 'd' or 'i'
-                            if (expressionComporator.probabilityTestComparison(
+                            if (expressionComparator.probabilityTestComparison(
                                             this,
                                             expression,
                                             ComparisonType.EQUAL
@@ -1055,7 +1055,7 @@ data class ExpressionNode(
                         } else {
                             var hasDifferentArgs = false
                             for (i in 0..children.lastIndex) {
-                                if (!expressionComporator.probabilityTestComparison(
+                                if (!expressionComparator.probabilityTestComparison(
                                                 children[i],
                                                 expression.children[i],
                                                 ComparisonType.EQUAL

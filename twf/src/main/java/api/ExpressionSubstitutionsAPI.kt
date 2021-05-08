@@ -71,14 +71,14 @@ fun findSubstitutionPlacesInExpression(
         return mutableListOf()
     }
     var expr = expression
-    var result = substitution.findAllPossibleSubstitutionPlaces(expression, compiledConfiguration.factComporator.expressionComporator)
+    var result = substitution.findAllPossibleSubstitutionPlaces(expression, compiledConfiguration.factComparator.expressionComparator)
     if (result.isEmpty() && substitution.matchJumbledAndNested && expression.containsNestedSameFunctions()){
         expr = expression.cloneWithExpandingNestedSameFunctions()
-        result = substitution.findAllPossibleSubstitutionPlaces(expr, compiledConfiguration.factComporator.expressionComporator)
+        result = substitution.findAllPossibleSubstitutionPlaces(expr, compiledConfiguration.factComparator.expressionComparator)
     }
     if (result.isEmpty()){
         expr = expr.cloneAndSimplifyByComputeSimplePlaces()
-        result = substitution.findAllPossibleSubstitutionPlaces(expr, compiledConfiguration.factComporator.expressionComporator)
+        result = substitution.findAllPossibleSubstitutionPlaces(expr, compiledConfiguration.factComparator.expressionComparator)
     }
     return result
 }
@@ -90,7 +90,7 @@ fun applySubstitution(
         substitutionPlaces: List<SubstitutionPlace>, //containsPointersOnExpressionPlaces
         compiledConfiguration: CompiledConfiguration = CompiledConfiguration()
 ): ExpressionNode {
-    substitution.applySubstitution(substitutionPlaces, compiledConfiguration.factComporator.expressionComporator)
+    substitution.applySubstitution(substitutionPlaces, compiledConfiguration.factComparator.expressionComparator)
     expression.getTopNode().reduceExtraSigns(setOf("+"), setOf("-"))
     expression.getTopNode().normilizeSubtructions(FunctionConfiguration())
     expression.getTopNode().computeNodeIdsAsNumbersInDirectTraversalAndDistancesToRoot()
