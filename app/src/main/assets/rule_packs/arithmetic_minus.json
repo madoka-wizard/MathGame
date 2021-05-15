@@ -1,0 +1,186 @@
+{
+  "code": "arithmetic_minus__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic minus",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+  ],
+  "rules": [
+    {
+      "left": "(+(-(+(-(a)))))",
+      "right": "(a)"
+    },
+    {
+      "left": "(-(+(-(a))))",
+      "right": "(a)"
+    },
+    {
+      "left": "(-(-(a)))",
+      "right": "(a)"
+    },
+    {
+      "left": "(b)",
+      "right": "(+(-(+(-(b)))))"
+    },
+    {
+      "left": "(+(a;-(0)))",
+      "right": "(a)"
+    },
+    {
+      "left": "(+(-(0);a))",
+      "right": "(a)"
+    },
+    {
+      "left": "(+(0;-(a)))",
+      "right": "(+(-(a)))"
+    },
+    {
+      "left": "(+(-(a);0))",
+      "right": "(+(-(a)))"
+    },
+    {
+      "left": "(+(a;-(a)))",
+      "right": "(0)"
+    },
+    {
+      "left": "(+(-(a);a))",
+      "right": "(0)"
+    },
+    {
+      "left": "(+(a;+(-(a))))",
+      "right": "(0)"
+    },
+    {
+      "left": "(+(+(-(a));a))",
+      "right": "(0)"
+    },
+    {
+      "left": "(0)",
+      "right": "(+(1;-(1)))"
+    },
+    {
+      "left": "(-(+(B;C)))",
+      "right": "(+(-(B);-(C)))"
+    },
+    {
+      "left": "(+(-(B);-(C)))",
+      "right": "(-(+(B;C)))"
+    },
+    {
+      "left": "(-(+(B;C;D)))",
+      "right": "(+(-(B);-(C);-(D)))"
+    },
+    {
+      "left": "(+(-(B);-(C);-(D)))",
+      "right": "(-(+(B;C;D)))"
+    },
+    {
+      "left": "(-(+(B;C;D;E)))",
+      "right": "(+(-(B);-(C);-(D);-(E)))"
+    },
+    {
+      "left": "(+(-(B);-(C);-(D);-(E)))",
+      "right": "(-(+(B;C;D;E)))"
+    },
+    {
+      "left": "(+(A;-(+(B;-(C)))))",
+      "right": "(+(A;-(B);C))"
+    },
+    {
+      "left": "(+(A;-(+(B;C))))",
+      "right": "(+(A;-(B);-(C)))"
+    },
+    {
+      "left": "(+(A;-(B);-(C)))",
+      "right": "(+(A;-(+(B;C))))"
+    },
+    {
+      "left": "(+(A;-(B);C))",
+      "right": "(+(A;-(+(B;-(C)))))"
+    },
+    {
+      "left": "(+(A;-(+(B;-(C);D))))",
+      "right": "(+(A;-(B);C;-(D)))"
+    },
+    {
+      "left": "(+(A;-(+(B;-(C);-(D)))))",
+      "right": "(+(A;-(B);C;D))"
+    },
+    {
+      "left": "(+(A;-(+(B;C;D))))",
+      "right": "(+(A;-(B);-(C);-(D)))"
+    },
+    {
+      "left": "(+(A;-(B);-(C);-(D)))",
+      "right": "(+(A;-(+(B;C;D))))"
+    },
+    {
+      "left": "(+(A;-(+(B;-(C)));D))",
+      "right": "(+(A;-(B);C;D))"
+    },
+    {
+      "left": "(+(A;-(+(B;C));D))",
+      "right": "(+(A;-(B);-(C);D))"
+    },
+    {
+      "left": "(+(A;-(B);-(C);D))",
+      "right": "(+(A;-(+(B;C));D))"
+    },
+    {
+      "left": "(+(A;-(+(B;C;D;E))))",
+      "right": "(+(A;-(B);-(C);-(D);-(E)))"
+    },
+    {
+      "left": "(+(A;-(B);-(C);-(D);-(E)))",
+      "right": "(+(A;-(+(B;C;D;E))))"
+    },
+    {
+      "left": "(+(A;-(+(B;C;D));E))",
+      "right": "(+(A;-(B);-(C);-(D);E))"
+    },
+    {
+      "left": "(+(A;-(B);-(C);-(D);E))",
+      "right": "(+(A;-(+(B;C;D));E))"
+    },
+    {
+      "left": "(+(A;C;-(A)))",
+      "right": "(+(C))"
+    },
+    {
+      "left": "(+(A;-(A);C))",
+      "right": "(+(C))"
+    },
+    {
+      "left": "(+(A;C;D;-(A)))",
+      "right": "(+(C;D))"
+    },
+    {
+      "left": "(+(A;C;-(A);D))",
+      "right": "(+(C;D))"
+    },
+    {
+      "left": "(+(A;-(A);C;D))",
+      "right": "(+(C;D))"
+    },
+    {
+      "left": "(+(A;C;D;E;-(A)))",
+      "right": "(+(C;D;E))"
+    },
+    {
+      "left": "(+(A;C;D;-(A);E))",
+      "right": "(+(C;D;E))"
+    },
+    {
+      "left": "(+(A;C;-(A);D;E))",
+      "right": "(+(C;D;E))"
+    },
+    {
+      "left": "(+(A;-(A);C;D;E))",
+      "right": "(+(C;D;E))"
+    }
+  ]
+}

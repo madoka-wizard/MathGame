@@ -1,0 +1,86 @@
+{
+  "code": "arithmetic_multiplication__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic multiplication",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_addition_vasily_game"
+    }
+  ],
+  "rules": [
+    {
+      "left": "(*(a;0))",
+      "right": "(0)",
+      "priority": 10
+    },
+    {
+      "left": "(*(0;a))",
+      "right": "(0)",
+      "priority": 10
+    },
+    {
+      "left": "(0)",
+      "right": "(*(a;0))",
+      "isExtending": true
+    },
+    {
+      "left": "(*(a;1))",
+      "right": "(a)",
+      "priority": 10
+    },
+    {
+      "left": "(*(1;a))",
+      "right": "(a)",
+      "priority": 10
+    },
+    {
+      "left": "(a)",
+      "right": "(*(a;1))",
+      "isExtending": true
+    },
+    {
+      "left": "(*(a;b))",
+      "right": "(*(b;a))",
+      "priority": 20,
+      "isExtending": true
+    },
+    {
+      "code": "OpeningBrackets",
+      "priority": 30
+    },
+    {
+      "code": "ReduceArithmetic",
+      "priority": 10
+    },
+    {
+      "code": "TwoSidesArithmeticReduce",
+      "priority": 10
+    },
+    {
+      "code": "MultiplicationFactorization",
+      "priority": 15
+    },
+    {
+      "left": "(+(a;a))",
+      "right": "(*(2;a))"
+    },
+    {
+      "left": "(+(a;+(a)))",
+      "right": "(*(2;a))"
+    },
+    {
+      "left": "(+(+(a);a))",
+      "right": "(*(2;a))"
+    },
+    {
+      "left": "(*(2;a))",
+      "right": "(+(a;a))"
+    }
+  ]
+}

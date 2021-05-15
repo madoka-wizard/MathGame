@@ -1,0 +1,22 @@
+{
+  "code": "arithmetic_commutativity__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic commutativity",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_multiplicative_commutativity__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_additional_commutativity__vasily_game"
+    }
+  ],
+  "rules": [
+  ]
+}

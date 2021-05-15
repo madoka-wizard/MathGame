@@ -1,0 +1,629 @@
+{
+  "code": "trigonometry__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Trigonometry",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_pow__vasilyGame"
+    }
+  ],
+  "rules": [
+    {
+      "left": "(+(^(sin(a);2);^(cos(a);2)))",
+      "right": "(1)",
+      "priority": 5,
+      "matchJumbledAndNested": true
+    },
+    {
+      "left": "(+(1;-(^(sin(a);2))))",
+      "right": "(^(cos(a);2))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(^(cos(a);2))",
+      "right": "(+(1;-(^(sin(a);2))))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(cos(a))",
+      "right": "(^(+(1;-(^(sin(a);2)));0.5))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(+(1;-(^(cos(a);2))))",
+      "right": "(^(sin(a);2))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(^(sin(a);2))",
+      "right": "(+(1;-(^(cos(a);2))))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(sin(a))",
+      "right": "(^(+(1;-(^(cos(a);2)));0.5))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(/(1;^(cos(a);2)))",
+      "right": "(+(1;^(tg(a);2)))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(+(1;^(tg(a);2)))",
+      "right": "(/(1;^(cos(a);2)))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(/(1;^(sin(a);2)))",
+      "right": "(+(1;^(ctg(a);2)))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(+(1;^(ctg(a);2)))",
+      "right": "(/(1;^(sin(a);2)))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(/(1;+(1;^(tg(a);2))))",
+      "right": "(^(cos(a);2))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(^(cos(a);2))",
+      "right": "(/(1;+(1;^(tg(a);2))))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(/(1;+(1;^(ctg(a);2))))",
+      "right": "(^(sin(a);2))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(^(sin(a);2))",
+      "right": "(/(1;+(1;^(ctg(a);2))))",
+      "matchJumbledAndNested": true,
+      "priority": 25
+    },
+    {
+      "left": "(*(tg(a);ctg(a)))",
+      "right": "(1)",
+      "priority": 5,
+      "matchJumbledAndNested": true
+    },
+    {
+      "left": "(/(sin(a);cos(a)))",
+      "right": "(tg(a))",
+      "priority": 25
+    },
+    {
+      "left": "(tg(a))",
+      "right": "(/(sin(a);cos(a)))",
+      "priority": 25
+    },
+    {
+      "left": "(/(cos(a);sin(a)))",
+      "right": "(ctg(a))",
+      "priority": 25
+    },
+    {
+      "left": "(ctg(a))",
+      "right": "(/(cos(a);sin(a)))",
+      "priority": 25
+    },
+    {
+      "left": "(/(1;ctg(a)))",
+      "right": "(tg(a))",
+      "priority": 25
+    },
+    {
+      "left": "(tg(a))",
+      "right": "(/(1;ctg(a)))",
+      "priority": 25
+    },
+    {
+      "left": "(/(1;tg(a)))",
+      "right": "(ctg(a))",
+      "priority": 25
+    },
+    {
+      "left": "(ctg(a))",
+      "right": "(/(1;tg(a)))",
+      "priority": 25
+    },
+    {
+      "left": "(sin(+(a;b)))",
+      "right": "(+(*(sin(a);cos(b));*(sin(b);cos(a))))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(*(sin(a);cos(b));*(sin(b);cos(a))))",
+      "right": "(sin(+(a;b)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(sin(+(a;-(b))))",
+      "right": "(+(*(sin(a);cos(b));-(*(sin(b);cos(a)))))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(*(sin(a);cos(b));-(*(sin(b);cos(a)))))",
+      "right": "(sin(+(a;-(b))))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(cos(+(a;b)))",
+      "right": "(+(*(cos(a);cos(b));-(*(sin(b);sin(a)))))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(*(cos(a);cos(b));-(*(sin(b);sin(a)))))",
+      "right": "(cos(+(a;b)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(cos(+(a;-(b))))",
+      "right": "(+(*(cos(a);cos(b));*(sin(b);sin(a))))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(*(cos(a);cos(b));*(sin(b);sin(a))))",
+      "right": "(cos(+(a;-(b))))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(sin(*(2;a)))",
+      "right": "(*(2;sin(a);cos(a)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(*(2;sin(a);cos(a)))",
+      "right": "(sin(*(2;a)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(cos(*(2;a)))",
+      "right": "(+(^(cos(a);2);-(^(sin(a);2))))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(^(cos(a);2);-(^(sin(a);2))))",
+      "right": "(cos(*(2;a)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(-(^(sin(a);2));^(cos(a);2)))",
+      "right": "(cos(*(2;a)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(cos(*(2;a)))",
+      "right": "(+(1;-(*(2;^(sin(a);2)))))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(1;-(*(2;^(sin(a);2)))))",
+      "right": "(cos(*(2;a)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(-(*(2;^(sin(a);2)));1))",
+      "right": "(cos(*(2;a)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(cos(*(2;a)))",
+      "right": "(+(*(2;^(cos(a);2));-(1)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(*(2;^(cos(a);2));-(1)))",
+      "right": "(cos(*(2;a)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(-(1);*(2;^(cos(a);2))))",
+      "right": "(cos(*(2;a)))",
+      "matchJumbledAndNested": true,
+      "priority": 24
+    },
+    {
+      "left": "(+(sin(a);sin(b)))",
+      "right": "(*(2;sin(/(+(a;b);2));cos(/(+(a;-(b));2))))",
+      "matchJumbledAndNested": true,
+      "priority": 23
+    },
+    {
+      "left": "(+(sin(a);-(sin(b))))",
+      "right": "(*(2;sin(/(+(a;-(b));2));cos(/(+(a;b);2))))",
+      "matchJumbledAndNested": true,
+      "priority": 23
+    },
+    {
+      "left": "(+(cos(a);cos(b)))",
+      "right": "(*(2;cos(/(+(a;b);2));cos(/(+(a;-(b));2))))",
+      "matchJumbledAndNested": true,
+      "priority": 23
+    },
+    {
+      "left": "(+(cos(a);-(cos(b))))",
+      "right": "(*(2;sin(/(+(a;-(b));2));sin(/(+(a;b);2))))",
+      "matchJumbledAndNested": true,
+      "priority": 23
+    },
+    {
+      "left": "(*(sin(a);sin(b)))",
+      "right": "(/(+(cos(+(a;-(b)));-(cos(+(a;b))));2))",
+      "matchJumbledAndNested": true,
+      "priority": 23
+    },
+    {
+      "left": "(*(sin(a);cos(b)))",
+      "right": "(/(+(sin(+(a;-(b)));sin(+(a;b)));2))",
+      "matchJumbledAndNested": true,
+      "priority": 23
+    },
+    {
+      "left": "(*(cos(a);cos(b)))",
+      "right": "(/(+(cos(+(a;-(b)));cos(+(a;b)));2))",
+      "matchJumbledAndNested": true,
+      "priority": 23
+    },
+    {
+      "left": "(sin(+(-(a))))",
+      "right": "(+(-(sin(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(+(-(sin(a))))",
+      "right": "(sin(+(-(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(-(sin(a)))",
+      "right": "(sin(+(-(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(cos(+(-(a))))",
+      "right": "(cos(a))",
+      "priority": 14
+    },
+    {
+      "left": "(cos(a))",
+      "right": "(cos(+(-(a))))"
+    },
+    {
+      "left": "(cos(+(π;a)))",
+      "right": "(+(-(cos(-(a)))))",
+      "priority": 14
+    },
+    {
+      "left": "(cos(+(π;-(a))))",
+      "right": "(+(-(cos(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(+(-(cos(a))))",
+      "right": "(cos(+(π;-(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(-(cos(a)))",
+      "right": "(cos(+(π;-(a))))"
+    },
+    {
+      "left": "(sin(+(π;a)))",
+      "right": "(sin(+(-(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(sin(+(π;-(a))))",
+      "right": "(sin(a))",
+      "priority": 14
+    },
+    {
+      "left": "(sin(a))",
+      "right": "(sin(+(π;-(a))))"
+    },
+    {
+      "left": "(sin(+(/(π;2);-(a))))",
+      "right": "(cos(a))",
+      "priority": 14
+    },
+    {
+      "left": "(sin(+(/(π;2);a)))",
+      "right": "(cos(+(-(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(cos(a))",
+      "right": "(sin(+(/(π;2);-(a))))"
+    },
+    {
+      "left": "(cos(+(/(π;2);-(a))))",
+      "right": "(sin(a))",
+      "priority": 14
+    },
+    {
+      "left": "(cos(+(/(π;2);a)))",
+      "right": "(sin(+(-(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(sin(a))",
+      "right": "(cos(+(/(π;2);-(a))))"
+    },
+    {
+      "left": "(sin(+(-(a))))",
+      "right": "(+(-(sin(a))))",
+      "priority": 17
+    },
+    {
+      "left": "(sin(-(a)))",
+      "right": "(+(-(sin(a))))",
+      "priority": 17
+    },
+    {
+      "left": "(+(-(sin(a))))",
+      "right": "(sin(+(-(a))))",
+      "priority": 17
+    },
+    {
+      "left": "(-(sin(a)))",
+      "right": "(sin(+(-(a))))",
+      "priority": 17
+    },
+    {
+      "left": "(sin(+(b;-(a))))",
+      "right": "(+(-(sin(+(a;-(b))))))",
+      "priority": 14
+    },
+    {
+      "left": "(+(-(sin(+(a;-(b))))))",
+      "right": "(sin(+(b;-(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(cos(+(-(a))))",
+      "right": "(cos(a))",
+      "priority": 14
+    },
+    {
+      "left": "(cos(-(a)))",
+      "right": "(cos(a))",
+      "priority": 14
+    },
+    {
+      "left": "(cos(a))",
+      "right": "(cos(+(-(a))))"
+    },
+    {
+      "left": "(cos(+(a;-(b))))",
+      "right": "(cos(+(b;-(a))))",
+      "priority": 14
+    },
+    {
+      "left": "(sin(0))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(0)",
+      "right": "(sin(0))",
+      "priority": 89
+    },
+    {
+      "left": "(sin(π))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(0)",
+      "right": "(sin(π))",
+      "priority": 89
+    },
+    {
+      "left": "(sin(/(π;2)))",
+      "right": "(1)",
+      "priority": 5
+    },
+    {
+      "left": "(1)",
+      "right": "(sin(/(π;2)))",
+      "priority": 89
+    },
+    {
+      "left": "(cos(0))",
+      "right": "(1)",
+      "priority": 5
+    },
+    {
+      "left": "(1)",
+      "right": "(cos(0))",
+      "priority": 89
+    },
+    {
+      "left": "(cos(π))",
+      "right": "(+(-(1)))",
+      "priority": 5
+    },
+    {
+      "left": "(+(-(1)))",
+      "right": "(cos(π))",
+      "priority": 89
+    },
+    {
+      "left": "(-(1))",
+      "right": "(cos(π))",
+      "priority": 89
+    },
+    {
+      "left": "(cos(/(π;2)))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(0)",
+      "right": "(cos(/(π;2)))",
+      "priority": 89
+    },
+    {
+      "left": "(sin(/(π;6)))",
+      "right": "(/(1;2))",
+      "priority": 5
+    },
+    {
+      "left": "(0.5)",
+      "right": "(sin(/(π;6)))",
+      "priority": 89
+    },
+    {
+      "left": "(sin(/(π;4)))",
+      "right": "(/(^(2;/(1;2));2))",
+      "priority": 5
+    },
+    {
+      "left": "(/(^(2;0.5);2))",
+      "right": "(sin(/(π;4)))",
+      "priority": 13
+    },
+    {
+      "left": "(sin(/(π;3)))",
+      "right": "(/(^(3;/(1;2));2))",
+      "priority": 5
+    },
+    {
+      "left": "(/(^(3;0.5);2))",
+      "right": "(sin(/(π;3)))",
+      "priority": 13
+    },
+    {
+      "left": "(cos(/(π;3)))",
+      "right": "(/(1;2))",
+      "priority": 5
+    },
+    {
+      "left": "(0.5)",
+      "right": "(cos(/(π;3)))",
+      "priority": 89
+    },
+    {
+      "left": "(cos(/(π;4)))",
+      "right": "(/(^(2;/(1;2));2))",
+      "priority": 5
+    },
+    {
+      "left": "(/(^(2;0.5);2))",
+      "right": "(cos(/(π;4)))",
+      "priority": 13
+    },
+    {
+      "left": "(cos(/(π;6)))",
+      "right": "(/(^(3;/(1;2));2))",
+      "priority": 5
+    },
+    {
+      "left": "(/(^(3;0.5);2))",
+      "right": "(cos(/(π;6)))",
+      "priority": 13
+    },
+    {
+      "left": "(tg(/(π;4)))",
+      "right": "(1)",
+      "priority": 5
+    },
+    {
+      "left": "(1)",
+      "right": "(tg(/(π;4)))",
+      "priority": 89
+    },
+    {
+      "left": "(ctg(/(π;4)))",
+      "right": "(1)",
+      "priority": 5
+    },
+    {
+      "left": "(1)",
+      "right": "(ctg(/(π;4)))",
+      "priority": 89
+    },
+    {
+      "left": "(tg(0))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(0)",
+      "right": "(tg(0))",
+      "priority": 89
+    },
+    {
+      "left": "(ctg(/(π;2)))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(0)",
+      "right": "(ctg(/(π;2)))",
+      "priority": 89
+    },
+    {
+      "left": "(sin(a))",
+      "right": "(+(-(sin(+(a;π)))))",
+      "priority": 89
+    },
+    {
+      "left": "(sin(a))",
+      "right": "(+(-(sin(+(a;-(π))))))",
+      "priority": 89
+    },
+    {
+      "left": "(cos(a))",
+      "right": "(+(-(cos(+(a;π)))))",
+      "priority": 89
+    },
+    {
+      "left": "(cos(a))",
+      "right": "(+(-(cos(+(a;-(π))))))",
+      "priority": 89
+    }
+  ]
+}

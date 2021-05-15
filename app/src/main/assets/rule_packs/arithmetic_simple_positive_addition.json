@@ -1,0 +1,61 @@
+{
+  "code": "arithmetic_simple_positive_addition__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic simple positive addition",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [],
+  "rules": [
+    {
+      "code": "",
+      "leftStructureString": "(+(a))",
+      "right": "(a)",
+      "priority": 30,
+      "weight": 0.0
+    },
+    {
+      "code": "",
+      "leftStructureString": "(+(a;b))",
+      "right": "(+(b;a))",
+      "priority": 20,
+      "isExtending": true
+    },
+    {
+      "code": "",
+      "leftStructureString": "(a)",
+      "right": "(+(a;0))",
+      "isExtending": true
+    },
+    {
+      "code": "SimpleComputation",
+      "priority": 5
+    },
+    {
+      "code": "ZeroComputation",
+      "priority": 5
+    },
+    {
+      "code": "PositiveNumberPlusMinus1",
+      "priority": 20
+    },
+    {
+      "code": "ParentBracketsExpansion",
+      "priority": 30
+    },
+    {
+      "code": "ArgumentsSwap",
+      "priority": 40
+    },
+    {
+      "code": "ArgumentsPermutation",
+      "priority": 40
+    },
+    {
+      "code": "ArgumentsPermutationInOriginalOrder",
+      "priority": 41
+    }
+  ]
+}

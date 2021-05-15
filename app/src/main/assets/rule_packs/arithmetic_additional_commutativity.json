@@ -1,0 +1,142 @@
+{
+  "code": "arithmetic_additional_commutativity__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic additional commutativity",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+  ],
+  "rules": [
+    {
+      "left": "(+(a;b))",
+      "right": "(+(b;a))"
+    },
+    {
+      "left": "(+(A;+(B;C)))",
+      "right": "(+(A;B;C))"
+    },
+    {
+      "left": "(+(A;B;C))",
+      "right": "(+(A;+(B;C)))"
+    },
+    {
+      "left": "(+(A;+(B;C)))",
+      "right": "(+(+(A;B);C))"
+    },
+    {
+      "left": "(+(+(A;B);C))",
+      "right": "(+(A;+(B;C)))"
+    },
+    {
+      "left": "(+(+(A;B);C))",
+      "right": "(+(A;B;C))"
+    },
+    {
+      "left": "(+(A;B;C))",
+      "right": "(+(+(A;B);C))"
+    },
+    {
+      "left": "(+(A;B;C))",
+      "right": "(+(A;C;B))"
+    },
+    {
+      "left": "(+(A;B;C))",
+      "right": "(+(B;A;C))"
+    },
+    {
+      "left": "(+(A;B;C))",
+      "right": "(+(C;A;B))"
+    },
+    {
+      "left": "(+(+(A;B);+(C;D)))",
+      "right": "(+(A;B;C;D))"
+    },
+    {
+      "left": "(+(A;+(B;C;D)))",
+      "right": "(+(A;B;C;D))"
+    },
+    {
+      "left": "(+(A;B;C;D))",
+      "right": "(+(A;+(B;C;D)))"
+    },
+    {
+      "left": "(+(+(A;B;C);D))",
+      "right": "(+(A;B;C;D))"
+    },
+    {
+      "left": "(+(A;B;C;D))",
+      "right": "(+(+(A;B;C);D))"
+    },
+    {
+      "left": "(+(A;B;+(C;D)))",
+      "right": "(+(A;B;C;D))"
+    },
+    {
+      "left": "(+(A;B;C;D))",
+      "right": "(+(A;B;+(C;D)))"
+    },
+    {
+      "left": "(+(A;+(B;C);D))",
+      "right": "(+(A;B;C;D))"
+    },
+    {
+      "left": "(+(A;B;C;D))",
+      "right": "(+(A;+(B;C);D))"
+    },
+    {
+      "left": "(+(+(A;B);C;D))",
+      "right": "(+(A;B;C;D))"
+    },
+    {
+      "left": "(+(A;B;C;D))",
+      "right": "(+(+(A;B);C;D))"
+    },
+    {
+      "left": "(+(A;B;C;D))",
+      "right": "(+(B;A;C;D))"
+    },
+    {
+      "left": "(+(A;B;C;D))",
+      "right": "(+(C;A;B;D))"
+    },
+    {
+      "left": "(+(A;B;C;D))",
+      "right": "(+(D;A;B;C))"
+    },
+    {
+      "left": "(+(A;+(B;C;D;E)))",
+      "right": "(+(A;B;C;D;E))"
+    },
+    {
+      "left": "(+(A;B;C;D;E))",
+      "right": "(+(A;+(B;C;D;E)))"
+    },
+    {
+      "left": "(+(+(A;B;C;D);E))",
+      "right": "(+(A;B;C;D;E))"
+    },
+    {
+      "left": "(+(A;B;C;D;E))",
+      "right": "(+(+(A;B;C;D);E))"
+    },
+    {
+      "left": "(+(A;B;C;D;E))",
+      "right": "(+(B;A;C;D;E))"
+    },
+    {
+      "left": "(+(A;B;C;D;E))",
+      "right": "(+(C;A;B;D;E))"
+    },
+    {
+      "left": "(+(A;B;C;D;E))",
+      "right": "(+(D;A;B;C;E))"
+    },
+    {
+      "left": "(+(A;B;C;D;E))",
+      "right": "(+(E;A;B;C;D))"
+    }
+  ]
+}

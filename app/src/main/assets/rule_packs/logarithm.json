@@ -1,0 +1,121 @@
+{
+  "code": "logarithm__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Logarithm",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_pow__vasily_game"
+    }
+  ],
+  "rules": [
+    {
+      "left": "(^(a;log(b;a)))",
+      "right": "(b)",
+      "priority": 5
+    },
+    {
+      "left": "(log(1;A))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(log(A;A))",
+      "right": "(1)",
+      "priority": 5
+    },
+    {
+      "left": "(log(*(b;c);a))",
+      "right": "(+(log(b;a);log(c;a)))"
+    },
+    {
+      "left": "(+(log(b;a);log(c;a)))",
+      "right": "(log(*(b;c);a))"
+    },
+    {
+      "left": "(log(*(b;c;d);a))",
+      "right": "(+(log(b;a);log(c;a);log(d;a)))"
+    },
+    {
+      "left": "(+(log(b;a);log(c;a);log(d;a)))",
+      "right": "(log(*(b;c;d);a))"
+    },
+    {
+      "left": "(log(*(b;c;d;e);a))",
+      "right": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))"
+    },
+    {
+      "left": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))",
+      "right": "(log(*(b;c;d;e);a))"
+    },
+    {
+      "left": "(log(/(b;c);a))",
+      "right": "(+(log(b;a);-(log(c;a))))"
+    },
+    {
+      "left": "(+(log(b;a);-(log(c;a))))",
+      "right": "(log(/(b;c);a))"
+    },
+    {
+      "left": "(log(^(b;c);a))",
+      "right": "(*(c;log(b;a)))"
+    },
+    {
+      "left": "(*(c;log(b;a)))",
+      "right": "(log(^(b;c);a))"
+    },
+    {
+      "left": "(*(log(b;a);c))",
+      "right": "(log(^(b;c);a))"
+    },
+    {
+      "left": "(log(b;^(a;k)))",
+      "right": "(/(log(b;a);k))"
+    },
+    {
+      "left": "(/(log(b;a);k))",
+      "right": "(log(b;^(a;k)))"
+    },
+    {
+      "left": "(/(1;log(b;a)))",
+      "right": "(log(a;b))"
+    },
+    {
+      "left": "(log(a;b))",
+      "right": "(/(1;log(b;a)))"
+    },
+    {
+      "left": "(/(log(c;a);log(b;a)))",
+      "right": "(log(c;b))"
+    },
+    {
+      "left": "(log(/(b;c);a))",
+      "right": "(+(-(log(/(c;b);a))))"
+    },
+    {
+      "left": "(+(-(log(/(c;b);a))))",
+      "right": "(log(/(b;c);a))"
+    },
+    {
+      "left": "(log(b;a))",
+      "right": "(+(-(log(/(1;b);a))))"
+    },
+    {
+      "left": "(+(-(log(/(1;b);a))))",
+      "right": "(log(b;a))"
+    },
+    {
+      "left": "(log(/(1;b);a))",
+      "right": "(+(-(log(b;a))))"
+    },
+    {
+      "left": "(+(-(log(b;a))))",
+      "right": "(log(/(1;b);a))"
+    }
+  ]
+}

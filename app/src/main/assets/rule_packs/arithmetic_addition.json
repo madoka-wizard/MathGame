@@ -1,0 +1,107 @@
+{
+  "code": "arithmetic_addition__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic addition",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [],
+  "rules": [
+    {
+      "left": "(+(a))",
+      "right": "(a)",
+      "priority": 30
+    },
+    {
+      "left": "(+(a;b))",
+      "right": "(+(b;a))",
+      "priority": 20,
+      "isExtending": true
+    },
+    {
+      "left": "(a)",
+      "right": "(+(a;0))",
+      "priority": 90,
+      "isExtending": true
+    },
+    {
+      "left": "(+(-(+(-(a)))))",
+      "right": "(a)",
+      "priority": 5
+    },
+    {
+      "left": "(-(+(-(a))))",
+      "right": "(a)",
+      "priority": 5
+    },
+    {
+      "left": "(-(-(a)))",
+      "right": "(a)",
+      "priority": 5
+    },
+    {
+      "left": "(a)",
+      "right": "(-(+(-(a))))",
+      "priority": 95,
+      "isExtending": true
+    },
+    {
+      "left": "(+(a;-(a)))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(+(-(a);a))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(+(a;+(-(a))))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(+(+(-(a));a))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "code": "SimpleComputation",
+      "priority": 5
+    },
+    {
+      "code": "ZeroComputation",
+      "priority": 5
+    },
+    {
+      "code": "NumberPlusMinus1",
+      "priority": 20
+    },
+    {
+      "code": "MinusInOutBrackets",
+      "priority": 31
+    },
+    {
+      "code": "ParentBracketsExpansion",
+      "priority": 30
+    },
+    {
+      "code": "ArgumentsSwap",
+      "priority": 40
+    },
+    {
+      "code": "ArgumentsPermutation",
+      "priority": 40
+    },
+    {
+      "code": "ArgumentsPermutationInOriginalOrder",
+      "priority": 41
+    },
+    {
+      "code": "AdditiveComplicatingExtension",
+      "priority": 92
+    }
+  ]
+}

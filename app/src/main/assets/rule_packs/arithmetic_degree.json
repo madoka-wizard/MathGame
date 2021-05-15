@@ -1,0 +1,166 @@
+{
+  "code": "arithmetic_degree__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic degree",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+  ],
+  "rules": [
+    {
+      "left": "(/(1;A))",
+      "right": "(^(A;+(-(1))))"
+    },
+    {
+      "left": "(^(A;+(-(1))))",
+      "right": "(/(1;A))"
+    },
+    {
+      "left": "(^(A;+(B;C)))",
+      "right": "(*(^(A;B);^(A;C)))"
+    },
+    {
+      "left": "(*(^(A;B);^(A;C)))",
+      "right": "(^(A;+(B;C)))"
+    },
+    {
+      "left": "(^(A;+(B;C;D)))",
+      "right": "(*(^(A;B);^(A;C);^(A;D)))"
+    },
+    {
+      "left": "(*(^(A;B);^(A;C);^(A;D)))",
+      "right": "(^(A;+(B;C;D)))"
+    },
+    {
+      "left": "(^(A;+(B;-(C))))",
+      "right": "(/(^(A;B);^(A;C)))"
+    },
+    {
+      "left": "(/(^(A;B);^(A;C)))",
+      "right": "(^(A;+(B;-(C))))"
+    },
+    {
+      "left": "(/(B;^(A;C)))",
+      "right": "(*(B;^(A;+(-(C)))))"
+    },
+    {
+      "left": "(*(B;^(A;+(-(C)))))",
+      "right": "(/(B;^(A;C)))"
+    },
+    {
+      "left": "(/(1;^(A;C)))",
+      "right": "(^(A;+(-(C))))"
+    },
+    {
+      "left": "(^(A;+(-(C))))",
+      "right": "(/(1;^(A;C)))"
+    },
+    {
+      "left": "(/(A;B))",
+      "right": "(^(/(B;A);+(-(1))))"
+    },
+    {
+      "left": "(^(/(B;A);+(-(1))))",
+      "right": "(/(A;B))"
+    },
+    {
+      "left": "(^(A;0))",
+      "right": "(1)"
+    },
+    {
+      "left": "(^(1;A))",
+      "right": "(1)"
+    },
+    {
+      "left": "(^(A;1))",
+      "right": "(A)"
+    },
+    {
+      "left": "(^(0;A))",
+      "right": "(0)"
+    },
+    {
+      "left": "(*(A;A))",
+      "right": "(^(A;2))"
+    },
+    {
+      "left": "(^(A;2))",
+      "right": "(*(A;A))"
+    },
+    {
+      "left": "(*(a;^(a;n)))",
+      "right": "(^(a;+(n;1)))"
+    },
+    {
+      "left": "(^(a;+(n;1)))",
+      "right": "(*(a;^(a;n)))"
+    },
+    {
+      "left": "(*(^(a;n);a))",
+      "right": "(^(a;+(1;n)))"
+    },
+    {
+      "left": "(^(a;+(1;n)))",
+      "right": "(*(^(a;n);a))"
+    },
+    {
+      "left": "(/(^(a;n);a))",
+      "right": "(^(a;+(n;-(1))))"
+    },
+    {
+      "left": "(^(a;+(n;-(1))))",
+      "right": "(/(^(a;n);a))"
+    },
+    {
+      "left": "(^(A;*(B;C)))",
+      "right": "(^(^(A;B);C))"
+    },
+    {
+      "left": "(^(^(A;B);C))",
+      "right": "(^(A;*(B;C)))"
+    },
+    {
+      "left": "(^(*(B;C);A))",
+      "right": "(*(^(B;A);^(C;A)))"
+    },
+    {
+      "left": "(*(^(B;A);^(C;A)))",
+      "right": "(^(*(B;C);A))"
+    },
+    {
+      "left": "(^(/(B;C);A))",
+      "right": "(/(^(B;A);^(C;A)))"
+    },
+    {
+      "left": "(/(^(B;A);^(C;A)))",
+      "right": "(^(/(B;C);A))"
+    },
+    {
+      "left": "(^(A;*(2;n)))",
+      "right": "(^(-(A);*(2;n)))"
+    },
+    {
+      "left": "(^(-(A);*(2;n)))",
+      "right": "(^(A;*(2;n)))"
+    },
+    {
+      "left": "(^(-(A);2))",
+      "right": "(^(A;2))"
+    },
+    {
+      "left": "(a)",
+      "right": "(^(^(a;2);/(1;2)))"
+    },
+    {
+      "left": "(a)",
+      "right": "(^(^(a;3);/(1;3)))"
+    },
+    {
+      "left": "(^(^(a;b);/(1;b)))",
+      "right": "(a)"
+    }
+  ]
+}

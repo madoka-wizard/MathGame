@@ -1,0 +1,167 @@
+{
+  "code": "arithmetic_pow__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic pow",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_division__vasily_game"
+    }
+  ],
+  "rules": [
+    {
+      "left": "(a)",
+      "right": "(^(a;1))",
+      "simpleAdditional": true,
+      "isExtending": true
+    },
+    {
+      "left": "(1)",
+      "right": "(^(1;2))",
+      "simpleAdditional": true,
+      "isExtending": true
+    },
+    {
+      "left": "(1)",
+      "right": "(^(1;3))",
+      "simpleAdditional": true,
+      "isExtending": true
+    },
+    {
+      "left": "(/(1;a))",
+      "right": "(^(a;+(-(1))))"
+    },
+    {
+      "left": "(^(a;+(-(1))))",
+      "right": "(/(1;a))"
+    },
+    {
+      "code": "PowFactorization",
+      "priority": 15
+    },
+    {
+      "left": "(^(a;+(b;-(c))))",
+      "right": "(/(^(a;b);^(a;c)))"
+    },
+    {
+      "left": "(/(^(a;b);^(a;c)))",
+      "right": "(^(a;+(b;-(c))))"
+    },
+    {
+      "left": "(/(B;^(A;C)))",
+      "right": "(*(B;^(A;+(-(C)))))"
+    },
+    {
+      "left": "(*(B;^(A;+(-(C)))))",
+      "right": "(/(B;^(A;C)))"
+    },
+    {
+      "left": "(/(1;^(A;C)))",
+      "right": "(^(A;+(-(C))))"
+    },
+    {
+      "left": "(^(A;+(-(C))))",
+      "right": "(/(1;^(A;C)))"
+    },
+    {
+      "left": "(/(A;B))",
+      "right": "(^(/(B;A);+(-(1))))"
+    },
+    {
+      "left": "(^(/(B;A);+(-(1))))",
+      "right": "(/(A;B))"
+    },
+    {
+      "left": "(^(A;0))",
+      "right": "(1)",
+      "priority": 5
+    },
+    {
+      "left": "(^(1;A))",
+      "right": "(1)",
+      "priority": 5
+    },
+    {
+      "left": "(^(A;1))",
+      "right": "(A)",
+      "priority": 5
+    },
+    {
+      "left": "(^(0;A))",
+      "right": "(0)",
+      "priority": 5
+    },
+    {
+      "left": "(*(a;a))",
+      "right": "(^(a;2))",
+      "simpleAdditional": true
+    },
+    {
+      "left": "(^(a;2))",
+      "right": "(*(a;a))",
+      "simpleAdditional": true
+    },
+    {
+      "left": "(*(a;^(a;n)))",
+      "right": "(^(a;+(n;1)))"
+    },
+    {
+      "left": "(^(a;+(n;1)))",
+      "right": "(*(a;^(a;n)))"
+    },
+    {
+      "left": "(*(^(a;n);a))",
+      "right": "(^(a;+(1;n)))"
+    },
+    {
+      "left": "(^(a;+(1;n)))",
+      "right": "(*(^(a;n);a))"
+    },
+    {
+      "left": "(/(^(a;n);a))",
+      "right": "(^(a;+(n;-(1))))"
+    },
+    {
+      "left": "(^(a;+(n;-(1))))",
+      "right": "(/(^(a;n);a))"
+    },
+    {
+      "left": "(^(A;*(B;C)))",
+      "right": "(^(^(A;B);C))"
+    },
+    {
+      "left": "(^(^(A;B);C))",
+      "right": "(^(A;*(B;C)))"
+    },
+    {
+      "left": "(^(/(B;C);A))",
+      "right": "(/(^(B;A);^(C;A)))"
+    },
+    {
+      "left": "(/(^(B;A);^(C;A)))",
+      "right": "(^(/(B;C);A))"
+    },
+    {
+      "left": "(^(A;*(2;n)))",
+      "right": "(^(-(A);*(2;n)))"
+    },
+    {
+      "left": "(^(-(A);*(2;n)))",
+      "right": "(^(A;*(2;n)))"
+    },
+    {
+      "left": "(^(-(A);2))",
+      "right": "(^(A;2))"
+    },
+    {
+      "left": "(^(^(a;b);/(1;b)))",
+      "right": "(a)",
+      "priority": 5
+    }
+  ]
+}

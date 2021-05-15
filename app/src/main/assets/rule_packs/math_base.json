@@ -1,0 +1,78 @@
+{
+  "code": "math_base__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Math base",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "pow_rules__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_commutativity__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_minus__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "base_digits__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_associativity__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "additive_to_multiplicative__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_degree__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "short_multiplication__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "logarithm__vasily_game"
+    },
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_plus_selections__vasily_game"
+    }
+  ],
+  "rules": [
+    {
+      "code": "SimpleComputation",
+      "priority": 5
+    },
+    {
+      "code": "ZeroComputation",
+      "priority": 5
+    },
+    {
+      "code": "NumberPlusMinus1",
+      "priority": 20
+    },
+    {
+      "code": "MultiplicationFactorization",
+      "priority": 15
+    },
+    {
+      "code": "DecimalToFraction",
+      "priority": 15
+    },
+    {
+      "code": "PowFactorization",
+      "priority": 15
+    }
+  ]
+}

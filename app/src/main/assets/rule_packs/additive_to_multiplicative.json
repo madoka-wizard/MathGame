@@ -1,0 +1,30 @@
+{
+  "code": "additive_to_multiplicative__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Additive to multiplicative",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+  ],
+  "rules": [
+    {
+      "left": "(+(a;*(a;n)))",
+      "right": "(*(a;+(n;1)))"
+    },
+    {
+      "left": "(*(a;+(n;1)))",
+      "right": "(+(a;*(a;n)))"
+    },
+    {
+      "left": "(+(*(a;n);a))",
+      "right": "(*(a;+(1;n)))"
+    },
+    {
+      "left": "(*(a;+(1;n)))",
+      "right": "(+(*(a;n);a))"
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "code": "arithmetic_plus_selections__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic plus selections",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+  ],
+  "rules": [
+    {
+      "left": "(+(a;b))",
+      "right": "(+(a;+(b)))"
+    },
+    {
+      "left": "(+(a;b))",
+      "right": "(+(+(a);b))"
+    },
+    {
+      "left": "(+(a;b;c))",
+      "right": "(+(+(a);b;c))"
+    },
+    {
+      "left": "(+(a;b;c))",
+      "right": "(+(a;+(b);c))"
+    },
+    {
+      "left": "(+(a;b;c))",
+      "right": "(+(a;b;+(c)))"
+    },
+    {
+      "left": "(+(a;b;c;d))",
+      "right": "(+(+(a);b;c;d))"
+    },
+    {
+      "left": "(+(a;b;c;d))",
+      "right": "(+(a;+(b);c;d))"
+    },
+    {
+      "left": "(+(a;b;c;d))",
+      "right": "(+(a;b;+(c);d))"
+    },
+    {
+      "left": "(+(a;b;c;d))",
+      "right": "(+(a;b;c;+(d)))"
+    },
+    {
+      "left": "(+(a;b;c;d;e))",
+      "right": "(+(+(a);b;c;d;e))"
+    },
+    {
+      "left": "(+(a;b;c;d;e))",
+      "right": "(+(a;+(b);c;d;e))"
+    },
+    {
+      "left": "(+(a;b;c;d;e))",
+      "right": "(+(a;b;+(c);d;e))"
+    },
+    {
+      "left": "(+(a;b;c;d;e))",
+      "right": "(+(a;b;c;+(d);e))"
+    },
+    {
+      "left": "(+(a;b;c;d;e))",
+      "right": "(+(a;b;c;d;+(e)))"
+    },
+    {
+      "right": "(+(a;b))",
+      "left": "(+(a;+(b)))"
+    },
+    {
+      "right": "(+(a;b))",
+      "left": "(+(+(a);b))"
+    },
+    {
+      "right": "(+(a;b;c))",
+      "left": "(+(+(a);b;c))"
+    },
+    {
+      "right": "(+(a;b;c))",
+      "left": "(+(a;+(b);c))"
+    },
+    {
+      "right": "(+(a;b;c))",
+      "left": "(+(a;b;+(c)))"
+    },
+    {
+      "right": "(+(a;b;c;d))",
+      "left": "(+(+(a);b;c;d))"
+    },
+    {
+      "right": "(+(a;b;c;d))",
+      "left": "(+(a;+(b);c;d))"
+    },
+    {
+      "right": "(+(a;b;c;d))",
+      "left": "(+(a;b;+(c);d))"
+    },
+    {
+      "right": "(+(a;b;c;d))",
+      "left": "(+(a;b;c;+(d)))"
+    },
+    {
+      "right": "(+(a;b;c;d;e))",
+      "left": "(+(+(a);b;c;d;e))"
+    },
+    {
+      "right": "(+(a;b;c;d;e))",
+      "left": "(+(a;+(b);c;d;e))"
+    },
+    {
+      "right": "(+(a;b;c;d;e))",
+      "left": "(+(a;b;+(c);d;e))"
+    },
+    {
+      "right": "(+(a;b;c;d;e))",
+      "left": "(+(a;b;c;+(d);e))"
+    },
+    {
+      "right": "(+(a;b;c;d;e))",
+      "left": "(+(a;b;c;d;+(e)))"
+    }
+  ]
+}

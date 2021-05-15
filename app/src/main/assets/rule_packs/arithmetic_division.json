@@ -1,0 +1,80 @@
+{
+  "code": "arithmetic_division__vasily_game",
+  "namespaceCode": "vasily_game",
+  "nameEn": "Arithmetic division",
+  "nameRu": "",
+  "descriptionShortEn": "",
+  "descriptionShortRu": "",
+  "descriptionEn": "",
+  "descriptionRu": "",
+  "rulePacks": [
+    {
+      "namespaceCode": "vasily_game",
+      "rulePackCode": "arithmetic_multiplication__vasily_game"
+    }
+  ],
+  "rules": [
+    {
+      "left": "(/(0;a))",
+      "right": "(0)",
+      "priority": 10
+    },
+    {
+      "left": "(/(a;1))",
+      "right": "(a)",
+      "priority": 10
+    },
+    {
+      "left": "(/(a;a))",
+      "right": "(1)",
+      "priority": 10
+    },
+    {
+      "left": "(*(/(1;a);a))",
+      "right": "(1)",
+      "priority": 10
+    },
+    {
+      "left": "(/(1;/(1;a)))",
+      "right": "(a)",
+      "priority": 10,
+      "matchJumbledAndNested": true
+    },
+    {
+      "left": "(a)",
+      "right": "(/(1;/(1;a)))",
+      "priority": 90,
+      "isExtending": true
+    },
+    {
+      "left": "(0.5)",
+      "right": "(/(1;2))",
+      "priority": 15,
+      "simpleAdditional": true
+    },
+    {
+      "left": "(/(1;2))",
+      "right": "(0.5)",
+      "priority": 5,
+      "simpleAdditional": true
+    },
+    {
+      "left": "(/(a;b))",
+      "right": "(/(*(a;b);*(b;b)))",
+      "priority": 90,
+      "isExtending": true
+    },
+    {
+      "code": "MultiplicativeComplicatingExtension",
+      "priority": 92
+    },
+    {
+      "code": "ReduceFraction",
+      "priority": 10
+    },
+    {
+      "code": "DecimalToFraction",
+      "priority": 15
+    }
+  ]
+}
